@@ -6,7 +6,7 @@ members = [
     "packages/xenosphere-core",
     "packages/xenosphere",
 ]
-
+package.license-file = "LICENSE"
 
 [workspace.dependencies]
 # package dependencies
