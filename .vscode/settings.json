@@ -1,0 +1,5 @@
+{
+  "rust-analyzer.linkedProjects": [
+    "./packages/xenosphere-parser/Cargo.toml"
+  ]
+}
