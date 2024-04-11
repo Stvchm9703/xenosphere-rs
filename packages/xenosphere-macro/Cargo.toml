@@ -1,6 +1,6 @@
 [package]
 name = "xenosphere-macro"
-version = "0.0.0"
+version = "0.0.1-alpha.0"
 edition = "2021"
 
 
@@ -9,3 +9,4 @@ edition = "2021"
 [dependencies]
 proc-macro2 = { workplace = true }
 syn = { workplace = true }
+quote = { workplace = true }

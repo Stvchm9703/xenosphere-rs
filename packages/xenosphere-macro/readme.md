@@ -10,7 +10,7 @@ to convert the macro input to the token-steam
 // create the modifier
 
 // src/themes/component_name.rs
-create_modifiers! {
+create_modifier_map! {
     component_modifier_name {
       padding: 10,
       margin: 10,
@@ -57,7 +57,7 @@ fn main_component (
     Box {
       component_ref!(package_name::component_name, Mode::Overwrite),
 
-      modifier: {
+      modifier: create_modifier! {
         // inherit the predefine modifier
         modifier_ref!(package_name::component_modifier_name),
         // define the modifier
@@ -67,7 +67,7 @@ fn main_component (
         background: "blue",
       },
 
-      event_handler: {
+      event_handler: create_event_modifiers!{
         // inherit the predefine event handler
         event_handler_ref!(package_name::event_handler_name),
         // define the event handler
