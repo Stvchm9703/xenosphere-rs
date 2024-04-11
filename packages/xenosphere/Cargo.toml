@@ -4,10 +4,10 @@ version = "0.0.1-alpha.1"
 edition = "2021"
 authors = ["Steven Chm<stv.chm@gmail.com>"]
 description = "Xenosphere, the cross-platform App Framework"
-license-file= "LICENSE"
-repository = "https://github.com/Stvchm9703/xenosphere-rs/packages/xenosphere-macro"
-
-
+license-file = "LICENSE"
+repository = "https://github.com/Stvchm9703/xenosphere-rs/packages/xenosphere"
+# homepage = "https://github.com/Stvchm9703/xenosphere-rs"
+homepage = { workspace = true }
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -15,6 +15,6 @@ repository = "https://github.com/Stvchm9703/xenosphere-rs/packages/xenosphere-ma
 # This is the main dependency for the project
 # re-export project crate
 # xenosphere = { path = "../xenosphere" }
-xenosphere-core = { path = "../xenosphere-core" }
-xenosphere-macro = { path = "../xenosphere-macro" }
-xenosphere-parser = { path = "../xenosphere-parser" }
+xenosphere-core = { path = "../xenosphere-core", version = "0.0.1-alpha.1" }
+xenosphere-macro = { path = "../xenosphere-macro", version = "0.0.1-alpha.1" }
+xenosphere-parser = { path = "../xenosphere-parser", version = "0.0.1-alpha.1" }

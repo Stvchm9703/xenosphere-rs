@@ -7,6 +7,8 @@ members = [
     "packages/xenosphere",
 ]
 package.license-file = "LICENSE"
+package.homepage = "https://github.com/Stvchm9703/xenosphere-rs"
+
 
 [workspace.dependencies]
 # package dependencies
