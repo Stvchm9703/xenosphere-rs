@@ -3,16 +3,36 @@ name = "xenosphere-parser"
 version = "0.0.1-alpha.1"
 edition = "2021"
 description = "A token parser for handling Xenosphere framework"
-license-file= "LICENSE"
+license-file = "LICENSE"
 repository = "https://github.com/Stvchm9703/xenosphere-rs/packages/xenosphere-parser"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[lib]
-proc-macro = true
-
-
 [dependencies]
-proc-macro2 = { workplace = true , version = "1.0.79" }
-syn = { workplace = true, version = "2.0.58", features = ["extra-traits", "full"] }
-quote = { workplace=true, version = "1.0.35"}
+# proc-macro2 = { workplace = true, version = "1.0.79" }
+syn = { workplace = true, version = "2.0.58", features = [
+  "extra-traits",
+  "full",
+] }
+quote = { workplace = true, version = "1.0.35" }
+pest = { version = "2.7.10" }
+pest_derive = { version = "2.7.10" }
+anyhow = { workspace = true, version = "1.0.44" }
+safetensors = { version = "0.4.3" }
+polars = { version = "0.40", features = [
+  "default",
+  "lazy",
+  "serde",
+  "serde-lazy",
+  "lazy",
+  "avro",
+  "json",
+  "ipc",
+  "csv",
+  "parquet",
+] }
+
+serde = { version = "1.0.203", features = [
+  "derive",
+  "std",
+] }

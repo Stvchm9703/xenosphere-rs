@@ -1,0 +1,2267 @@
+import { defineLazyLayerNode } from "./base";
+import * as zod from "zod";
+export const activation = defineLazyLayerNode({
+  module_name: "activation",
+  params: {
+    alpha: zod.number(),
+    inplace: zod.boolean(),
+    approximate: zod.string(),
+    dim: zod.optional(zod.number()),
+    lambd: zod.number(),
+    min_val: zod.number(),
+    max_val: zod.number(),
+    min_value: zod.optional(zod.number()),
+    max_value: zod.optional(zod.number()),
+    negative_slope: zod.number(),
+    num_parameters: zod.number(),
+    init: zod.number(),
+    lower: zod.number(),
+    upper: zod.number(),
+    beta: zod.number(),
+    threshold: zod.number(),
+    value: zod.number(),
+  },
+  options: [
+    "CELU",
+    "ELU",
+    "GELU",
+    "GLU",
+    "Hardshrink",
+    "Hardsigmoid",
+    "Hardswish",
+    "Hardtanh",
+    "LeakyReLU",
+    "LogSigmoid",
+    "LogSoftmax",
+    "Mish",
+    "MultiheadAttention",
+    "PReLU",
+    "RReLU",
+    "ReLU",
+    "ReLU6",
+    "SELU",
+    "SiLU",
+    "Sigmoid",
+    "Softmax",
+    "Softmax2d",
+    "Softmin",
+    "Softplus",
+    "Softshrink",
+    "Softsign",
+    "Tanh",
+    "Tanhshrink",
+    "Threshold",
+  ],
+  nodes: [{
+    "class_name": "CELU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["alpha : \"<class 'float'>\",", "inplace : \"<class 'bool'>\","],
+    "parse_params": ["alpha: zod.number(),", "inplace: zod.boolean(),"],
+  }, {
+    "class_name": "ELU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["alpha : \"<class 'float'>\",", "inplace : \"<class 'bool'>\","],
+    "parse_params": ["alpha: zod.number(),", "inplace: zod.boolean(),"],
+  }, {
+    "class_name": "GELU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["approximate : \"<class 'str'>\","],
+    "parse_params": ["approximate: zod.string(),"],
+  }, {
+    "class_name": "GLU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["dim : \"<class 'int'>\","],
+    "parse_params": ["dim: zod.number(),"],
+  }, {
+    "class_name": "Hardshrink",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["lambd : \"<class 'float'>\","],
+    "parse_params": ["lambd: zod.number(),"],
+  }, {
+    "class_name": "Hardsigmoid",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["inplace : \"<class 'bool'>\","],
+    "parse_params": ["inplace: zod.boolean(),"],
+  }, {
+    "class_name": "Hardswish",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["inplace : \"<class 'bool'>\","],
+    "parse_params": ["inplace: zod.boolean(),"],
+  }, {
+    "class_name": "Hardtanh",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [
+      "min_val : \"<class 'float'>\",",
+      "max_val : \"<class 'float'>\",",
+      "inplace : \"<class 'bool'>\",",
+      'min_value : "typing.Optional[float]",',
+      'max_value : "typing.Optional[float]",',
+    ],
+    "parse_params": [
+      "min_val: zod.number(),",
+      "max_val: zod.number(),",
+      "inplace: zod.boolean(),",
+      "min_value: zod.optional(zod.number()) ,",
+      "max_value: zod.optional(zod.number()) ,",
+    ],
+  }, {
+    "class_name": "LeakyReLU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [
+      "negative_slope : \"<class 'float'>\",",
+      "inplace : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "negative_slope: zod.number(),",
+      "inplace: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "LogSigmoid",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "LogSoftmax",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ['dim : "typing.Optional[int]",'],
+    "parse_params": ["dim: zod.optional(zod.number()) ,"],
+  }, {
+    "class_name": "Mish",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["inplace : \"<class 'bool'>\","],
+    "parse_params": ["inplace: zod.boolean(),"],
+  }, {
+    "class_name": "MultiheadAttention",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "PReLU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [
+      "num_parameters : \"<class 'int'>\",",
+      "init : \"<class 'float'>\",",
+    ],
+    "parse_params": ["num_parameters: zod.number(),", "init: zod.number(),"],
+  }, {
+    "class_name": "RReLU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [
+      "lower : \"<class 'float'>\",",
+      "upper : \"<class 'float'>\",",
+      "inplace : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "lower: zod.number(),",
+      "upper: zod.number(),",
+      "inplace: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "ReLU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["inplace : \"<class 'bool'>\","],
+    "parse_params": ["inplace: zod.boolean(),"],
+  }, {
+    "class_name": "ReLU6",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["inplace : \"<class 'bool'>\","],
+    "parse_params": ["inplace: zod.boolean(),"],
+  }, {
+    "class_name": "SELU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["inplace : \"<class 'bool'>\","],
+    "parse_params": ["inplace: zod.boolean(),"],
+  }, {
+    "class_name": "SiLU",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["inplace : \"<class 'bool'>\","],
+    "parse_params": ["inplace: zod.boolean(),"],
+  }, {
+    "class_name": "Sigmoid",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "Softmax",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ['dim : "typing.Optional[int]",'],
+    "parse_params": ["dim: zod.optional(zod.number()) ,"],
+  }, {
+    "class_name": "Softmax2d",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "Softmin",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ['dim : "typing.Optional[int]",'],
+    "parse_params": ["dim: zod.optional(zod.number()) ,"],
+  }, {
+    "class_name": "Softplus",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["beta : \"<class 'int'>\",", "threshold : \"<class 'int'>\","],
+    "parse_params": ["beta: zod.number(),", "threshold: zod.number(),"],
+  }, {
+    "class_name": "Softshrink",
+    "modules_path": "torch.nn.modules.activation",
+    "params": ["lambd : \"<class 'float'>\","],
+    "parse_params": ["lambd: zod.number(),"],
+  }, {
+    "class_name": "Softsign",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "Tanh",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "Tanhshrink",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "Threshold",
+    "modules_path": "torch.nn.modules.activation",
+    "params": [
+      "threshold : \"<class 'float'>\",",
+      "value : \"<class 'float'>\",",
+      "inplace : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "threshold: zod.number(),",
+      "value: zod.number(),",
+      "inplace: zod.boolean(),",
+    ],
+  }],
+});
+
+export const adaptive = defineLazyLayerNode({
+  module_name: "adaptive",
+  params: {
+    in_features: zod.number(),
+    n_classes: zod.number(),
+    cutoffs: zod.array(zod.number()),
+    div_value: zod.number(),
+    head_bias: zod.boolean(),
+  },
+  options: ["AdaptiveLogSoftmaxWithLoss"],
+  nodes: [{
+    "class_name": "AdaptiveLogSoftmaxWithLoss",
+    "modules_path": "torch.nn.modules.adaptive",
+    "params": [
+      "in_features : \"<class 'int'>\",",
+      "n_classes : \"<class 'int'>\",",
+      'cutoffs : "typing.Sequence[int]",',
+      "div_value : \"<class 'float'>\",",
+      "head_bias : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "in_features: zod.number(),",
+      "n_classes: zod.number(),",
+      "cutoffs: zod.array(zod.number()) ,",
+      "div_value: zod.number(),",
+      "head_bias: zod.boolean(),",
+    ],
+  }],
+});
+
+export const batchnorm = defineLazyLayerNode({
+  module_name: "batchnorm",
+  params: {
+    num_features: zod.number(),
+    eps: zod.number(),
+    momentum: zod.number(),
+    affine: zod.boolean(),
+    track_running_stats: zod.boolean(),
+    process_group: zod.optional(zod.any()),
+  },
+  options: ["BatchNorm1d", "BatchNorm2d", "BatchNorm3d", "SyncBatchNorm"],
+  nodes: [{
+    "class_name": "BatchNorm1d",
+    "modules_path": "torch.nn.modules.batchnorm",
+    "params": [
+      "num_features : \"<class 'int'>\",",
+      "eps : \"<class 'float'>\",",
+      "momentum : \"<class 'float'>\",",
+      "affine : \"<class 'bool'>\",",
+      "track_running_stats : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "num_features: zod.number(),",
+      "eps: zod.number(),",
+      "momentum: zod.number(),",
+      "affine: zod.boolean(),",
+      "track_running_stats: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "BatchNorm2d",
+    "modules_path": "torch.nn.modules.batchnorm",
+    "params": [
+      "num_features : \"<class 'int'>\",",
+      "eps : \"<class 'float'>\",",
+      "momentum : \"<class 'float'>\",",
+      "affine : \"<class 'bool'>\",",
+      "track_running_stats : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "num_features: zod.number(),",
+      "eps: zod.number(),",
+      "momentum: zod.number(),",
+      "affine: zod.boolean(),",
+      "track_running_stats: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "BatchNorm3d",
+    "modules_path": "torch.nn.modules.batchnorm",
+    "params": [
+      "num_features : \"<class 'int'>\",",
+      "eps : \"<class 'float'>\",",
+      "momentum : \"<class 'float'>\",",
+      "affine : \"<class 'bool'>\",",
+      "track_running_stats : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "num_features: zod.number(),",
+      "eps: zod.number(),",
+      "momentum: zod.number(),",
+      "affine: zod.boolean(),",
+      "track_running_stats: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "LazyBatchNorm1d",
+    "modules_path": "torch.nn.modules.batchnorm",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "LazyBatchNorm2d",
+    "modules_path": "torch.nn.modules.batchnorm",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "LazyBatchNorm3d",
+    "modules_path": "torch.nn.modules.batchnorm",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "SyncBatchNorm",
+    "modules_path": "torch.nn.modules.batchnorm",
+    "params": [
+      "num_features : \"<class 'int'>\",",
+      "eps : \"<class 'float'>\",",
+      "momentum : \"<class 'float'>\",",
+      "affine : \"<class 'bool'>\",",
+      "track_running_stats : \"<class 'bool'>\",",
+      'process_group : "typing.Optional[typing.Any]",',
+    ],
+    "parse_params": [
+      "num_features: zod.number(),",
+      "eps: zod.number(),",
+      "momentum: zod.number(),",
+      "affine: zod.boolean(),",
+      "track_running_stats: zod.boolean(),",
+      "process_group: zod.optional(zod.any()) ,",
+    ],
+  }],
+});
+
+export const channelshuffle = defineLazyLayerNode({
+  module_name: "channelshuffle",
+  params: {
+    groups: zod.number(),
+  },
+  options: ["ChannelShuffle"],
+  nodes: [{
+    "class_name": "ChannelShuffle",
+    "modules_path": "torch.nn.modules.channelshuffle",
+    "params": ["groups : \"<class 'int'>\","],
+    "parse_params": ["groups: zod.number(),"],
+  }],
+});
+
+export const container = defineLazyLayerNode({
+  module_name: "container",
+  params: {
+    kwargs: zod.any(),
+    modules: zod.optional(zod.any()),
+    parameters: zod.any(),
+    values: zod.optional(zod.any()),
+  },
+  options: [
+    "Container",
+    "ModuleDict",
+    "ModuleList",
+    "ParameterDict",
+    "ParameterList",
+    "Sequential",
+  ],
+  nodes: [{
+    "class_name": "Container",
+    "modules_path": "torch.nn.modules.container",
+    "params": ['kwargs : "typing.Any",'],
+    "parse_params": ["kwargs: zod.any(),"],
+  }, {
+    "class_name": "ModuleDict",
+    "modules_path": "torch.nn.modules.container",
+    "params": [
+      'modules : "typing.Optional[typing.Mapping[str, torch.nn.modules.module.Module]]",',
+    ],
+    "parse_params": ["modules: zod.optional(zod.any()) ,"],
+  }, {
+    "class_name": "ModuleList",
+    "modules_path": "torch.nn.modules.container",
+    "params": [
+      'modules : "typing.Optional[typing.Iterable[torch.nn.modules.module.Module]]",',
+    ],
+    "parse_params": ["modules: zod.optional(zod.any()) ,"],
+  }, {
+    "class_name": "ParameterDict",
+    "modules_path": "torch.nn.modules.container",
+    "params": ['parameters : "typing.Any",'],
+    "parse_params": ["parameters: zod.any(),"],
+  }, {
+    "class_name": "ParameterList",
+    "modules_path": "torch.nn.modules.container",
+    "params": ['values : "typing.Optional[typing.Iterable[typing.Any]]",'],
+    "parse_params": ["values: zod.optional(zod.any()) ,"],
+  }, {
+    "class_name": "Sequential",
+    "modules_path": "torch.nn.modules.container",
+    "params": [],
+    "parse_params": [],
+  }],
+});
+
+export const conv = defineLazyLayerNode({
+  module_name: "conv",
+  params: {
+    in_channels: zod.number(),
+    out_channels: zod.number(),
+    kernel_size: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]),
+    stride: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]),
+    padding: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]),
+    dilation: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]),
+    groups: zod.number(),
+    bias: zod.boolean(),
+    padding_mode: zod.string(),
+    output_padding: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]),
+  },
+  options: [
+    "Conv1d",
+    "Conv2d",
+    "Conv3d",
+    "ConvTranspose1d",
+    "ConvTranspose2d",
+    "ConvTranspose3d",
+  ],
+  nodes: [{
+    "class_name": "Conv1d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "in_channels : \"<class 'int'>\",",
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int]]",',
+      'padding : "typing.Union[str, int, typing.Tuple[int]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "in_channels: zod.number(),",
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.string() , zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "Conv2d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "in_channels : \"<class 'int'>\",",
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int]]",',
+      'padding : "typing.Union[str, int, typing.Tuple[int, int]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int, int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "in_channels: zod.number(),",
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.string() , zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "Conv3d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "in_channels : \"<class 'int'>\",",
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'padding : "typing.Union[str, int, typing.Tuple[int, int, int]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "in_channels: zod.number(),",
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.string() , zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "ConvTranspose1d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "in_channels : \"<class 'int'>\",",
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int]]",',
+      'output_padding : "typing.Union[int, typing.Tuple[int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      'dilation : "typing.Union[int, typing.Tuple[int]]",',
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "in_channels: zod.number(),",
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "output_padding: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "ConvTranspose2d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "in_channels : \"<class 'int'>\",",
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int]]",',
+      'output_padding : "typing.Union[int, typing.Tuple[int, int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      'dilation : "typing.Union[int, typing.Tuple[int, int]]",',
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "in_channels: zod.number(),",
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "output_padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "ConvTranspose3d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "in_channels : \"<class 'int'>\",",
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'output_padding : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      'dilation : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "in_channels: zod.number(),",
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "output_padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "LazyConv1d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "LazyConv2d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int, int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "LazyConv3d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "LazyConvTranspose1d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int]]",',
+      'output_padding : "typing.Union[int, typing.Tuple[int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      'dilation : "typing.Union[int, typing.Tuple[int]]",',
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "output_padding: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "LazyConvTranspose2d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int]]",',
+      'output_padding : "typing.Union[int, typing.Tuple[int, int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "dilation : \"<class 'int'>\",",
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "output_padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "dilation: zod.number(),",
+      "padding_mode: zod.string(),",
+    ],
+  }, {
+    "class_name": "LazyConvTranspose3d",
+    "modules_path": "torch.nn.modules.conv",
+    "params": [
+      "out_channels : \"<class 'int'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'output_padding : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      "groups : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      'dilation : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      "padding_mode : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "out_channels: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "output_padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "groups: zod.number(),",
+      "bias: zod.boolean(),",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "padding_mode: zod.string(),",
+    ],
+  }],
+});
+
+export const distance = defineLazyLayerNode({
+  module_name: "distance",
+  params: {
+    dim: zod.number(),
+    eps: zod.number(),
+    p: zod.number(),
+    keepdim: zod.boolean(),
+  },
+  options: ["CosineSimilarity", "PairwiseDistance"],
+  nodes: [{
+    "class_name": "CosineSimilarity",
+    "modules_path": "torch.nn.modules.distance",
+    "params": ["dim : \"<class 'int'>\",", "eps : \"<class 'float'>\","],
+    "parse_params": ["dim: zod.number(),", "eps: zod.number(),"],
+  }, {
+    "class_name": "PairwiseDistance",
+    "modules_path": "torch.nn.modules.distance",
+    "params": [
+      "p : \"<class 'float'>\",",
+      "eps : \"<class 'float'>\",",
+      "keepdim : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "p: zod.number(),",
+      "eps: zod.number(),",
+      "keepdim: zod.boolean(),",
+    ],
+  }],
+});
+
+export const dropout = defineLazyLayerNode({
+  module_name: "dropout",
+  params: {
+    p: zod.number(),
+    inplace: zod.boolean(),
+  },
+  options: [
+    "AlphaDropout",
+    "Dropout",
+    "Dropout1d",
+    "Dropout2d",
+    "Dropout3d",
+    "FeatureAlphaDropout",
+  ],
+  nodes: [{
+    "class_name": "AlphaDropout",
+    "modules_path": "torch.nn.modules.dropout",
+    "params": ["p : \"<class 'float'>\",", "inplace : \"<class 'bool'>\","],
+    "parse_params": ["p: zod.number(),", "inplace: zod.boolean(),"],
+  }, {
+    "class_name": "Dropout",
+    "modules_path": "torch.nn.modules.dropout",
+    "params": ["p : \"<class 'float'>\",", "inplace : \"<class 'bool'>\","],
+    "parse_params": ["p: zod.number(),", "inplace: zod.boolean(),"],
+  }, {
+    "class_name": "Dropout1d",
+    "modules_path": "torch.nn.modules.dropout",
+    "params": ["p : \"<class 'float'>\",", "inplace : \"<class 'bool'>\","],
+    "parse_params": ["p: zod.number(),", "inplace: zod.boolean(),"],
+  }, {
+    "class_name": "Dropout2d",
+    "modules_path": "torch.nn.modules.dropout",
+    "params": ["p : \"<class 'float'>\",", "inplace : \"<class 'bool'>\","],
+    "parse_params": ["p: zod.number(),", "inplace: zod.boolean(),"],
+  }, {
+    "class_name": "Dropout3d",
+    "modules_path": "torch.nn.modules.dropout",
+    "params": ["p : \"<class 'float'>\",", "inplace : \"<class 'bool'>\","],
+    "parse_params": ["p: zod.number(),", "inplace: zod.boolean(),"],
+  }, {
+    "class_name": "FeatureAlphaDropout",
+    "modules_path": "torch.nn.modules.dropout",
+    "params": ["p : \"<class 'float'>\",", "inplace : \"<class 'bool'>\","],
+    "parse_params": ["p: zod.number(),", "inplace: zod.boolean(),"],
+  }],
+});
+
+export const flatten = defineLazyLayerNode({
+  module_name: "flatten",
+  params: {
+    start_dim: zod.number(),
+    end_dim: zod.number(),
+    dim: zod.union([zod.number(), zod.string()]),
+    unflattened_size: zod.union([
+      zod.any(),
+      zod.array(zod.number()),
+      zod.tuple([zod.number(), zod.any()]),
+      zod.tuple([zod.tuple([zod.string(), zod.number()])]),
+    ]),
+  },
+  options: ["Flatten", "Unflatten"],
+  nodes: [{
+    "class_name": "Flatten",
+    "modules_path": "torch.nn.modules.flatten",
+    "params": [
+      "start_dim : \"<class 'int'>\",",
+      "end_dim : \"<class 'int'>\",",
+    ],
+    "parse_params": ["start_dim: zod.number(),", "end_dim: zod.number(),"],
+  }, {
+    "class_name": "Unflatten",
+    "modules_path": "torch.nn.modules.flatten",
+    "params": [
+      'dim : "typing.Union[int, str]",',
+      'unflattened_size : "typing.Union[torch.Size, typing.List[int], typing.Tuple[int, ...], typing.Tuple[typing.Tuple[str, int]]]",',
+    ],
+    "parse_params": [
+      "dim: zod.union([zod.number() , zod.string(), ]) ,",
+      "unflattened_size: zod.union([zod.any(), zod.array(zod.number()) , zod.tuple([zod.number() , zod.any()]) , zod.tuple([zod.tuple([zod.string() , zod.number(), ]) ]) ]) ,",
+    ],
+  }],
+});
+
+export const fold = defineLazyLayerNode({
+  module_name: "fold",
+  params: {
+    output_size: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.any()]),
+    ]),
+    kernel_size: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.any()]),
+    ]),
+    dilation: zod.union([zod.number(), zod.tuple([zod.number(), zod.any()])]),
+    padding: zod.union([zod.number(), zod.tuple([zod.number(), zod.any()])]),
+    stride: zod.union([zod.number(), zod.tuple([zod.number(), zod.any()])]),
+  },
+  options: ["Fold", "Unfold"],
+  nodes: [{
+    "class_name": "Fold",
+    "modules_path": "torch.nn.modules.fold",
+    "params": [
+      'output_size : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'kernel_size : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'padding : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, ...]]",',
+    ],
+    "parse_params": [
+      "output_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+    ],
+  }, {
+    "class_name": "Unfold",
+    "modules_path": "torch.nn.modules.fold",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'padding : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, ...]]",',
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+    ],
+  }],
+});
+
+export const instancenorm = defineLazyLayerNode({
+  module_name: "instancenorm",
+  params: {
+    num_features: zod.number(),
+    eps: zod.number(),
+    momentum: zod.number(),
+    affine: zod.boolean(),
+    track_running_stats: zod.boolean(),
+  },
+  options: ["InstanceNorm1d", "InstanceNorm2d", "InstanceNorm3d"],
+  nodes: [{
+    "class_name": "InstanceNorm1d",
+    "modules_path": "torch.nn.modules.instancenorm",
+    "params": [
+      "num_features : \"<class 'int'>\",",
+      "eps : \"<class 'float'>\",",
+      "momentum : \"<class 'float'>\",",
+      "affine : \"<class 'bool'>\",",
+      "track_running_stats : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "num_features: zod.number(),",
+      "eps: zod.number(),",
+      "momentum: zod.number(),",
+      "affine: zod.boolean(),",
+      "track_running_stats: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "InstanceNorm2d",
+    "modules_path": "torch.nn.modules.instancenorm",
+    "params": [
+      "num_features : \"<class 'int'>\",",
+      "eps : \"<class 'float'>\",",
+      "momentum : \"<class 'float'>\",",
+      "affine : \"<class 'bool'>\",",
+      "track_running_stats : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "num_features: zod.number(),",
+      "eps: zod.number(),",
+      "momentum: zod.number(),",
+      "affine: zod.boolean(),",
+      "track_running_stats: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "InstanceNorm3d",
+    "modules_path": "torch.nn.modules.instancenorm",
+    "params": [
+      "num_features : \"<class 'int'>\",",
+      "eps : \"<class 'float'>\",",
+      "momentum : \"<class 'float'>\",",
+      "affine : \"<class 'bool'>\",",
+      "track_running_stats : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "num_features: zod.number(),",
+      "eps: zod.number(),",
+      "momentum: zod.number(),",
+      "affine: zod.boolean(),",
+      "track_running_stats: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "LazyInstanceNorm1d",
+    "modules_path": "torch.nn.modules.instancenorm",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "LazyInstanceNorm2d",
+    "modules_path": "torch.nn.modules.instancenorm",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "LazyInstanceNorm3d",
+    "modules_path": "torch.nn.modules.instancenorm",
+    "params": [],
+    "parse_params": [],
+  }],
+});
+
+export const linear = defineLazyLayerNode({
+  module_name: "linear",
+  params: {
+    in1_features: zod.number(),
+    in2_features: zod.number(),
+    out_features: zod.number(),
+    bias: zod.boolean(),
+    args: zod.any(),
+    kwargs: zod.any(),
+    in_features: zod.number(),
+  },
+  options: ["Bilinear", "Identity", "Linear"],
+  nodes: [{
+    "class_name": "Bilinear",
+    "modules_path": "torch.nn.modules.linear",
+    "params": [
+      "in1_features : \"<class 'int'>\",",
+      "in2_features : \"<class 'int'>\",",
+      "out_features : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "in1_features: zod.number(),",
+      "in2_features: zod.number(),",
+      "out_features: zod.number(),",
+      "bias: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "Identity",
+    "modules_path": "torch.nn.modules.linear",
+    "params": ['args : "typing.Any",', 'kwargs : "typing.Any",'],
+    "parse_params": ["args: zod.any(),", "kwargs: zod.any(),"],
+  }, {
+    "class_name": "LazyLinear",
+    "modules_path": "torch.nn.modules.linear",
+    "params": [
+      "out_features : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+    ],
+    "parse_params": ["out_features: zod.number(),", "bias: zod.boolean(),"],
+  }, {
+    "class_name": "Linear",
+    "modules_path": "torch.nn.modules.linear",
+    "params": [
+      "in_features : \"<class 'int'>\",",
+      "out_features : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "in_features: zod.number(),",
+      "out_features: zod.number(),",
+      "bias: zod.boolean(),",
+    ],
+  }],
+});
+
+export const loss = defineLazyLayerNode({
+  module_name: "loss",
+  params: {
+    weight: zod.optional(zod.any()),
+    reduction: zod.string(),
+    pos_weight: zod.optional(zod.any()),
+    blank: zod.number(),
+    zero_infinity: zod.boolean(),
+    margin: zod.number(),
+    ignore_index: zod.number(),
+    label_smoothing: zod.number(),
+    full: zod.boolean(),
+    eps: zod.number(),
+    delta: zod.number(),
+    log_target: zod.boolean(),
+    p: zod.number(),
+    log_input: zod.boolean(),
+    beta: zod.number(),
+    swap: zod.boolean(),
+    distance_function: zod.optional(zod.function()),
+  },
+  options: [
+    "BCELoss",
+    "BCEWithLogitsLoss",
+    "CTCLoss",
+    "CosineEmbeddingLoss",
+    "CrossEntropyLoss",
+    "GaussianNLLLoss",
+    "HingeEmbeddingLoss",
+    "HuberLoss",
+    "KLDivLoss",
+    "L1Loss",
+    "MSELoss",
+    "MarginRankingLoss",
+    "MultiLabelMarginLoss",
+    "MultiLabelSoftMarginLoss",
+    "MultiMarginLoss",
+    "NLLLoss",
+    "NLLLoss2d",
+    "PoissonNLLLoss",
+    "SmoothL1Loss",
+    "SoftMarginLoss",
+    "TripletMarginLoss",
+    "TripletMarginWithDistanceLoss",
+  ],
+  nodes: [{
+    "class_name": "BCELoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      'weight : "typing.Optional[torch.Tensor]",',
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "weight: zod.optional(zod.any()) ,",
+      "reduction: zod.string(),",
+    ],
+  }, {
+    "class_name": "BCEWithLogitsLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      'weight : "typing.Optional[torch.Tensor]",',
+      "reduction : \"<class 'str'>\",",
+      'pos_weight : "typing.Optional[torch.Tensor]",',
+    ],
+    "parse_params": [
+      "weight: zod.optional(zod.any()) ,",
+      "reduction: zod.string(),",
+      "pos_weight: zod.optional(zod.any()) ,",
+    ],
+  }, {
+    "class_name": "CTCLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "blank : \"<class 'int'>\",",
+      "reduction : \"<class 'str'>\",",
+      "zero_infinity : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "blank: zod.number(),",
+      "reduction: zod.string(),",
+      "zero_infinity: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "CosineEmbeddingLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "margin : \"<class 'float'>\",",
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": ["margin: zod.number(),", "reduction: zod.string(),"],
+  }, {
+    "class_name": "CrossEntropyLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      'weight : "typing.Optional[torch.Tensor]",',
+      "ignore_index : \"<class 'int'>\",",
+      "reduction : \"<class 'str'>\",",
+      "label_smoothing : \"<class 'float'>\",",
+    ],
+    "parse_params": [
+      "weight: zod.optional(zod.any()) ,",
+      "ignore_index: zod.number(),",
+      "reduction: zod.string(),",
+      "label_smoothing: zod.number(),",
+    ],
+  }, {
+    "class_name": "GaussianNLLLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "full : \"<class 'bool'>\",",
+      "eps : \"<class 'float'>\",",
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "full: zod.boolean(),",
+      "eps: zod.number(),",
+      "reduction: zod.string(),",
+    ],
+  }, {
+    "class_name": "HingeEmbeddingLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "margin : \"<class 'float'>\",",
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": ["margin: zod.number(),", "reduction: zod.string(),"],
+  }, {
+    "class_name": "HuberLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "reduction : \"<class 'str'>\",",
+      "delta : \"<class 'float'>\",",
+    ],
+    "parse_params": ["reduction: zod.string(),", "delta: zod.number(),"],
+  }, {
+    "class_name": "KLDivLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "reduction : \"<class 'str'>\",",
+      "log_target : \"<class 'bool'>\",",
+    ],
+    "parse_params": ["reduction: zod.string(),", "log_target: zod.boolean(),"],
+  }, {
+    "class_name": "L1Loss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": ["reduction : \"<class 'str'>\","],
+    "parse_params": ["reduction: zod.string(),"],
+  }, {
+    "class_name": "MSELoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": ["reduction : \"<class 'str'>\","],
+    "parse_params": ["reduction: zod.string(),"],
+  }, {
+    "class_name": "MarginRankingLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "margin : \"<class 'float'>\",",
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": ["margin: zod.number(),", "reduction: zod.string(),"],
+  }, {
+    "class_name": "MultiLabelMarginLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": ["reduction : \"<class 'str'>\","],
+    "parse_params": ["reduction: zod.string(),"],
+  }, {
+    "class_name": "MultiLabelSoftMarginLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      'weight : "typing.Optional[torch.Tensor]",',
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "weight: zod.optional(zod.any()) ,",
+      "reduction: zod.string(),",
+    ],
+  }, {
+    "class_name": "MultiMarginLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "p : \"<class 'int'>\",",
+      "margin : \"<class 'float'>\",",
+      'weight : "typing.Optional[torch.Tensor]",',
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "p: zod.number(),",
+      "margin: zod.number(),",
+      "weight: zod.optional(zod.any()) ,",
+      "reduction: zod.string(),",
+    ],
+  }, {
+    "class_name": "NLLLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      'weight : "typing.Optional[torch.Tensor]",',
+      "ignore_index : \"<class 'int'>\",",
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "weight: zod.optional(zod.any()) ,",
+      "ignore_index: zod.number(),",
+      "reduction: zod.string(),",
+    ],
+  }, {
+    "class_name": "NLLLoss2d",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      'weight : "typing.Optional[torch.Tensor]",',
+      "ignore_index : \"<class 'int'>\",",
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "weight: zod.optional(zod.any()) ,",
+      "ignore_index: zod.number(),",
+      "reduction: zod.string(),",
+    ],
+  }, {
+    "class_name": "PoissonNLLLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "log_input : \"<class 'bool'>\",",
+      "full : \"<class 'bool'>\",",
+      "eps : \"<class 'float'>\",",
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "log_input: zod.boolean(),",
+      "full: zod.boolean(),",
+      "eps: zod.number(),",
+      "reduction: zod.string(),",
+    ],
+  }, {
+    "class_name": "SmoothL1Loss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": ["reduction : \"<class 'str'>\",", "beta : \"<class 'float'>\","],
+    "parse_params": ["reduction: zod.string(),", "beta: zod.number(),"],
+  }, {
+    "class_name": "SoftMarginLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": ["reduction : \"<class 'str'>\","],
+    "parse_params": ["reduction: zod.string(),"],
+  }, {
+    "class_name": "TripletMarginLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      "margin : \"<class 'float'>\",",
+      "p : \"<class 'float'>\",",
+      "eps : \"<class 'float'>\",",
+      "swap : \"<class 'bool'>\",",
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "margin: zod.number(),",
+      "p: zod.number(),",
+      "eps: zod.number(),",
+      "swap: zod.boolean(),",
+      "reduction: zod.string(),",
+    ],
+  }, {
+    "class_name": "TripletMarginWithDistanceLoss",
+    "modules_path": "torch.nn.modules.loss",
+    "params": [
+      'distance_function : "typing.Optional[typing.Callable[[torch.Tensor, torch.Tensor], torch.Tensor]]",',
+      "margin : \"<class 'float'>\",",
+      "swap : \"<class 'bool'>\",",
+      "reduction : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "distance_function: zod.optional(zod.function()) ,",
+      "margin: zod.number(),",
+      "swap: zod.boolean(),",
+      "reduction: zod.string(),",
+    ],
+  }],
+});
+
+export const module = defineLazyLayerNode({
+  module_name: "module",
+  params: {},
+  options: ["Module"],
+  nodes: [{
+    "class_name": "Module",
+    "modules_path": "torch.nn.modules.module",
+    "params": [],
+    "parse_params": [],
+  }],
+});
+
+export const normalization = defineLazyLayerNode({
+  module_name: "normalization",
+  params: {
+    size: zod.number(),
+    alpha: zod.number(),
+    beta: zod.number(),
+    k: zod.number(),
+    num_groups: zod.number(),
+    num_channels: zod.number(),
+    eps: zod.number(),
+    affine: zod.boolean(),
+    normalized_shape: zod.union([
+      zod.number(),
+      zod.array(zod.number()),
+      zod.any(),
+    ]),
+    elementwise_affine: zod.boolean(),
+  },
+  options: ["CrossMapLRN2d", "GroupNorm", "LayerNorm", "LocalResponseNorm"],
+  nodes: [{
+    "class_name": "CrossMapLRN2d",
+    "modules_path": "torch.nn.modules.normalization",
+    "params": [
+      "size : \"<class 'int'>\",",
+      "alpha : \"<class 'float'>\",",
+      "beta : \"<class 'float'>\",",
+      "k : \"<class 'float'>\",",
+    ],
+    "parse_params": [
+      "size: zod.number(),",
+      "alpha: zod.number(),",
+      "beta: zod.number(),",
+      "k: zod.number(),",
+    ],
+  }, {
+    "class_name": "GroupNorm",
+    "modules_path": "torch.nn.modules.normalization",
+    "params": [
+      "num_groups : \"<class 'int'>\",",
+      "num_channels : \"<class 'int'>\",",
+      "eps : \"<class 'float'>\",",
+      "affine : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "num_groups: zod.number(),",
+      "num_channels: zod.number(),",
+      "eps: zod.number(),",
+      "affine: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "LayerNorm",
+    "modules_path": "torch.nn.modules.normalization",
+    "params": [
+      'normalized_shape : "typing.Union[int, typing.List[int], torch.Size]",',
+      "eps : \"<class 'float'>\",",
+      "elementwise_affine : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "normalized_shape: zod.union([zod.number() , zod.array(zod.number()) , zod.any()]) ,",
+      "eps: zod.number(),",
+      "elementwise_affine: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "LocalResponseNorm",
+    "modules_path": "torch.nn.modules.normalization",
+    "params": [
+      "size : \"<class 'int'>\",",
+      "alpha : \"<class 'float'>\",",
+      "beta : \"<class 'float'>\",",
+      "k : \"<class 'float'>\",",
+    ],
+    "parse_params": [
+      "size: zod.number(),",
+      "alpha: zod.number(),",
+      "beta: zod.number(),",
+      "k: zod.number(),",
+    ],
+  }],
+});
+
+export const padding = defineLazyLayerNode({
+  module_name: "padding",
+  params: {
+    padding: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number(), zod.number()]),
+    ]),
+    value: zod.number(),
+  },
+  options: [
+    "ConstantPad1d",
+    "ConstantPad2d",
+    "ConstantPad3d",
+    "ReflectionPad1d",
+    "ReflectionPad2d",
+    "ReflectionPad3d",
+    "ReplicationPad1d",
+    "ReplicationPad2d",
+    "ReplicationPad3d",
+    "ZeroPad2d",
+  ],
+  nodes: [{
+    "class_name": "ConstantPad1d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": [
+      'padding : "typing.Union[int, typing.Tuple[int, int]]",',
+      "value : \"<class 'float'>\",",
+    ],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "value: zod.number(),",
+    ],
+  }, {
+    "class_name": "ConstantPad2d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": [
+      'padding : "typing.Union[int, typing.Tuple[int, int, int, int]]",',
+      "value : \"<class 'float'>\",",
+    ],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "value: zod.number(),",
+    ],
+  }, {
+    "class_name": "ConstantPad3d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": [
+      'padding : "typing.Union[int, typing.Tuple[int, int, int, int, int, int]]",',
+      "value : \"<class 'float'>\",",
+    ],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number() , zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "value: zod.number(),",
+    ],
+  }, {
+    "class_name": "ReflectionPad1d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": ['padding : "typing.Union[int, typing.Tuple[int, int]]",'],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+    ],
+  }, {
+    "class_name": "ReflectionPad2d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": [
+      'padding : "typing.Union[int, typing.Tuple[int, int, int, int]]",',
+    ],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number() , zod.number(), ]) ]) ,",
+    ],
+  }, {
+    "class_name": "ReflectionPad3d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": [
+      'padding : "typing.Union[int, typing.Tuple[int, int, int, int, int, int]]",',
+    ],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number() , zod.number() , zod.number() , zod.number(), ]) ]) ,",
+    ],
+  }, {
+    "class_name": "ReplicationPad1d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": ['padding : "typing.Union[int, typing.Tuple[int, int]]",'],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+    ],
+  }, {
+    "class_name": "ReplicationPad2d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": [
+      'padding : "typing.Union[int, typing.Tuple[int, int, int, int]]",',
+    ],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number() , zod.number(), ]) ]) ,",
+    ],
+  }, {
+    "class_name": "ReplicationPad3d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": [
+      'padding : "typing.Union[int, typing.Tuple[int, int, int, int, int, int]]",',
+    ],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number() , zod.number() , zod.number() , zod.number(), ]) ]) ,",
+    ],
+  }, {
+    "class_name": "ZeroPad2d",
+    "modules_path": "torch.nn.modules.padding",
+    "params": [
+      'padding : "typing.Union[int, typing.Tuple[int, int, int, int]]",',
+    ],
+    "parse_params": [
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number() , zod.number(), ]) ]) ,",
+    ],
+  }],
+});
+
+export const pixelshuffle = defineLazyLayerNode({
+  module_name: "pixelshuffle",
+  params: {
+    upscale_factor: zod.number(),
+    downscale_factor: zod.number(),
+  },
+  options: ["PixelShuffle", "PixelUnshuffle"],
+  nodes: [{
+    "class_name": "PixelShuffle",
+    "modules_path": "torch.nn.modules.pixelshuffle",
+    "params": ["upscale_factor : \"<class 'int'>\","],
+    "parse_params": ["upscale_factor: zod.number(),"],
+  }, {
+    "class_name": "PixelUnshuffle",
+    "modules_path": "torch.nn.modules.pixelshuffle",
+    "params": ["downscale_factor : \"<class 'int'>\","],
+    "parse_params": ["downscale_factor: zod.number(),"],
+  }],
+});
+
+export const pooling = defineLazyLayerNode({
+  module_name: "pooling",
+  params: {
+    output_size: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]).nullable(),
+    return_indices: zod.boolean(),
+    kernel_size: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]),
+    stride: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]).nullable(),
+    padding: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]),
+    ceil_mode: zod.boolean(),
+    count_include_pad: zod.boolean(),
+    divisor_override: zod.optional(zod.number()),
+    output_ratio: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number(), zod.number()]),
+    ]).nullable(),
+    norm_type: zod.number(),
+    dilation: zod.union([zod.number(), zod.tuple([zod.number(), zod.any()])]),
+  },
+  options: [
+    "AdaptiveAvgPool1d",
+    "AdaptiveAvgPool2d",
+    "AdaptiveAvgPool3d",
+    "AdaptiveMaxPool1d",
+    "AdaptiveMaxPool2d",
+    "AdaptiveMaxPool3d",
+    "AvgPool1d",
+    "AvgPool2d",
+    "AvgPool3d",
+    "FractionalMaxPool2d",
+    "FractionalMaxPool3d",
+    "LPPool1d",
+    "LPPool2d",
+    "MaxPool1d",
+    "MaxPool2d",
+    "MaxPool3d",
+    "MaxUnpool1d",
+    "MaxUnpool2d",
+    "MaxUnpool3d",
+  ],
+  nodes: [{
+    "class_name": "AdaptiveAvgPool1d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'output_size : "typing.Union[int, NoneType, typing.Tuple[typing.Optional[int], ...]]",',
+    ],
+    "parse_params": [
+      "output_size: zod.union([zod.number() ,  zod.tuple([zod.optional(zod.number()) , zod.any()]) ]) .nullable(),",
+    ],
+  }, {
+    "class_name": "AdaptiveAvgPool2d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'output_size : "typing.Union[int, NoneType, typing.Tuple[typing.Optional[int], ...]]",',
+    ],
+    "parse_params": [
+      "output_size: zod.union([zod.number() ,  zod.tuple([zod.optional(zod.number()) , zod.any()]) ]) .nullable(),",
+    ],
+  }, {
+    "class_name": "AdaptiveAvgPool3d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'output_size : "typing.Union[int, NoneType, typing.Tuple[typing.Optional[int], ...]]",',
+    ],
+    "parse_params": [
+      "output_size: zod.union([zod.number() ,  zod.tuple([zod.optional(zod.number()) , zod.any()]) ]) .nullable(),",
+    ],
+  }, {
+    "class_name": "AdaptiveMaxPool1d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'output_size : "typing.Union[int, NoneType, typing.Tuple[typing.Optional[int], ...]]",',
+      "return_indices : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "output_size: zod.union([zod.number() ,  zod.tuple([zod.optional(zod.number()) , zod.any()]) ]) .nullable(),",
+      "return_indices: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "AdaptiveMaxPool2d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'output_size : "typing.Union[int, NoneType, typing.Tuple[typing.Optional[int], ...]]",',
+      "return_indices : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "output_size: zod.union([zod.number() ,  zod.tuple([zod.optional(zod.number()) , zod.any()]) ]) .nullable(),",
+      "return_indices: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "AdaptiveMaxPool3d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'output_size : "typing.Union[int, NoneType, typing.Tuple[typing.Optional[int], ...]]",',
+      "return_indices : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "output_size: zod.union([zod.number() ,  zod.tuple([zod.optional(zod.number()) , zod.any()]) ]) .nullable(),",
+      "return_indices: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "AvgPool1d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int]]",',
+      'padding : "typing.Union[int, typing.Tuple[int]]",',
+      "ceil_mode : \"<class 'bool'>\",",
+      "count_include_pad : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "ceil_mode: zod.boolean(),",
+      "count_include_pad: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "AvgPool2d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int], NoneType]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int]]",',
+      "ceil_mode : \"<class 'bool'>\",",
+      "count_include_pad : \"<class 'bool'>\",",
+      'divisor_override : "typing.Optional[int]",',
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "ceil_mode: zod.boolean(),",
+      "count_include_pad: zod.boolean(),",
+      "divisor_override: zod.optional(zod.number()) ,",
+    ],
+  }, {
+    "class_name": "AvgPool3d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int, int], NoneType]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      "ceil_mode : \"<class 'bool'>\",",
+      "count_include_pad : \"<class 'bool'>\",",
+      'divisor_override : "typing.Optional[int]",',
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "ceil_mode: zod.boolean(),",
+      "count_include_pad: zod.boolean(),",
+      "divisor_override: zod.optional(zod.number()) ,",
+    ],
+  }, {
+    "class_name": "FractionalMaxPool2d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int]]",',
+      'output_size : "typing.Union[int, typing.Tuple[int, int], NoneType]",',
+      'output_ratio : "typing.Union[float, typing.Tuple[float, float], NoneType]",',
+      "return_indices : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "output_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "output_ratio: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "return_indices: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "FractionalMaxPool3d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'output_size : "typing.Union[int, typing.Tuple[int, int, int], NoneType]",',
+      'output_ratio : "typing.Union[float, typing.Tuple[float, float, float], NoneType]",',
+      "return_indices : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "output_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "output_ratio: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "return_indices: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "LPPool1d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      "norm_type : \"<class 'float'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, ...], NoneType]",',
+      "ceil_mode : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "norm_type: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ,  ]) .nullable(),",
+      "ceil_mode: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "LPPool2d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      "norm_type : \"<class 'float'>\",",
+      'kernel_size : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, ...], NoneType]",',
+      "ceil_mode : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "norm_type: zod.number(),",
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ,  ]) .nullable(),",
+      "ceil_mode: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "MaxPool1d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, ...], NoneType]",',
+      'padding : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int, ...]]",',
+      "return_indices : \"<class 'bool'>\",",
+      "ceil_mode : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ,  ]) .nullable(),",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "return_indices: zod.boolean(),",
+      "ceil_mode: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "MaxPool2d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, ...], NoneType]",',
+      'padding : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int, ...]]",',
+      "return_indices : \"<class 'bool'>\",",
+      "ceil_mode : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ,  ]) .nullable(),",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "return_indices: zod.boolean(),",
+      "ceil_mode: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "MaxPool3d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, ...], NoneType]",',
+      'padding : "typing.Union[int, typing.Tuple[int, ...]]",',
+      'dilation : "typing.Union[int, typing.Tuple[int, ...]]",',
+      "return_indices : \"<class 'bool'>\",",
+      "ceil_mode : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ,  ]) .nullable(),",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "dilation: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ]) ,",
+      "return_indices: zod.boolean(),",
+      "ceil_mode: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "MaxUnpool1d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int], NoneType]",',
+      'padding : "typing.Union[int, typing.Tuple[int]]",',
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number(), ]) ,  ]) .nullable(),",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number(), ]) ]) ,",
+    ],
+  }, {
+    "class_name": "MaxUnpool2d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int], NoneType]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int]]",',
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ]) ,",
+    ],
+  }, {
+    "class_name": "MaxUnpool3d",
+    "modules_path": "torch.nn.modules.pooling",
+    "params": [
+      'kernel_size : "typing.Union[int, typing.Tuple[int, int, int]]",',
+      'stride : "typing.Union[int, typing.Tuple[int, int, int], NoneType]",',
+      'padding : "typing.Union[int, typing.Tuple[int, int, int]]",',
+    ],
+    "parse_params": [
+      "kernel_size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+      "stride: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "padding: zod.union([zod.number() , zod.tuple([zod.number() , zod.number() , zod.number(), ]) ]) ,",
+    ],
+  }],
+});
+
+export const rnn = defineLazyLayerNode({
+  module_name: "rnn",
+  params: {
+    input_size: zod.number(),
+    hidden_size: zod.number(),
+    bias: zod.boolean(),
+    mode: zod.string(),
+    num_layers: zod.number(),
+    batch_first: zod.boolean(),
+    dropout: zod.number(),
+    bidirectional: zod.boolean(),
+    proj_size: zod.number(),
+    nonlinearity: zod.string(),
+    num_chunks: zod.number(),
+  },
+  options: [
+    "GRU",
+    "GRUCell",
+    "LSTM",
+    "LSTMCell",
+    "RNN",
+    "RNNBase",
+    "RNNCell",
+    "RNNCellBase",
+  ],
+  nodes: [{
+    "class_name": "GRU",
+    "modules_path": "torch.nn.modules.rnn",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "GRUCell",
+    "modules_path": "torch.nn.modules.rnn",
+    "params": [
+      "input_size : \"<class 'int'>\",",
+      "hidden_size : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "input_size: zod.number(),",
+      "hidden_size: zod.number(),",
+      "bias: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "LSTM",
+    "modules_path": "torch.nn.modules.rnn",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "LSTMCell",
+    "modules_path": "torch.nn.modules.rnn",
+    "params": [
+      "input_size : \"<class 'int'>\",",
+      "hidden_size : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "input_size: zod.number(),",
+      "hidden_size: zod.number(),",
+      "bias: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "RNN",
+    "modules_path": "torch.nn.modules.rnn",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "RNNBase",
+    "modules_path": "torch.nn.modules.rnn",
+    "params": [
+      "mode : \"<class 'str'>\",",
+      "input_size : \"<class 'int'>\",",
+      "hidden_size : \"<class 'int'>\",",
+      "num_layers : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "batch_first : \"<class 'bool'>\",",
+      "dropout : \"<class 'float'>\",",
+      "bidirectional : \"<class 'bool'>\",",
+      "proj_size : \"<class 'int'>\",",
+    ],
+    "parse_params": [
+      "mode: zod.string(),",
+      "input_size: zod.number(),",
+      "hidden_size: zod.number(),",
+      "num_layers: zod.number(),",
+      "bias: zod.boolean(),",
+      "batch_first: zod.boolean(),",
+      "dropout: zod.number(),",
+      "bidirectional: zod.boolean(),",
+      "proj_size: zod.number(),",
+    ],
+  }, {
+    "class_name": "RNNCell",
+    "modules_path": "torch.nn.modules.rnn",
+    "params": [
+      "input_size : \"<class 'int'>\",",
+      "hidden_size : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "nonlinearity : \"<class 'str'>\",",
+    ],
+    "parse_params": [
+      "input_size: zod.number(),",
+      "hidden_size: zod.number(),",
+      "bias: zod.boolean(),",
+      "nonlinearity: zod.string(),",
+    ],
+  }, {
+    "class_name": "RNNCellBase",
+    "modules_path": "torch.nn.modules.rnn",
+    "params": [
+      "input_size : \"<class 'int'>\",",
+      "hidden_size : \"<class 'int'>\",",
+      "bias : \"<class 'bool'>\",",
+      "num_chunks : \"<class 'int'>\",",
+    ],
+    "parse_params": [
+      "input_size: zod.number(),",
+      "hidden_size: zod.number(),",
+      "bias: zod.boolean(),",
+      "num_chunks: zod.number(),",
+    ],
+  }],
+});
+
+export const sparse = defineLazyLayerNode({
+  module_name: "sparse",
+  params: {
+    num_embeddings: zod.number(),
+    embedding_dim: zod.number(),
+    padding_idx: zod.optional(zod.number()),
+    max_norm: zod.optional(zod.number()),
+    norm_type: zod.number(),
+    scale_grad_by_freq: zod.boolean(),
+    sparse: zod.boolean(),
+    _weight: zod.optional(zod.any()),
+    _freeze: zod.boolean(),
+    mode: zod.string(),
+    include_last_offset: zod.boolean(),
+  },
+  options: ["Embedding", "EmbeddingBag"],
+  nodes: [{
+    "class_name": "Embedding",
+    "modules_path": "torch.nn.modules.sparse",
+    "params": [
+      "num_embeddings : \"<class 'int'>\",",
+      "embedding_dim : \"<class 'int'>\",",
+      'padding_idx : "typing.Optional[int]",',
+      'max_norm : "typing.Optional[float]",',
+      "norm_type : \"<class 'float'>\",",
+      "scale_grad_by_freq : \"<class 'bool'>\",",
+      "sparse : \"<class 'bool'>\",",
+      '_weight : "typing.Optional[torch.Tensor]",',
+      "_freeze : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "num_embeddings: zod.number(),",
+      "embedding_dim: zod.number(),",
+      "padding_idx: zod.optional(zod.number()) ,",
+      "max_norm: zod.optional(zod.number()) ,",
+      "norm_type: zod.number(),",
+      "scale_grad_by_freq: zod.boolean(),",
+      "sparse: zod.boolean(),",
+      "_weight: zod.optional(zod.any()) ,",
+      "_freeze: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "EmbeddingBag",
+    "modules_path": "torch.nn.modules.sparse",
+    "params": [
+      "num_embeddings : \"<class 'int'>\",",
+      "embedding_dim : \"<class 'int'>\",",
+      'max_norm : "typing.Optional[float]",',
+      "norm_type : \"<class 'float'>\",",
+      "scale_grad_by_freq : \"<class 'bool'>\",",
+      "mode : \"<class 'str'>\",",
+      "sparse : \"<class 'bool'>\",",
+      '_weight : "typing.Optional[torch.Tensor]",',
+      "include_last_offset : \"<class 'bool'>\",",
+      'padding_idx : "typing.Optional[int]",',
+    ],
+    "parse_params": [
+      "num_embeddings: zod.number(),",
+      "embedding_dim: zod.number(),",
+      "max_norm: zod.optional(zod.number()) ,",
+      "norm_type: zod.number(),",
+      "scale_grad_by_freq: zod.boolean(),",
+      "mode: zod.string(),",
+      "sparse: zod.boolean(),",
+      "_weight: zod.optional(zod.any()) ,",
+      "include_last_offset: zod.boolean(),",
+      "padding_idx: zod.optional(zod.number()) ,",
+    ],
+  }],
+});
+
+export const transformer = defineLazyLayerNode({
+  module_name: "transformer",
+  params: {
+    d_model: zod.number(),
+    nhead: zod.number(),
+    num_encoder_layers: zod.number(),
+    num_decoder_layers: zod.number(),
+    dim_feedforward: zod.number(),
+    dropout: zod.number(),
+    activation: zod.union([zod.string(), zod.function()]),
+    custom_encoder: zod.optional(zod.any()),
+    custom_decoder: zod.optional(zod.any()),
+    layer_norm_eps: zod.number(),
+    batch_first: zod.boolean(),
+    norm_first: zod.boolean(),
+  },
+  options: [
+    "Transformer",
+    "TransformerDecoder",
+    "TransformerDecoderLayer",
+    "TransformerEncoder",
+    "TransformerEncoderLayer",
+  ],
+  nodes: [{
+    "class_name": "Transformer",
+    "modules_path": "torch.nn.modules.transformer",
+    "params": [
+      "d_model : \"<class 'int'>\",",
+      "nhead : \"<class 'int'>\",",
+      "num_encoder_layers : \"<class 'int'>\",",
+      "num_decoder_layers : \"<class 'int'>\",",
+      "dim_feedforward : \"<class 'int'>\",",
+      "dropout : \"<class 'float'>\",",
+      'activation : "typing.Union[str, typing.Callable[[torch.Tensor], torch.Tensor]]",',
+      'custom_encoder : "typing.Optional[typing.Any]",',
+      'custom_decoder : "typing.Optional[typing.Any]",',
+      "layer_norm_eps : \"<class 'float'>\",",
+      "batch_first : \"<class 'bool'>\",",
+      "norm_first : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "d_model: zod.number(),",
+      "nhead: zod.number(),",
+      "num_encoder_layers: zod.number(),",
+      "num_decoder_layers: zod.number(),",
+      "dim_feedforward: zod.number(),",
+      "dropout: zod.number(),",
+      "activation: zod.union([zod.string() , zod.function()]) ,",
+      "custom_encoder: zod.optional(zod.any()) ,",
+      "custom_decoder: zod.optional(zod.any()) ,",
+      "layer_norm_eps: zod.number(),",
+      "batch_first: zod.boolean(),",
+      "norm_first: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "TransformerDecoder",
+    "modules_path": "torch.nn.modules.transformer",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "TransformerDecoderLayer",
+    "modules_path": "torch.nn.modules.transformer",
+    "params": [
+      "d_model : \"<class 'int'>\",",
+      "nhead : \"<class 'int'>\",",
+      "dim_feedforward : \"<class 'int'>\",",
+      "dropout : \"<class 'float'>\",",
+      'activation : "typing.Union[str, typing.Callable[[torch.Tensor], torch.Tensor]]",',
+      "layer_norm_eps : \"<class 'float'>\",",
+      "batch_first : \"<class 'bool'>\",",
+      "norm_first : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "d_model: zod.number(),",
+      "nhead: zod.number(),",
+      "dim_feedforward: zod.number(),",
+      "dropout: zod.number(),",
+      "activation: zod.union([zod.string() , zod.function()]) ,",
+      "layer_norm_eps: zod.number(),",
+      "batch_first: zod.boolean(),",
+      "norm_first: zod.boolean(),",
+    ],
+  }, {
+    "class_name": "TransformerEncoder",
+    "modules_path": "torch.nn.modules.transformer",
+    "params": [],
+    "parse_params": [],
+  }, {
+    "class_name": "TransformerEncoderLayer",
+    "modules_path": "torch.nn.modules.transformer",
+    "params": [
+      "d_model : \"<class 'int'>\",",
+      "nhead : \"<class 'int'>\",",
+      "dim_feedforward : \"<class 'int'>\",",
+      "dropout : \"<class 'float'>\",",
+      'activation : "typing.Union[str, typing.Callable[[torch.Tensor], torch.Tensor]]",',
+      "layer_norm_eps : \"<class 'float'>\",",
+      "batch_first : \"<class 'bool'>\",",
+      "norm_first : \"<class 'bool'>\",",
+    ],
+    "parse_params": [
+      "d_model: zod.number(),",
+      "nhead: zod.number(),",
+      "dim_feedforward: zod.number(),",
+      "dropout: zod.number(),",
+      "activation: zod.union([zod.string() , zod.function()]) ,",
+      "layer_norm_eps: zod.number(),",
+      "batch_first: zod.boolean(),",
+      "norm_first: zod.boolean(),",
+    ],
+  }],
+});
+
+export const upsampling = defineLazyLayerNode({
+  module_name: "upsampling",
+  params: {
+    size: zod.union([zod.number(), zod.tuple([zod.number(), zod.number()])])
+      .nullable(),
+    scale_factor: zod.union([
+      zod.number(),
+      zod.tuple([zod.number(), zod.number()]),
+    ]).nullable(),
+    mode: zod.string(),
+    align_corners: zod.optional(zod.boolean()),
+    recompute_scale_factor: zod.optional(zod.boolean()),
+  },
+  options: ["Upsample", "UpsamplingBilinear2d", "UpsamplingNearest2d"],
+  nodes: [{
+    "class_name": "Upsample",
+    "modules_path": "torch.nn.modules.upsampling",
+    "params": [
+      'size : "typing.Union[int, typing.Tuple[int, ...], NoneType]",',
+      'scale_factor : "typing.Union[float, typing.Tuple[float, ...], NoneType]",',
+      "mode : \"<class 'str'>\",",
+      'align_corners : "typing.Optional[bool]",',
+      'recompute_scale_factor : "typing.Optional[bool]",',
+    ],
+    "parse_params": [
+      "size: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ,  ]) .nullable(),",
+      "scale_factor: zod.union([zod.number() , zod.tuple([zod.number() , zod.any()]) ,  ]) .nullable(),",
+      "mode: zod.string(),",
+      "align_corners: zod.optional(zod.boolean()) ,",
+      "recompute_scale_factor: zod.optional(zod.boolean()) ,",
+    ],
+  }, {
+    "class_name": "UpsamplingBilinear2d",
+    "modules_path": "torch.nn.modules.upsampling",
+    "params": [
+      'size : "typing.Union[int, typing.Tuple[int, int], NoneType]",',
+      'scale_factor : "typing.Union[float, typing.Tuple[float, float], NoneType]",',
+    ],
+    "parse_params": [
+      "size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "scale_factor: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+    ],
+  }, {
+    "class_name": "UpsamplingNearest2d",
+    "modules_path": "torch.nn.modules.upsampling",
+    "params": [
+      'size : "typing.Union[int, typing.Tuple[int, int], NoneType]",',
+      'scale_factor : "typing.Union[float, typing.Tuple[float, float], NoneType]",',
+    ],
+    "parse_params": [
+      "size: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+      "scale_factor: zod.union([zod.number() , zod.tuple([zod.number() , zod.number(), ]) ,  ]) .nullable(),",
+    ],
+  }],
+});

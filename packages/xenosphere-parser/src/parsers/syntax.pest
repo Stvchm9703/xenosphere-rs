@@ -1,0 +1,131 @@
+/// basic
+///
+
+attr_set       = {
+    (naming ~ "=")? ~ (value_block) ~ (",")?
+}
+attr_def_block = {
+    "#[" ~ (naming ~ ("(" ~ (attr_set)* ~ ")")?) ~ "]"
+}
+naming         = {
+    (ASCII_ALPHANUMERIC | "_")*
+}
+
+// content_or_object_block = { "{" ~ (content) ~ "}" }
+array_block    =  { "[" ~ (value_block ~ (",")?)* ~ "]" }
+string_block   =  { "\"" ~ (!"\"" ~ ANY)* ~ "\"" }
+int_block      = @{ ("-")? ~ (ASCII_DIGIT)+ }
+float_block    = @{ int_block ~ ("." ~ (ASCII_DIGIT)+)? }
+num_block      = @{ float_block ~ (^"e" ~ int_block)? }
+value_block    = _{ array_block | string_block | num_block }
+func_block     =  {
+    naming ~ "(" ~ (((naming ~ "=" ~ value_block) | (value_block)) ~ ","?)* ~ ")"
+}
+func_block_arr =  {
+    "[" ~ (func_block ~ (",")?)* ~ "]"
+}
+shape_block    =  {
+    "(" ~ (ASCII_NONZERO_DIGIT ~ (",")?)+ ~ ")"
+}
+content        =  {
+    layer_def_block
+  | attr_def_block
+}
+
+COMMENT = _{
+    ("//") ~ !("/") ~ (!(("\r") | ("\n")) ~ ANY)* ~ (NEWLINE | EOI)
+}
+
+WHITESPACE = _{ (" " | "\t" | "\u{000C}" | NEWLINE)+ }
+
+// 
+int_def_block = {
+    "int" ~ naming ~ ("=" ~ int_block){,1}
+}
+
+float_def_block = {
+    "float" ~ naming ~ ("=" ~ float_block){,1}
+}
+
+string_def_block = {
+    "string" ~ naming ~ ("=" ~ string_block){,1}
+}
+
+array_def_block = {
+    "array" ~ naming ~ ("=" ~ array_block){,1}
+}
+
+tensor_def_block = {
+    "tensor" ~ "<" ~ shape_block ~ ">" ~ naming ~ ("=" ~ array_block){,1}
+}
+func_def_block   = {
+    "func" ~ naming ~ ("=" ~ (func_block | naming)){,1}
+}
+
+// variable definition, as the alias of the value
+var_def_block = _{
+    int_def_block
+  | float_def_block
+  | string_def_block
+  | array_def_block
+  | func_def_block
+  | tensor_def_block
+}
+
+object_property = {
+    ("$" | "&" | "*") ~ naming ~ ("." ~ naming)*
+}
+
+should_value = {
+    value_block
+  | object_property
+}
+
+assignment_block = {
+    object_property ~ "=" ~ (should_value)
+}
+
+// overall layer definition
+layer_def_block = {
+    "layer" ~ (naming) ~ "{" ~ (layer_property_block){,1} | (layer_pass_block | layer_stack_block){,1} ~ "}"
+}
+
+layer_property_block = {
+    // for layer property and setting
+    ("property") ~ "{" ~ (layer_property_elem)* ~ "}"
+}
+
+// layer_property_elem_type = @{ "in" | "out" | "static" }
+layer_property_elem = {
+    // input data reference
+    ("in" | "out" | "static") ~ var_def_block
+}
+
+// // layer_property_elem_dim_type = @{ "in_dim" | "out_dim" }
+// layer_property_elem_dim = {
+// ("in_dim" | "out_dim") ~ int_block
+// }
+
+layer_stack_block = {
+    ("stack") ~ "[" ~ (layer_stack_elem ~ ","?)* ~ "]"
+}
+
+layer_stack_elem = {
+    func_block
+}
+
+layer_pass_block = {
+    // for layer pass / calculation
+    "pass" ~ "{" ~ (c_impl_block)* ~ "}"
+}
+
+c_impl_block = {
+    "#[target(" ~ naming ~ ","? ~ (("syntex") ~ "=" ~ naming)* ~ ")]" ~ "{" ~ (c_impl_func_block)* ~ "}"
+}
+
+c_impl_func_block = {
+    assignment_block
+  | func_block
+}
+
+chunk = _{ SOI ~ content+ ~ EOI }

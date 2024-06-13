@@ -1,0 +1,26 @@
+
+
+layer Target 
+{
+   property
+   {
+      in tensor y
+      const func open = L1(12,12)
+      out tensor x
+   }
+
+
+   stack
+   [
+      conv()
+   ]
+
+
+   pass 
+   {
+      #[target(arm)]
+      {
+         ff = 1;
+      }
+   }
+}Ò
