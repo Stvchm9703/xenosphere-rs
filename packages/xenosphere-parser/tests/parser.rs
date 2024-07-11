@@ -7,40 +7,61 @@ use xenosphere_parser::parsers::{
 
 #[cfg(test)]
 #[test]
-fn test_parser() {
+fn test_parser_with_layer_stack() {
     let token = parse_makeup_token(
         r##"
-// #[use("Tensor")]
+#[use("Tensor")]
+#[export="Tensor"]
+
     layer Conv {
         property {
             in int y = 3
-            
             static int x = 3
             static float z = 3.0
             static string a = "3"
             static array b = [3, 4, 5]
             static tensor<(3,3)> mask
-
-
-            // static func activation = LEUKOCYTE(3, b=4)
-            // static func loss
+            // static func c = LEUKOCYTE(3, b=4)
         }
-
         stack
         [
+            Conv2D($y, $z, 3, 3, activation="relu"),
             Flatten(),
             Dense(128),
             Dense(10),
-            Classification(label=10)
+            Classification(label=10),
         ]
+    }
+    "##,
+    );
+    println!("{:?}", token);
+    assert_eq!(4, 4);
+}
 
-        // pass {
-        //     #[target(x86), syntex="gcc"]
-        //     {
-        //         Conv2D($input_tensor, $output_tensor, $y, $x, activation=$activation)
-        //         Relu($input_tensor, $output_tensor)
-        //     }
-        // }
+#[cfg(test)]
+#[test]
+fn test_parser_with_layer_pass() {
+    let token = parse_makeup_token(
+        r##"
+#[use("Tensor")]
+#[export="Tensor"]
+
+    layer Conv {
+        property {
+            in int y = 3
+            static int x = 3
+            static float z = 3.0
+            static string a = "3"
+            static array b = [3, 4, 5]
+            static tensor<(3,3)> mask
+        }
+        pass {
+            #[target="x86", syntex("gcc")]
+            {
+                Conv2D($input_tensor, $output_tensor, $y, $x, activation=$activation)
+                Relu($input_tensor, $output_tensor)
+            }
+        }
     }
     "##,
     );
