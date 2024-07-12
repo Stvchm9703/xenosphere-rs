@@ -20,7 +20,7 @@ pub fn parse(input_str: &str) -> std::result::Result<Pairs<Rule>, Error> {
     match result_token {
         Ok(pairs) => {
             let content_token = parse_chunk(pairs.to_owned())?;
-            // println!("out parse_chunk {:#?}", content_token);
+            println!("out parse_chunk {:#?}", content_token);
             return Ok(pairs);
         }
         Err(e) => Err(Error::msg(format!("Error parsing input: {:?}", e))),

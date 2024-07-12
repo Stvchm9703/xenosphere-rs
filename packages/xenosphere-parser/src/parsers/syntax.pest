@@ -34,22 +34,19 @@ func_name_arg_block = {
     naming ~ "=" ~ (value_block | object_property)
 }
 
-func_block_arr = {
+func_block_arr =  {
     "[" ~ (func_block ~ (",")?)* ~ "]"
 }
-shape_block    = {
+shape_block    =  {
     "(" ~ (ASCII_NONZERO_DIGIT ~ (",")?)+ ~ ")"
 }
-content        = {
-    layer_def_block
-  | attr_def_block
-}
+content        = _{ layer_def_block | attr_def_block | COMMENT | WHITESPACE }
 
-COMMENT = _{
-    ("//") ~ !("/") ~ (!(("\r") | ("\n")) ~ ANY)* ~ (NEWLINE | EOI)
-}
-
-WHITESPACE = _{ (" " | "\t" | "\u{000C}" | NEWLINE)+ }
+WHITESPACE = _{ " " | "\t" | "\u{000C}" | NEWLINE }
+// Comments
+COMMENT       = _{ LINE_COMMENT | BLOCK_COMMENT }
+LINE_COMMENT  = _{ "//" ~ (!NEWLINE ~ ANY)* }
+BLOCK_COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
 
 // 
 int_def_block = {
@@ -137,10 +134,7 @@ layer_stack_block = {
     ("stack") ~ "[" ~ (layer_stack_elem ~ ","?)* ~ "]"
 }
 
-layer_stack_elem = _{
-    func_block
-  | branch_block
-}
+layer_stack_elem = _{ func_block | branch_block }
 
 branch_block = {
     "#BRANCH" ~ "{" ~ ("[" ~ (layer_stack_elem ~ ","?) ~ "]")+ ~ "}"
@@ -152,13 +146,14 @@ layer_pass_block = {
 }
 
 c_impl_block = {
-    c_impl_attr_block ~ "{" ~ ANY ~ "}"
+    c_impl_attr_block ~ &"{" ~ c_impl_content_block ~ "}#"
 }
 
 c_impl_attr_block = _{ attr_def_block }
 
-// c_impl_content_block = _{
+c_impl_content_block = ${
+    (!"}#" ~ ANY)*
+}
+// c_imp_content        = _{ ASCII_ALPHANUMERIC }
 
-// }
-
-chunk = _{ SOI ~ content+ ~ EOI }
+chunk = _{ SOI ~ content* ~ EOI }

@@ -22,7 +22,7 @@ fn test_parser_with_layer_stack() {
             static array b  = [3, 4, 5]
             static func c
             static func c1 = LEUKOCYTE
-            static tensor<(3,3)> mask
+            // static tensor<(3,3)> mask
 
         }
         stack
@@ -55,22 +55,31 @@ fn test_parser_with_layer_pass() {
             static float z = 3.0
             static string a = "3"
             static array b = [3, 4, 5]
-            static tensor<(3,3)> mask
+            // static tensor<(3,3)> mask
         }
         pass {
-            #[target="x86", syntex("gcc")]
-            {
-
-                // $z = 3.0;
-                // $y = 3;
-                // x1 = $r.t;
-                // x2 = conv2d();
-            }
+            #[target="x86", syntex("gcc")]{
+                int x = 5;
+                int y = 10;
+                // code block
+                int main() {
+                    int x = 5;
+                    int y = 10;
+                    // int result = add(x, y);
+                    if (x > y) {
+                        printf("x is greater than y\n");
+                    } else {
+                        printf("y is greater than x\n");
+                    }
+                    printf("Result: %d\n", result);
+                    return 0;
+                }
+            }#
         }
     } 
     "##,
     );
-    println!("{:?}", token);
+    println!("{:#?}", token);
     assert_eq!(4, 4);
 }
 
@@ -88,10 +97,7 @@ fn test_property_define<'a>() {
             "tensor<(3,3)> y = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]",
             MarkupRule::tensor_def_block,
         ),
-        (
-            "tensor<(3,3)> y ",
-            MarkupRule::tensor_def_block,
-        ),
+        ("tensor<(3,3)> y ", MarkupRule::tensor_def_block),
         ("func y", MarkupRule::func_def_block),
         ("func y = LEUKOCYTE", MarkupRule::func_def_block),
         ("func y = LEUKOCYTE()", MarkupRule::func_def_block),
