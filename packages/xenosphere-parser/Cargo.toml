@@ -15,8 +15,8 @@ syn = { workplace = true, version = "2.0.58", features = [
   "full",
 ] }
 quote = { workplace = true, version = "1.0.35" }
-pest = { version = "2.7.10" }
-pest_derive = { version = "2.7.10" }
+pest = { version = "2.7.11" }
+pest_derive = { version = "2.7.11" }
 anyhow = { workspace = true, version = "1.0.44" }
 safetensors = { version = "0.4.3" }
 polars = { version = "0.40", features = [
