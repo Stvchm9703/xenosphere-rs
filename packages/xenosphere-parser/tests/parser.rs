@@ -12,16 +12,18 @@ fn test_parser_with_layer_stack() {
         r##"
 #[use("Tensor")]
 #[export="Tensor"]
-
     layer Conv {
         property {
             in int y = 3
+            in int e
             static int x = 3
             static float z = 3.0
             static string a = "3"
-            static array b = [3, 4, 5]
+            static array b  = [3, 4, 5]
+            static func c
+            static func c1 = LEUKOCYTE
             static tensor<(3,3)> mask
-            // static func c = LEUKOCYTE(3, b=4)
+
         }
         stack
         [
@@ -34,7 +36,7 @@ fn test_parser_with_layer_stack() {
     }
     "##,
     );
-    println!("{:?}", token);
+    println!("{:#?}", token);
     assert_eq!(4, 4);
 }
 
@@ -58,11 +60,14 @@ fn test_parser_with_layer_pass() {
         pass {
             #[target="x86", syntex("gcc")]
             {
-                Conv2D($input_tensor, $output_tensor, $y, $x, activation=$activation)
-                Relu($input_tensor, $output_tensor)
+
+                // $z = 3.0;
+                // $y = 3;
+                // x1 = $r.t;
+                // x2 = conv2d();
             }
         }
-    }
+    } 
     "##,
     );
     println!("{:?}", token);
@@ -83,9 +88,15 @@ fn test_property_define<'a>() {
             "tensor<(3,3)> y = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]",
             MarkupRule::tensor_def_block,
         ),
-        ("func y = LEUKOCYTE(3, b=4)", MarkupRule::func_def_block),
+        (
+            "tensor<(3,3)> y ",
+            MarkupRule::tensor_def_block,
+        ),
         ("func y", MarkupRule::func_def_block),
+        ("func y = LEUKOCYTE", MarkupRule::func_def_block),
+        ("func y = LEUKOCYTE()", MarkupRule::func_def_block),
         ("func y = LEUKOCYTE(3, b=4)", MarkupRule::func_def_block),
+        ("func y = LEUKOCYTE($z)", MarkupRule::func_def_block),
     ];
 
     // let mut test_cases_result: Vec<bool> = vec![];

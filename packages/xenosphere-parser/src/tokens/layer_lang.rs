@@ -55,7 +55,7 @@ pub enum LayerPropertyElementValue {
     Float(f32),
     String(String),
     Array(Vec<LayerPropertyElementValue>),
-    Func(String),
+    Func(Vec<LayerFuncArgSet>),
     Tensor(PseudoTensor<f32>),
     None,
 }

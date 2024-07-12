@@ -68,11 +68,21 @@ array_def_block = {
     "array" ~ naming ~ ("=" ~ array_block){,1}
 }
 
-tensor_def_block = {
-    "tensor" ~ "<" ~ shape_block ~ ">" ~ naming ~ ("=" ~ array_block){,1}
+tensor_value = {
+    num_block
+  | tensor_arr_block
 }
-func_def_block   = {
-    "func" ~ naming ~ ("=" ~ (func_block | naming)){,1}
+
+tensor_arr_block = {
+    "[" ~ (tensor_value ~ (",")?)* ~ "]"
+}
+
+tensor_def_block = {
+    "tensor" ~ "<" ~ shape_block ~ ">" ~ naming
+}
+
+func_def_block = {
+    "func" ~ naming ~ ("=" ~ naming)?
 }
 
 // variable definition, as the alias of the value
@@ -142,15 +152,13 @@ layer_pass_block = {
 }
 
 c_impl_block = {
-    c_impl_attr_block ~ "{" ~ (c_impl_content_block)* ~ "}"
+    c_impl_attr_block ~ "{" ~ ANY ~ "}"
 }
 
-c_impl_attr_block = _{
-    attr_def_block
-}
+c_impl_attr_block = _{ attr_def_block }
 
-c_impl_content_block = {
-    "sd"
-}
+// c_impl_content_block = _{
+
+// }
 
 chunk = _{ SOI ~ content+ ~ EOI }

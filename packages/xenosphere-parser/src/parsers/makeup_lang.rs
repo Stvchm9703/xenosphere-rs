@@ -149,12 +149,12 @@ fn parse_layer_property_element_set(pair: Pair<Rule>) -> Result<LayerPropertyEle
 }
 
 fn parse_layer_stack(pairs: Pairs<Rule>) -> Result<Vec<LayerStackElm>, Error> {
-    println!("parse_layer_stack");
+    // println!("parse_layer_stack");
 
     let mut layer_stack: Vec<LayerStackElm> = vec![];
     for pair in pairs {
-        println!("elm {:#?}", pair);
-        println!("parse_layer_stack rule {:?}", pair.as_rule().to_owned());
+        // println!("elm {:#?}", pair);
+        // println!("parse_layer_stack rule {:?}", pair.as_rule().to_owned());
 
         match pair.as_rule() {
 
@@ -163,7 +163,7 @@ fn parse_layer_stack(pairs: Pairs<Rule>) -> Result<Vec<LayerStackElm>, Error> {
                 // layer_stack.push(tmp);
                 // let elm = parse_value_block(pair)?;
                 println!("elm {:#?}", pair);
-                let tmp = parse_func_block(pair)?;
+                let tmp = parse_stack_func_block(pair)?;
                 layer_stack.push(tmp);
             }
             Rule::branch_block => {
@@ -218,7 +218,7 @@ fn parse_val_def_block(pair: Pair<Rule>) -> Result<(String, LayerPropertyElement
 }
 
 fn parse_value_block(pair: Pair<Rule>) -> Result<LayerPropertyElementValue, Error> {
-    // print!("parse_array_block {:#?}", pair.as_rule());
+    print!("parse_value_block {:#?}", pair);
     match pair.as_rule() {
         Rule::int_block => {
             let tmp_value = pair.as_str().trim();
@@ -236,10 +236,10 @@ fn parse_value_block(pair: Pair<Rule>) -> Result<LayerPropertyElementValue, Erro
             let tmp_value = pair.as_str().trim();
             return Ok(LayerPropertyElementValue::String(tmp_value.to_string()));
         }
-        Rule::func_block => {
-            let tmp_value = pair.as_str().trim();
-            return Ok(LayerPropertyElementValue::Func(tmp_value.to_string()));
-        }
+        // Rule::func_block => {
+        //     // let tmp_value = pair.as_str().trim();
+        //     // return Ok(LayerPropertyElementValue::Func());
+        // }
         Rule::array_block => {
             let tmp_sub_values = pair
                 .clone()
@@ -265,7 +265,7 @@ pub fn parse_tensor_block(
     Ok(tensor_data)
 }
 
-fn parse_func_block(pair: Pair<Rule>) -> Result<LayerStackElm, Error> {
+fn parse_stack_func_block(pair: Pair<Rule>) -> Result<LayerStackElm, Error> {
     let mut func_block: LayerStackBlock = LayerStackBlock {
         func_name: "".to_string(),
         func_args: vec![],
@@ -278,96 +278,103 @@ fn parse_func_block(pair: Pair<Rule>) -> Result<LayerStackElm, Error> {
             }
             Rule::func_arg_block => {
                 // parse the func args
-                for (pos, arg_pair) in inner_pair.clone().into_inner().enumerate() {
-                    match arg_pair.as_rule() {
-                        Rule::object_property => {
-                            let tmp = LayerFuncArgSet {
-                                name: format!("arg:{}", pos),
-                                value: LayerFuncArgValue::InputReference(
-                                    arg_pair.as_span().as_str().to_string(),
-                                ),
-                            };
-                            func_block.func_args.push(tmp);
-                        }
-
-                        Rule::int_block => {
-                            let tmp = LayerFuncArgSet {
-                                name: format!("arg:{}", pos),
-                                value: LayerFuncArgValue::Int(
-                                    arg_pair.as_str().parse::<i32>().unwrap(),
-                                ),
-                            };
-                            func_block.func_args.push(tmp);
-                        }
-
-                         Rule::float_block | Rule::num_block => {
-                            let tmp = LayerFuncArgSet {
-                                name: format!("arg:{}", pos),
-                                value: LayerFuncArgValue::Float(
-                                    arg_pair.as_str().parse::<f32>().unwrap(),
-                                ),
-                            };
-                            func_block.func_args.push(tmp);
-                        }
-
-                        Rule::string_block => {
-                            let tmp = LayerFuncArgSet {
-                                name: format!("arg:{}", pos),
-                                value: LayerFuncArgValue::String(
-                                    arg_pair.as_str().to_string().replace("\"", ""),
-                                ),
-                            };
-                            func_block.func_args.push(tmp);
-                        }
-
-                        Rule::func_name_arg_block => {
-                            let tmp_inner = arg_pair.clone().into_inner();
-                            let mut tmp = LayerFuncArgSet {
-                                name: "".to_string(),
-                                value: LayerFuncArgValue::String("".to_string()),
-                            };
-
-                            for tmp_inner_pair in tmp_inner {
-                                match tmp_inner_pair.as_rule() {
-                                    Rule::naming => {
-                                        tmp.name = tmp_inner_pair.as_str().to_string();
-                                    }
-                                    Rule::int_block => {
-                                        tmp.value = LayerFuncArgValue::Int(
-                                            tmp_inner_pair.as_str().parse::<i32>().unwrap(),
-                                        );
-                                    }
-                                    Rule::float_block | Rule::num_block => {
-                                        tmp.value = LayerFuncArgValue::Float(
-                                            tmp_inner_pair.as_str().parse::<f32>().unwrap(),
-                                        );
-                                    }
-                                    Rule::string_block => {
-                                        tmp.value = LayerFuncArgValue::String(
-                                            tmp_inner_pair.as_str().to_string().replace("\"", ""),
-                                        );
-                                    }
-                                    Rule::object_property => {
-                                        tmp.value = LayerFuncArgValue::InputReference(
-                                            tmp_inner_pair.as_span().as_str().to_string(),
-                                        );
-                                    }
-                                    _ => {}
-                                }
-                            }
-
-                            func_block.func_args.push(tmp);
-                        }
-
-                        _ => {}
-                    }
-                }
+                func_block.func_args =  extract_layer_func_arg(inner_pair);
             }
             _ => {}
         }
     }
 
     return Ok(LayerStackElm::Block(func_block));
+}
+
+fn extract_layer_func_arg(inner_pair: Pair<Rule>) -> Vec<LayerFuncArgSet>{
+    let mut func_args: Vec<LayerFuncArgSet> = vec![];
+    for (pos, arg_pair) in inner_pair.clone().into_inner().enumerate() {
+        match arg_pair.as_rule() {
+            Rule::object_property => {
+                let tmp = LayerFuncArgSet {
+                    name: format!("arg:{}", pos),
+                    value: LayerFuncArgValue::InputReference(
+                        arg_pair.as_span().as_str().to_string(),
+                    ),
+                };
+                func_args.push(tmp);
+            }
+
+            Rule::int_block => {
+                let tmp = LayerFuncArgSet {
+                    name: format!("arg:{}", pos),
+                    value: LayerFuncArgValue::Int(
+                        arg_pair.as_str().parse::<i32>().unwrap(),
+                    ),
+                };
+                func_args.push(tmp);
+            }
+
+             Rule::float_block | Rule::num_block => {
+                let tmp = LayerFuncArgSet {
+                    name: format!("arg:{}", pos),
+                    value: LayerFuncArgValue::Float(
+                        arg_pair.as_str().parse::<f32>().unwrap(),
+                    ),
+                };
+                func_args.push(tmp);
+            }
+
+            Rule::string_block => {
+                let tmp = LayerFuncArgSet {
+                    name: format!("arg:{}", pos),
+                    value: LayerFuncArgValue::String(
+                        arg_pair.as_str().to_string().replace("\"", ""),
+                    ),
+                };
+                func_args.push(tmp);
+            }
+
+            Rule::func_name_arg_block => {
+                let tmp_inner = arg_pair.clone().into_inner();
+                let mut tmp = LayerFuncArgSet {
+                    name: "".to_string(),
+                    value: LayerFuncArgValue::String("".to_string()),
+                };
+
+                for tmp_inner_pair in tmp_inner {
+                    match tmp_inner_pair.as_rule() {
+                        Rule::naming => {
+                            tmp.name = tmp_inner_pair.as_str().to_string();
+                        }
+                        Rule::int_block => {
+                            tmp.value = LayerFuncArgValue::Int(
+                                tmp_inner_pair.as_str().parse::<i32>().unwrap(),
+                            );
+                        }
+                        Rule::float_block | Rule::num_block => {
+                            tmp.value = LayerFuncArgValue::Float(
+                                tmp_inner_pair.as_str().parse::<f32>().unwrap(),
+                            );
+                        }
+                        Rule::string_block => {
+                            tmp.value = LayerFuncArgValue::String(
+                                tmp_inner_pair.as_str().to_string().replace("\"", ""),
+                            );
+                        }
+                        Rule::object_property => {
+                            tmp.value = LayerFuncArgValue::InputReference(
+                                tmp_inner_pair.as_span().as_str().to_string(),
+                            );
+                        }
+                        _ => {}
+                    }
+                }
+
+                func_args.push(tmp);
+            }
+
+            _ => {}
+        }
+    }
+
+    func_args
 }
 
 fn parse_branch_block(pair: Pair<Rule>) -> Result<LayerStackElm, Error> {

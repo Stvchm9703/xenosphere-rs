@@ -1,20 +1,127 @@
-expr    =  { prefix? ~ primary ~ postfix? ~ (infix ~ prefix? ~ primary ~ postfix?)* }
-infix   = _{ add | sub | mul | div | pow }
-add     =  { "+" }
-// Addition
-sub     =  { "-" }
-// Subtraction
-mul     =  { "*" }
-// Multiplication
-div     =  { "/" }
-// Division
-pow     =  { "^" }
-// Exponentiation
-prefix  = _{ neg }
-neg     =  { "-" }
-// Negation
-postfix = _{ fac }
-fac     =  { "!" }
-// Factorial
-primary = _{ int | "(" ~ expr ~ ")" }
-int     = @{ (ASCII_NONZERO_DIGIT ~ ASCII_DIGIT+ | ASCII_DIGIT) }
+// Define the main rule to capture the entire program
+program = _{ SOI ~ program_declaration* ~ EOI }
+
+WHITESPACE = _{ " " | "\t" | "\u{000C}" | NEWLINE }
+// Comments
+COMMENT       = _{ LINE_COMMENT | BLOCK_COMMENT }
+LINE_COMMENT  = _{ "//" ~ (!NEWLINE ~ ANY)* }
+BLOCK_COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
+
+// Operators
+ARITHMETIC_OPERATOR           =  { "+" | "-" | "*" | "/" | "%" }
+ARITHMETIC_SHORTHAND_OPERATOR =  { "++" | "--" | "**" | "//" }
+RELATIONAL_OPERATOR           =  { "==" | "!=" | ">" | "<" | ">=" | "<=" }
+LOGICAL_OPERATOR              =  { "&&" | "||" | "!" }
+BITWISE_OPERATOR              =  { "&" | "|" | "^" | "~" | "<<" | ">>" }
+VARIABLE_ASSIGNMENT_OPERATOR  =  { "=" }
+ASSIGNMENT_OPERATOR           =  { "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>=" }
+OPERATOR                      = _{
+    ARITHMETIC_OPERATOR
+  | ARITHMETIC_SHORTHAND_OPERATOR
+  | RELATIONAL_OPERATOR
+  | LOGICAL_OPERATOR
+  | BITWISE_OPERATOR
+  | ASSIGNMENT_OPERATOR
+  | VARIABLE_ASSIGNMENT_OPERATOR
+}
+
+/// values
+VALUE               = _{ INTEGER | FLOAT | CHARACTER | STRING | NULL | ARRAY }
+INTEGER             = @{ "-"? ~ (DECIMAL_INTEGER | HEXADECIMAL_INTEGER) }
+DECIMAL_INTEGER     = _{ INTEGER_PART ~ EXPONENT_PART? }
+HEXADECIMAL_INTEGER = _{ "0x" ~ ASCII_HEX_DIGIT+ }
+
+FLOAT         = @{ "-"? ~ DECIMAL_FLOAT | EXPONENT_FLOAT | HEXADECIMAL_FLOAT }
+DECIMAL_FLOAT = _{
+    ((INTEGER_PART ~ FRACTION_PART) | (FRACTION_PART) | (INTEGER_PART ~ ".")) ~ "f"?
+}
+INTEGER_PART  = _{ ASCII_NONZERO_DIGIT ~ ASCII_DIGIT* }
+FRACTION_PART = _{ "." ~ ASCII_DIGIT+ }
+EXPONENT_PART = _{ ("e" | "E") ~ ("+" | "-")? ~ ASCII_DIGIT+ }
+
+EXPONENT_FLOAT = { (INTEGER_PART | FRACTION_PART | INTEGER_PART ~ FRACTION_PART) ~ EXPONENT_PART }
+
+HEXADECIMAL_FLOAT = { HEXADECIMAL_INTEGER ~ "." ~ ASCII_HEX_DIGIT+ ~ ("p" | "P") ~ ("+" | "-")? ~ ASCII_DIGIT+ }
+
+CHARACTER = { "'" ~ (!"'" ~ ANY) ~ "'" }
+STRING    = { "\"" ~ (!"\"" ~ ANY)* ~ "\"" }
+NULL      = { "NULL" | "Null" | "null" | "NIL" | "Nil" | "nil" | "NONE" | "None" | "none" | "Nu" | "nu" | "Mu" | "mu" }
+ARRAY     = { "[" ~ (VALUE ~ ("," ~ VALUE)*)? ~ "]" }
+
+/// end of values
+
+// Variable Declaration Terms
+VARIABLE_IDENTIFIER        = @{ ASCII_ALPHANUMERIC ~ ("_"* ~ ASCII_ALPHANUMERIC)* }
+OUTTER_VARIABLE_IDENTIFIER = @{ "$" ~ VARIABLE_IDENTIFIER }
+
+DATA_TYPE               = _{ BASIC_DATA_TYPE | EXTEND_BASIC_DATA_TYPE }
+VOID_DATA_TYPE          =  { "void" }
+BASIC_DATA_TYPE         = _{ "int" | "float" | "double" | "char" | "bool" }
+EXTEND_BASIC_DATA_TYPE  = _{ "string" | "tensor" | "vector" | "float2" | "float3" | "object" }
+PUBLIC_ACCESS_MOD       = @{ "public" | "pub" }
+PRIVATE_ACCESS_MOD      = @{ "private" | "priv" }
+PROTECTED_ACCESS_MOD    = @{ "protected" | "prot" }
+PREFIX_ACCESS_MODIFIER  = @{ PUBLIC_ACCESS_MOD | PRIVATE_ACCESS_MOD | PROTECTED_ACCESS_MOD }
+PREFIX_STORAGE_MODIFIER =  { "static" | "extern" | "register" | "auto" | "typedef" }
+PREFIX_TYPE_MODIFIER    =  { "const" | "volatile" | "restrict" }
+PREFIX_DATA_SIZE        =  { "short" | "long" }
+
+REFERENCE_ADDRESS_MOD      = @{ "&" }
+REFERENCE_POINTER_MOD      = @{ "*" }
+PREFIX_REFERENCE_MONDIFIER = _{ (REFERENCE_ADDRESS_MOD+ | REFERENCE_POINTER_MOD+) }
+REFERENCE_DATA_TYPE        = @{ DATA_TYPE ~ PREFIX_REFERENCE_MONDIFIER }
+
+POSTFIX_ARRAY_DECL = @{ "[" ~ (INTEGER | "_" | VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ "]" }
+
+VARIABLE_DECLARATION_PREFIX = _{ PREFIX_ACCESS_MODIFIER? ~ PREFIX_STORAGE_MODIFIER? ~ PREFIX_TYPE_MODIFIER? ~ PREFIX_DATA_SIZE? }
+
+// Variable Declaration Patterns
+VARIABLE_DECLARATION                 = { VARIABLE_DECLARATION_PREFIX ~ (DATA_TYPE | REFERENCE_DATA_TYPE) ~ VARIABLE_IDENTIFIER ~ POSTFIX_ARRAY_DECL? ~ ("," ~ VARIABLE_IDENTIFIER ~ POSTFIX_ARRAY_DECL?)* ~ ";" }
+VARIABLE_DECLARATION_WITH_ASSIGNMENT = { VARIABLE_DECLARATION_PREFIX ~ (DATA_TYPE | REFERENCE_DATA_TYPE) ~ VARIABLE_IDENTIFIER ~ POSTFIX_ARRAY_DECL? ~ VALUE_DIRECT_EXPRESSION ~ ";" }
+
+// expression
+VALUEABLE_EXPRESSION = _{ VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER | VALUE | FUNCTION_CALL_EXPRESSION }
+
+// RIGHT_HAND_EXPRESSION    = _{ VALUE_DIRECT_EXPRESSION }
+VALUE_DIRECT_EXPRESSION  = { VARIABLE_ASSIGNMENT_OPERATOR ~ VALUEABLE_EXPRESSION }
+FUNCTION_CALL_EXPRESSION = { VARIABLE_IDENTIFIER ~ "(" ~ (VALUEABLE_EXPRESSION) ~ ("," ~ (VALUEABLE_EXPRESSION))* ~ ")" }
+
+// function
+FUNCTION_DECLARATION_PREFIX = _{ PREFIX_ACCESS_MODIFIER? ~ PREFIX_DATA_SIZE? }
+FUNCTION_DECLARATION_NAME   = @{ VARIABLE_IDENTIFIER ~ ("::" ~ VARIABLE_IDENTIFIER)* }
+FUNCTION_DECLARATION_ARGS   =  { DATA_TYPE ~ (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ ("," ~ DATA_TYPE ~ (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER))* }
+FUNCTION_DECLARATION        =  {
+    FUNCTION_DECLARATION_PREFIX ~ (DATA_TYPE | VOID_DATA_TYPE | REFERENCE_DATA_TYPE) ~ FUNCTION_DECLARATION_NAME ~ "(" ~ FUNCTION_DECLARATION_ARGS? ~ ")" ~ "{" ~ (STATEMENT | FUNCTION_RETURN_STATEMENT)* ~ "}"
+}
+FUNCTION_CALL_STATEMENT     = _{ FUNCTION_CALL_EXPRESSION ~ ";" }
+FUNCTION_RETURN_STATEMENT   =  { "return" ~ (VALUEABLE_EXPRESSION ~ (ARITHMETIC_OPERATOR ~ VALUEABLE_EXPRESSION)*)? ~ ";" }
+
+STATEMENT         = _{ VARIABLE_DECLARATION | VARIABLE_DECLARATION_WITH_ASSIGNMENT | (VALUE_OPERATION_STATMENT ~ ";") | COMPOUND_STATEMENT | LOOP_STATEMENT | FUNCTION_CALL_STATEMENT | FUNCTION_RETURN_STATEMENT | CONDITION_STATEMENT | COMMENT }
+COMPARE_STATEMENT =  { (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ RELATIONAL_OPERATOR ~ VALUEABLE_EXPRESSION }
+
+/// operation
+VALUE_OPERATION_STATMENT    =  { (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ (rh_direct_operation | rh_shorthand_operation | rh_shorthand_self_operation | rh_bitwise_operation) }
+rh_direct_operation         = _{ (VARIABLE_ASSIGNMENT_OPERATOR | ASSIGNMENT_OPERATOR) ~ VALUEABLE_EXPRESSION ~ ( ARITHMETIC_OPERATOR ~ VALUEABLE_EXPRESSION | ARITHMETIC_SHORTHAND_OPERATOR ~ VALUEABLE_EXPRESSION)* }
+rh_shorthand_operation      = _{ ASSIGNMENT_OPERATOR ~ VALUEABLE_EXPRESSION }
+rh_shorthand_self_operation = _{ ARITHMETIC_SHORTHAND_OPERATOR }
+rh_bitwise_operation        = _{ VARIABLE_ASSIGNMENT_OPERATOR ~ VALUEABLE_EXPRESSION ~ BITWISE_OPERATOR ~ VALUEABLE_EXPRESSION }
+COMPOUND_STATEMENT          =  { "{" ~ STATEMENT* ~ "}" }
+
+/// loop related
+FOR_LOOP_CONDITION      =  { "int" ~ VARIABLE_IDENTIFIER ~ "=" ~ VALUEABLE_EXPRESSION ~ ";" ~ COMPARE_STATEMENT ~ ";" ~ VALUE_OPERATION_STATMENT }
+FOR_LOOP_RANGE          =  { VARIABLE_IDENTIFIER ~ "in" ~ (VALUEABLE_EXPRESSION | (INTEGER ~ ".." ~ INTEGER) | (VALUEABLE_EXPRESSION ~ "[" ~ INTEGER ~ ":" ~ INTEGER ~ "]")) }
+FOR_LOOP_STATEMENT      =  { "for" ~ "(" ~ (FOR_LOOP_CONDITION | FOR_LOOP_RANGE) ~ ")" ~ LOOP_COMPOUND_STATEMENT }
+WHILE_LOOP_STATEMENT    =  { "while" ~ "(" ~ COMPARE_STATEMENT ~ ")" ~ LOOP_COMPOUND_STATEMENT }
+DO_WHILE_LOOP_STATEMENT =  { "do" ~ LOOP_COMPOUND_STATEMENT ~ "while" ~ "(" ~ COMPARE_STATEMENT ~ ")" ~ ";" }
+LOOP_COMPOUND_STATEMENT =  { "{" ~ (STATEMENT | LOOP_BREAK_STATEMENT | LOOP_CONTINUE_STATEMENT)* ~ "}" }
+LOOP_BREAK_STATEMENT    =  { "break" ~ ";" }
+LOOP_CONTINUE_STATEMENT =  { "continue" ~ ";" }
+LOOP_STATEMENT          = _{ FOR_LOOP_STATEMENT | WHILE_LOOP_STATEMENT | DO_WHILE_LOOP_STATEMENT }
+
+/// condition related
+IF_CONDITION_STATEMENT     =  { "if" ~ "(" ~ COMPARE_STATEMENT ~ ")" ~ COMPOUND_STATEMENT ~ ("else" ~ "if" ~ "(" ~ COMPARE_STATEMENT ~ ")" ~ COMPOUND_STATEMENT)* ~ ("else" ~ COMPOUND_STATEMENT)? }
+SWITCH_CONDITION_STATEMENT =  { "switch" ~ "(" ~ (VALUEABLE_EXPRESSION | COMPARE_STATEMENT) ~ ")" ~ "{" ~ SWITCH_CASE_STATEMENT* ~ "}" }
+SWITCH_CASE_STATEMENT      =  { "case" ~ VALUEABLE_EXPRESSION ~ ":" ~ STATEMENT* ~ "break" ~ ";" }
+CONDITION_STATEMENT        = _{ IF_CONDITION_STATEMENT | SWITCH_CONDITION_STATEMENT }
+
+program_declaration = _{ STATEMENT | FUNCTION_DECLARATION | WHITESPACE }
