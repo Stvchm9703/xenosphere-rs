@@ -35,7 +35,7 @@ int main() {
     printf("Result: %d\n", result);
     return 0;
 }
-
+ 
 void main_func(tensor $x, tensor $y) {
     const tensor w_1 = [
         [1, 2, 3],
@@ -112,6 +112,61 @@ int main() {
 
   return 0;
 }
+    "##,
+    );
+    println!("{:#?}", token);
+    assert_eq!(4, 4);
+}
+
+
+
+#[cfg(test)]
+#[test]
+fn test_parser_godot_cpp(){
+    let token = parse_clang_token(
+        r##"
+        // copy from godot cpp
+	AnimationPlayer *animation_player = null;
+
+AnimationPlayer *SpineAnimationTrack::find_animation_player() {
+	AnimationPlayer *animation_player = nullptr;
+	for (int i = 0; i < get_child_count(); i++) {
+		animation_player = cast_to<AnimationPlayer>(get_child(i));
+		if (animation_player) {
+			break;
+		}
+	}
+	return animation_player;
+}
+
+    "##,
+    );
+    println!("{:#?}", token);
+    assert_eq!(4, 4);
+}
+
+
+#[cfg(test)]
+#[test]
+fn test_parser_godot_cpp_1(){
+    let token = parse_clang_token(
+        r##"
+        // copy from godot cpp
+bool d = e | r;
+string dsd = "dsd";
+string empty = "";
+void SpineAnimationTrack::_bind_methods() {
+	ClassDB::bind_method();
+	ClassDB::bind_method(D_METHOD("set_loop", "loop"), &SpineAnimationTrack::set_loop);
+	ClassDB::bind_method(D_METHOD("get_loop"), &SpineAnimationTrack::get_loop);
+
+	PropertyInfo("animation_name", PROPERTY_HINT_NONE, "");
+	PropertyInfo(Variant::STRING, "animation_name", PROPERTY_HINT_NONE, "");
+	PropertyInfo(Variant::STRING, "animation_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_NOEDITOR);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "animation_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_NOEDITOR), "set_animation_name", "get_animation_name");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "loop", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_STORAGE | PROPERTY_USAGE_INTERNAL | PROPERTY_USAGE_NOEDITOR), "set_loop", "get_loop");
+}
+
     "##,
     );
     println!("{:#?}", token);
