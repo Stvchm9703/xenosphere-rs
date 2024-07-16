@@ -44,12 +44,74 @@ void main_func(tensor $x, tensor $y) {
     ];
     
     $y = $x * w;
-    $y = $x ** w;
+    $y = $x ++;
+    $y = $x ** w + 2;
     $y**;
 
     return;
 }
 
+    "##,
+    );
+    println!("{:#?}", token);
+    assert_eq!(4, 4);
+}
+
+
+
+
+#[cfg(test)]
+#[test]
+fn test_parser_looping() {
+    let token = parse_clang_token(
+        r##"
+/****
+ * 
+ * This is a simple C program
+ * 
+ */
+for (int i = 0; i < 10; i++) {
+    printf("i is %d\n", i);
+}
+for (item in items) {
+    printf("i is %d\n", i);
+}
+    "##,
+    );
+    println!("{:#?}", token);
+    assert_eq!(4, 4);
+}
+
+
+
+
+#[cfg(test)]
+#[test]
+fn test_parser_with_simple_cpp(){
+    let token = parse_clang_token(
+        r##"
+
+void swapNums(int &x, int &y) {
+  int z = x;
+  x = y;
+  y = z;
+}
+
+int main() {
+  int firstNum = 10;
+  int secondNum = 20;
+
+//   cout << "Before swap: " << "\n";
+//   cout << firstNum << secondNum << "\n";
+
+  // Call the function, which will change the values of firstNum and secondNum
+  swapNums(firstNum, secondNum);
+
+//   cout << "After swap: " << "\n";
+//   cout << firstNum << secondNum << "\n";
+
+  return 0;
+}
     "##,
     );
     println!("{:#?}", token);

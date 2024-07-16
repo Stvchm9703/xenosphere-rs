@@ -1,26 +1,38 @@
+#[package("SamplePackage")]
+#[use("PyTorchPack")]
 
+///!    Generates by visual editor;
+///!    edit this file to change the layer structure;
 
-layer Target 
+layer SampleLayer
 {
    property
    {
-      in tensor y
-      const func open = L1(12,12)
-      out tensor x
+        in array    kernel_size = [3,3]
+        static int  stride_size = 0
+
+        in tensor   $input_tensor
+        out tensor  $output_tensor
    }
 
 
    stack
    [
-      conv()
+        Conv2D(
+            input_tensor = $input_tensor,
+            output_tensor = $output_tensor,
+            kernel_size = kernel_size,
+            stride_size = stride_size,
+        ),
+        MaxPool2D(
+            input_tensor = $output_tensor,
+            output_tensor = $output_tensor,
+            kernel_size = kernel_size,
+        ),
+        CELU(
+            input_tensor = $output_tensor,
+            output_tensor = $output_tensor,
+        ),
    ]
 
-
-   pass 
-   {
-      #[target(arm)]
-      {
-         ff = 1
-      }
-   }
-}Ò
+}

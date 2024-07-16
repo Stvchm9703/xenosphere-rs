@@ -1,19 +1,11 @@
 /// basic
 ///
 
-attr_set = @{
-    (func_block | (naming ~ "=" ~ value_block | func_block)) ~ ","?
-}
-// attr_def_block = {
-// "#[" ~ (naming ~ ("(" ~ (attr_set)* ~ ")")?) ~ "]"
-// }
-attr_def_block = {
-    "#[" ~ attr_set+ ~ "]"
-}
+/// attribute
+attr_set       = @{ (func_block | (naming ~ "=" ~ value_block | func_block)) ~ ","? }
+attr_def_block =  { "#[" ~ attr_set+ ~ "]" }
 
-naming = {
-    (ASCII_ALPHANUMERIC | "_")*
-}
+naming = @{ ASCII_ALPHANUMERIC ~ ("_"* ~ ASCII_ALPHANUMERIC)* }
 
 // content_or_object_block = { "{" ~ (content) ~ "}" }
 array_block  =  { "[" ~ (value_block ~ (",")?)* ~ "]" }
@@ -22,16 +14,14 @@ int_block    = @{ ("-")? ~ (ASCII_DIGIT)+ }
 float_block  = @{ int_block ~ ("." ~ (ASCII_DIGIT)+)? }
 num_block    = @{ float_block ~ (^"e" ~ int_block)? }
 value_block  = _{ array_block | string_block | num_block }
-func_block   =  {
-    naming ~ func_arg_block
-}
+func_block   =  { naming ~ func_arg_block }
 
 func_arg_block = {
-    "(" ~ ((func_name_arg_block | value_block | object_property) ~ ","?)* ~ ")"
+    "(" ~ ((func_name_arg_block | should_value) ~ ","?)* ~ ")"
 }
 
 func_name_arg_block = {
-    naming ~ "=" ~ (value_block | object_property)
+    naming ~ "=" ~ should_value
 }
 
 func_block_arr =  {
@@ -49,37 +39,20 @@ LINE_COMMENT  = _{ "//" ~ (!NEWLINE ~ ANY)* }
 BLOCK_COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
 
 // 
-int_def_block = {
-    "int" ~ naming ~ ("=" ~ int_block){,1}
-}
+int_def_block    = { "int" ~ naming ~ ("=" ~ int_block){,1} }
+float_def_block  = { "float" ~ naming ~ ("=" ~ float_block){,1} }
+string_def_block = { "string" ~ naming ~ ("=" ~ string_block){,1} }
+array_def_block  = { "array" ~ naming ~ ("=" ~ array_block){,1} }
 
-float_def_block = {
-    "float" ~ naming ~ ("=" ~ float_block){,1}
-}
-
-string_def_block = {
-    "string" ~ naming ~ ("=" ~ string_block){,1}
-}
-
-array_def_block = {
-    "array" ~ naming ~ ("=" ~ array_block){,1}
-}
-
-tensor_value = {
-    num_block
-  | tensor_arr_block
-}
-
-tensor_arr_block = {
-    "[" ~ (tensor_value ~ (",")?)* ~ "]"
-}
+tensor_value     = { num_block | tensor_arr_block }
+tensor_arr_block = { "[" ~ (tensor_value ~ (",")?)* ~ "]" }
 
 tensor_def_block = {
-    "tensor" ~ "<" ~ shape_block ~ ">" ~ naming
+    "tensor" ~ "<" ~ shape_block ~ ">" ~ naming ~ ("=" ~ tensor_arr_block){,1}
 }
 
 func_def_block = {
-    "func" ~ naming ~ ("=" ~ naming)?
+    "func" ~ naming ~ ("=" ~ naming ~ func_arg_block?)?
 }
 
 // variable definition, as the alias of the value
@@ -92,46 +65,40 @@ var_def_block = _{
   | tensor_def_block
 }
 
-declare_const_reference = @{ "$" }
-property_reference      = @{ "&" }
+declare_const_reference = { "$" }
+property_reference      = { "&" }
 
-object_property = {
+object_property = _{
     (declare_const_reference | property_reference) ~ naming ~ ("." ~ naming)*
 }
 
-should_value = {
-    value_block
-  | object_property
-}
+should_value = { value_block | object_property }
 
-assignment_block = {
-    (object_property | naming) ~ "=" ~ (should_value)
-}
+// assignment_block = {
+// (object_property | naming) ~ "=" ~ (should_value)
+// }
 
 // overall layer definition
 layer_def_block = {
-    "layer" ~ (naming) ~ "{" ~ (layer_property_block){,1}
+    ("layer" | "LAYER") ~ (naming) ~ "{" ~ (layer_type_block){,1} ~ (layer_property_block){,1}
   | (layer_pass_block | layer_stack_block){,1} ~ "}"
 }
-
+layer_type_block = {
+    ("type" | "TYPE") ~ "=" ~ naming ~ ";"
+}
 layer_property_block = {
     // for layer property and setting
-    ("property") ~ "{" ~ (layer_property_elem)* ~ "}"
+    ("property" | "PROPERTY") ~ "{" ~ (layer_property_elem)* ~ "}"
 }
 
 // layer_property_elem_type = @{ "in" | "out" | "static" }
 layer_property_elem = {
     // input data reference
-    ("in" | "out" | "static") ~ var_def_block
+    ("in" | "out" | "static") ~ var_def_block ~ ";"
 }
 
-// // layer_property_elem_dim_type = @{ "in_dim" | "out_dim" }
-// layer_property_elem_dim = {
-// ("in_dim" | "out_dim") ~ int_block
-// }
-
 layer_stack_block = {
-    ("stack") ~ "[" ~ (layer_stack_elem ~ ","?)* ~ "]"
+    ("stack" | "STACK") ~ "[" ~ (layer_stack_elem ~ ","?)* ~ "]"
 }
 
 layer_stack_elem = _{ func_block | branch_block }
@@ -142,7 +109,7 @@ branch_block = {
 
 layer_pass_block = {
     // for layer pass / calculation
-    "pass" ~ "{" ~ (c_impl_block)+ ~ "}"
+    ("pass" | "PASS") ~ "{" ~ (c_impl_block)+ ~ "}"
 }
 
 c_impl_block = {

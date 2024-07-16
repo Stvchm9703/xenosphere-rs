@@ -8,16 +8,16 @@ LINE_COMMENT  = _{ "//" ~ (!NEWLINE ~ ANY)* }
 BLOCK_COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
 
 // Operators
-ARITHMETIC_OPERATOR           =  { "+" | "-" | "*" | "/" | "%" }
-ARITHMETIC_SHORTHAND_OPERATOR =  { "++" | "--" | "**" | "//" }
-RELATIONAL_OPERATOR           =  { "==" | "!=" | ">" | "<" | ">=" | "<=" }
-LOGICAL_OPERATOR              =  { "&&" | "||" | "!" }
-BITWISE_OPERATOR              =  { "&" | "|" | "^" | "~" | "<<" | ">>" }
-VARIABLE_ASSIGNMENT_OPERATOR  =  { "=" }
-ASSIGNMENT_OPERATOR           =  { "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>=" }
-OPERATOR                      = _{
+ARITHMETIC_OPERATOR          = @{ "+" | "-" | "*" | "/" | "%" }
+ARITHMETIC_DOUBLED_OPERATOR  = @{ "++" | "--" | "**" | "//" }
+RELATIONAL_OPERATOR          =  { "==" | "!=" | ">" | "<" | ">=" | "<=" }
+LOGICAL_OPERATOR             =  { "&&" | "||" | "!" }
+BITWISE_OPERATOR             =  { "&" | "|" | "^" | "~" | "<<" | ">>" }
+VARIABLE_ASSIGNMENT_OPERATOR =  { "=" }
+ASSIGNMENT_OPERATOR          =  { "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>=" }
+OPERATOR                     = _{
     ARITHMETIC_OPERATOR
-  | ARITHMETIC_SHORTHAND_OPERATOR
+  | ARITHMETIC_DOUBLED_OPERATOR
   | RELATIONAL_OPERATOR
   | LOGICAL_OPERATOR
   | BITWISE_OPERATOR
@@ -35,7 +35,7 @@ FLOAT         = @{ "-"? ~ DECIMAL_FLOAT | EXPONENT_FLOAT | HEXADECIMAL_FLOAT }
 DECIMAL_FLOAT = _{
     ((INTEGER_PART ~ FRACTION_PART) | (FRACTION_PART) | (INTEGER_PART ~ ".")) ~ "f"?
 }
-INTEGER_PART  = _{ ASCII_NONZERO_DIGIT ~ ASCII_DIGIT* }
+INTEGER_PART  = _{ ASCII_DIGIT+ }
 FRACTION_PART = _{ "." ~ ASCII_DIGIT+ }
 EXPONENT_PART = _{ ("e" | "E") ~ ("+" | "-")? ~ ASCII_DIGIT+ }
 
@@ -51,13 +51,13 @@ ARRAY     = { "[" ~ (VALUE ~ ("," ~ VALUE)*)? ~ "]" }
 /// end of values
 
 // Variable Declaration Terms
-VARIABLE_IDENTIFIER        = @{ ASCII_ALPHANUMERIC ~ ("_"* ~ ASCII_ALPHANUMERIC)* }
+VARIABLE_IDENTIFIER        = @{ ASCII_ALPHA+ ~ ("_"* ~ ASCII_ALPHANUMERIC)* }
 OUTTER_VARIABLE_IDENTIFIER = @{ "$" ~ VARIABLE_IDENTIFIER }
 
 DATA_TYPE               = _{ BASIC_DATA_TYPE | EXTEND_BASIC_DATA_TYPE }
 VOID_DATA_TYPE          =  { "void" }
 BASIC_DATA_TYPE         = _{ "int" | "float" | "double" | "char" | "bool" }
-EXTEND_BASIC_DATA_TYPE  = _{ "string" | "tensor" | "vector" | "float2" | "float3" | "object" }
+EXTEND_BASIC_DATA_TYPE  = _{ "string" | "tensor" | "vector" | "object" }
 PUBLIC_ACCESS_MOD       = @{ "public" | "pub" }
 PRIVATE_ACCESS_MOD      = @{ "private" | "priv" }
 PROTECTED_ACCESS_MOD    = @{ "protected" | "prot" }
@@ -69,7 +69,7 @@ PREFIX_DATA_SIZE        =  { "short" | "long" }
 REFERENCE_ADDRESS_MOD      = @{ "&" }
 REFERENCE_POINTER_MOD      = @{ "*" }
 PREFIX_REFERENCE_MONDIFIER = _{ (REFERENCE_ADDRESS_MOD+ | REFERENCE_POINTER_MOD+) }
-REFERENCE_DATA_TYPE        = @{ DATA_TYPE ~ PREFIX_REFERENCE_MONDIFIER }
+REFERENCE_DATA_TYPE        = { DATA_TYPE ~ PREFIX_REFERENCE_MONDIFIER }
 
 POSTFIX_ARRAY_DECL = @{ "[" ~ (INTEGER | "_" | VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ "]" }
 
@@ -84,12 +84,12 @@ VALUEABLE_EXPRESSION = _{ VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER | VAL
 
 // RIGHT_HAND_EXPRESSION    = _{ VALUE_DIRECT_EXPRESSION }
 VALUE_DIRECT_EXPRESSION  = { VARIABLE_ASSIGNMENT_OPERATOR ~ VALUEABLE_EXPRESSION }
-FUNCTION_CALL_EXPRESSION = { VARIABLE_IDENTIFIER ~ "(" ~ (VALUEABLE_EXPRESSION) ~ ("," ~ (VALUEABLE_EXPRESSION))* ~ ")" }
+FUNCTION_CALL_EXPRESSION = { VARIABLE_IDENTIFIER ~ "(" ~ (VALUEABLE_EXPRESSION ~ ","?)* ~ ")" }
 
 // function
 FUNCTION_DECLARATION_PREFIX = _{ PREFIX_ACCESS_MODIFIER? ~ PREFIX_DATA_SIZE? }
 FUNCTION_DECLARATION_NAME   = @{ VARIABLE_IDENTIFIER ~ ("::" ~ VARIABLE_IDENTIFIER)* }
-FUNCTION_DECLARATION_ARGS   =  { DATA_TYPE ~ (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ ("," ~ DATA_TYPE ~ (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER))* }
+FUNCTION_DECLARATION_ARGS   =  { (DATA_TYPE | REFERENCE_DATA_TYPE) ~ (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ ("," ~ DATA_TYPE ~ (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER))* }
 FUNCTION_DECLARATION        =  {
     FUNCTION_DECLARATION_PREFIX ~ (DATA_TYPE | VOID_DATA_TYPE | REFERENCE_DATA_TYPE) ~ FUNCTION_DECLARATION_NAME ~ "(" ~ FUNCTION_DECLARATION_ARGS? ~ ")" ~ "{" ~ (STATEMENT | FUNCTION_RETURN_STATEMENT)* ~ "}"
 }
@@ -100,15 +100,18 @@ STATEMENT         = _{ VARIABLE_DECLARATION | VARIABLE_DECLARATION_WITH_ASSIGNME
 COMPARE_STATEMENT =  { (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ RELATIONAL_OPERATOR ~ VALUEABLE_EXPRESSION }
 
 /// operation
-VALUE_OPERATION_STATMENT    =  { (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ (rh_direct_operation | rh_shorthand_operation | rh_shorthand_self_operation | rh_bitwise_operation) }
-rh_direct_operation         = _{ (VARIABLE_ASSIGNMENT_OPERATOR | ASSIGNMENT_OPERATOR) ~ VALUEABLE_EXPRESSION ~ ( ARITHMETIC_OPERATOR ~ VALUEABLE_EXPRESSION | ARITHMETIC_SHORTHAND_OPERATOR ~ VALUEABLE_EXPRESSION)* }
-rh_shorthand_operation      = _{ ASSIGNMENT_OPERATOR ~ VALUEABLE_EXPRESSION }
-rh_shorthand_self_operation = _{ ARITHMETIC_SHORTHAND_OPERATOR }
-rh_bitwise_operation        = _{ VARIABLE_ASSIGNMENT_OPERATOR ~ VALUEABLE_EXPRESSION ~ BITWISE_OPERATOR ~ VALUEABLE_EXPRESSION }
-COMPOUND_STATEMENT          =  { "{" ~ STATEMENT* ~ "}" }
+VALUE_OPERATION_STATMENT         =  { (VARIABLE_IDENTIFIER | OUTTER_VARIABLE_IDENTIFIER) ~ (rh_direct_operation | rh_shorthand_operation | rh_shorthand_self_operation | rh_bitwise_operation) }
+rh_direct_operation_pattern_head =  { (VARIABLE_ASSIGNMENT_OPERATOR | ASSIGNMENT_OPERATOR) ~ VALUEABLE_EXPRESSION }
+rh_direct_operation_pattern_tail =  { (ARITHMETIC_OPERATOR ~ VALUEABLE_EXPRESSION | ARITHMETIC_DOUBLED_OPERATOR ~ VALUEABLE_EXPRESSION?) }
+rh_direct_operation              = _{ rh_direct_operation_pattern_head ~ rh_direct_operation_pattern_tail* }
+rh_shorthand_operation           = _{ ASSIGNMENT_OPERATOR ~ VALUEABLE_EXPRESSION }
+rh_shorthand_self_operation      = _{ ARITHMETIC_DOUBLED_OPERATOR }
+rh_bitwise_operation             = _{ VARIABLE_ASSIGNMENT_OPERATOR ~ VALUEABLE_EXPRESSION ~ BITWISE_OPERATOR ~ VALUEABLE_EXPRESSION }
+COMPOUND_STATEMENT               =  { "{" ~ STATEMENT* ~ "}" }
 
 /// loop related
-FOR_LOOP_CONDITION      =  { "int" ~ VARIABLE_IDENTIFIER ~ "=" ~ VALUEABLE_EXPRESSION ~ ";" ~ COMPARE_STATEMENT ~ ";" ~ VALUE_OPERATION_STATMENT }
+for_loop_initial_state  =  { "int" ~ VARIABLE_IDENTIFIER ~ "=" ~ VALUEABLE_EXPRESSION }
+FOR_LOOP_CONDITION      =  { for_loop_initial_state ~ ";" ~ COMPARE_STATEMENT ~ ";" ~ VALUE_OPERATION_STATMENT }
 FOR_LOOP_RANGE          =  { VARIABLE_IDENTIFIER ~ "in" ~ (VALUEABLE_EXPRESSION | (INTEGER ~ ".." ~ INTEGER) | (VALUEABLE_EXPRESSION ~ "[" ~ INTEGER ~ ":" ~ INTEGER ~ "]")) }
 FOR_LOOP_STATEMENT      =  { "for" ~ "(" ~ (FOR_LOOP_CONDITION | FOR_LOOP_RANGE) ~ ")" ~ LOOP_COMPOUND_STATEMENT }
 WHILE_LOOP_STATEMENT    =  { "while" ~ "(" ~ COMPARE_STATEMENT ~ ")" ~ LOOP_COMPOUND_STATEMENT }

@@ -11,18 +11,21 @@ fn test_parser_with_layer_stack() {
     let token = parse_makeup_token(
         r##"
 #[use("Tensor")]
+#[import("Tensor")]
+#[import(path="../path/to/file")]
 #[export="Tensor"]
     layer Conv {
         property {
-            in int y = 3
-            in int e
-            static int x = 3
-            static float z = 3.0
-            static string a = "3"
-            static array b  = [3, 4, 5]
-            static func c
-            static func c1 = LEUKOCYTE
-            // static tensor<(3,3)> mask
+            in int y = 3 ;
+            in int e ;
+            static int x = 3;
+            static float z = 3.0;
+            static string a = "3";
+            static array b  = [3, 4, 5];
+            static func c;
+            static func c1 = LEUKOCYTE;
+            static func c2 = LEUKOCYTE($x, $y, b=12);
+            static tensor<(3,3)> mask ;
 
         }
         stack
@@ -50,12 +53,12 @@ fn test_parser_with_layer_pass() {
 
     layer Conv {
         property {
-            in int y = 3
-            static int x = 3
-            static float z = 3.0
-            static string a = "3"
-            static array b = [3, 4, 5]
-            // static tensor<(3,3)> mask
+            in int y = 3 ; 
+            static int x = 3 ;
+            static float z = 3.0 ;
+            static string a = "3" ;
+            static array b = [3, 4, 5]; 
+            static tensor<(3,3)> mask = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
         }
         pass {
             #[target="x86", syntex("gcc")]{
@@ -79,7 +82,7 @@ fn test_parser_with_layer_pass() {
     } 
     "##,
     );
-    println!("{:#?}", token);
+    // println!("{:#?}", token);
     assert_eq!(4, 4);
 }
 

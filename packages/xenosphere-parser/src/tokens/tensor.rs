@@ -3,19 +3,23 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PseudoTensor<T> {
+    // shape 
+    // : shape is a vector of integers that represents the shape of the tensor.
+    // : e.g. [2, 3, 4] means a tensor with 3 dimensions, and each dimension has 2, 3, and 4 elements.
+    // :  first dimension has 2 elements, second dimension has 3 elements, and third dimension has 4 elements.
     pub shape: Vec<i32>,
     pub data: Vec<PseudoTensorData<T>>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PseudoTensorData<T> {
-    pub position: Vec<i32>,
+    pub coordinate: Vec<i32>,
     pub value: T,
 }
 
 impl<T> PseudoTensorData<T> {
-    pub fn new(position: Vec<i32>, value: T) -> Self {
-        PseudoTensorData { position, value }
+    pub fn new(coordinate: Vec<i32>, value: T) -> Self {
+        PseudoTensorData { coordinate, value }
     }
 }
 
