@@ -1,5 +1,8 @@
-use crate::tokens::c_lang::value_operation_token::ValueOperationToken;
-pub struct FunctionReturnStatementToken {
+use crate::tokens::script_lang::value_operation_token::ValueOperationToken;
+use serde::{Serialize, Deserialize};
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ReturnStatementToken {
     /// CFunctionReturnStatementToken
     /// for the simple function return statement
     /// e.g. return a;

@@ -1,32 +1,34 @@
-use crate::parsers::clang::Rule;
+// use crate::parsers::clang::Rule;
+// use pest::iterators::{Pair, Pairs};
 use anyhow::{Error, Result};
-use pest::iterators::{Pair, Pairs};
 
-mod variable_declartion_token;
+pub mod variable_declartion_token;
+use serde::{Serialize, Deserialize};
 use variable_declartion_token::VariableDeclartionToken;
 
-mod value_operation_token;
+pub mod value_operation_token;
 use value_operation_token::ValueOperationToken;
 
-mod compound_statement_token;
+pub mod compound_statement_token;
 use compound_statement_token::CompoundStatementToken;
 
-mod loop_statement_token;
+pub mod loop_statement_token;
 use loop_statement_token::LoopStatementToken;
 
-mod function_declaration_statement_token;
+pub mod function_declaration_statement_token;
 use function_declaration_statement_token::FunctionDeclarationStatementToken;
 
-mod function_call_statement_token;
+pub mod function_call_statement_token;
 use function_call_statement_token::FunctionCallStatementToken;
 
-mod function_return_statement_token;
-use function_return_statement_token::FunctionReturnStatementToken;
+pub mod return_statement_token;
+use return_statement_token::ReturnStatementToken;
 
-mod condition_statement_token;
+pub mod condition_statement_token;
 use condition_statement_token::ConditionStatementToken;
 
-pub struct CLangScriptBlock {
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
+pub struct ScriptBlock {
     pub raw_content: String,
     pub script_syntex: String,
     pub target_platform: String,
@@ -35,9 +37,10 @@ pub struct CLangScriptBlock {
 }
 
 pub trait StatementTokenParser {
-    fn try_parse(pair: Pair<Rule>) -> Result<(), Error>;
+    // fn try_parse(pair: Pair<Rule>) -> Result<(), Error>;
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum StatementToken {
     VariableDeclaration(VariableDeclartionToken),
     ValueOperationStatment(ValueOperationToken),
@@ -45,11 +48,13 @@ pub enum StatementToken {
     LoopStatement(LoopStatementToken),
     FunctionDeclarationStatement(FunctionDeclarationStatementToken),
     FunctionCallStatement(FunctionCallStatementToken),
-    FunctionReturnStatement(FunctionReturnStatementToken),
+    FunctionReturnStatement(ReturnStatementToken),
     ConditionStatement(ConditionStatementToken),
     Comment(CommentToken),
 }
 
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CommentToken {
     /// CCommentToken
     /// for the simple comment statement

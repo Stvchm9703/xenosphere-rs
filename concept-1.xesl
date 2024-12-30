@@ -4,7 +4,7 @@
 ///!    Generates by visual editor;
 ///!    edit this file to change the layer structure;
 
-layer SampleLayer
+layer "SampleLayer"
 {
    property
    {

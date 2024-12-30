@@ -1,6 +1,8 @@
 
-use crate::tokens::c_lang::StatementToken;
+use crate::tokens::script_lang::StatementToken;
+use serde::{Serialize, Deserialize};
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CompoundStatementToken {
     /// CCompoundStatementToken
     /// for the simple compound statement

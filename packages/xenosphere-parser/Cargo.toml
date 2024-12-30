@@ -17,6 +17,16 @@ syn = { workplace = true, version = "2.0.58", features = [
 quote = { workplace = true, version = "1.0.35" }
 pest = { version = "2.7.11" }
 pest_derive = { version = "2.7.11" }
+tree-sitter = { version = "0.22.6" }
+tree-sitter-c = { version = "0.21.4" }
+tree-sitter-cuda = { version = "0.20.5" }
+tree-sitter-cpp = { version ="0.22.2" }
+tree-sitter-rust = { version = "0.21.2" }
+tree-sitter-python = { version = "0.21" }
+tree-sitter-javascript = { version = "0.21.4" }
+tree-sitter-typescript = { version = "0.21.2" }
+tree-sitter-go = { version = "0.21" }
+
 anyhow = { workspace = true, version = "1.0.44" }
 safetensors = { version = "0.4.3" }
 polars = { version = "0.40", features = [
@@ -36,3 +46,10 @@ serde = { version = "1.0.203", features = [
   "derive",
   "std",
 ] }
+
+regex="*"
+lazy_static="1.5"
+
+
+[build-dependencies]
+cc="*"

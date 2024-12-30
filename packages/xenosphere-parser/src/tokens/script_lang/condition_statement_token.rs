@@ -1,5 +1,7 @@
-use crate::tokens::c_lang::compound_statement_token::CompoundStatementToken;
+use crate::tokens::script_lang::compound_statement_token::CompoundStatementToken;
+use serde::{Serialize, Deserialize};
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ConditionStatementToken {
     /// CConditionStatementToken
     /// for the simple condition statement
@@ -19,6 +21,8 @@ pub struct ConditionStatementToken {
     pub raw_content: String,
 }
 
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ConditionStatementSet {
     /// ConditionStatementSet
     ///     the subset of CConditionStatementToken

@@ -79,11 +79,11 @@ should_value = { value_block | object_property }
 // }
 
 // overall layer definition
-layer_def_block = {
+layer_def_block      = {
     ("layer" | "LAYER") ~ (naming) ~ "{" ~ (layer_type_block){,1} ~ (layer_property_block){,1}
-  | (layer_pass_block | layer_stack_block){,1} ~ "}"
+  | (layer_pass_block | layer_stack_block){,1} ~ (layer_preview_block){,1} ~ "}"
 }
-layer_type_block = {
+layer_type_block     = {
     ("type" | "TYPE") ~ "=" ~ naming ~ ";"
 }
 layer_property_block = {
@@ -101,10 +101,18 @@ layer_stack_block = {
     ("stack" | "STACK") ~ "[" ~ (layer_stack_elem ~ ","?)* ~ "]"
 }
 
-layer_stack_elem = _{ func_block | branch_block }
+layer_stack_elem = _{ stack_func_block | branch_block }
+
+imported_funciton_naming = {
+    ASCII_ALPHANUMERIC ~ (("_" | "/" | ".")* ~ ASCII_ALPHANUMERIC)*
+}
+
+stack_func_block = _{
+    imported_funciton_naming ~ func_arg_block
+}
 
 branch_block = {
-    "#BRANCH" ~ "{" ~ ("[" ~ (layer_stack_elem ~ ","?) ~ "]")+ ~ "}"
+    ("#branch" | "#BRANCH") ~ "{" ~ (layer_stack_block ~ ","?)+ ~ "}" ~ ","?
 }
 
 layer_pass_block = {
@@ -121,6 +129,15 @@ c_impl_attr_block = _{ attr_def_block }
 c_impl_content_block = ${
     (!"}#" ~ ANY)*
 }
+
+layer_preview_block = {
+    ("preview" | "PREVIEW") ~ "{" ~ (layer_preview_elem)* ~ "}"
+}
+
+layer_preview_elem = {
+    ("in" | "out") ~ var_def_block ~ ";"
+}
+
 // c_imp_content        = _{ ASCII_ALPHANUMERIC }
 
 chunk = _{ SOI ~ content* ~ EOI }

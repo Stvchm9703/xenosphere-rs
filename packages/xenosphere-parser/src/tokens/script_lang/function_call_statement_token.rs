@@ -1,5 +1,7 @@
-use crate::tokens::c_lang::variable_declartion_token::VariableDeclartionToken;
+use crate::tokens::script_lang::variable_declartion_token::VariableDeclartionToken;
+use serde::{Serialize, Deserialize};
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct FunctionCallStatementToken {
     /// CFunctionCallStatementToken
     /// for the simple function call statement
