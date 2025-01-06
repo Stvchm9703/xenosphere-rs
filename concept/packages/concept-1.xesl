@@ -1,5 +1,5 @@
 #[package("SamplePackage")]
-#[use("PyTorchPack")]
+#[use("Package1")]
 
 ///!    Generates by visual editor;
 ///!    edit this file to change the layer structure;

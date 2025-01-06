@@ -13,22 +13,28 @@ pub struct Token {
     pub raw: String,
     pub expr: String,
     pub kind: String,
+    pub grammar: String,
+    pub source_language: String,
     pub children: Vec<Token>,
+    pub is_root: bool,
 }
 
 pub trait TokenTrait {
-    fn new(node: Node, input_str: &str) -> Self;
+    fn new(node: Node, input_str: &str, is_bool: bool) -> Self;
     fn add_children(&mut self, node: Node, input_str: &str);
     fn is_named_kind(&self) -> bool;
 }
 
 impl TokenTrait for Token {
-    fn new(node: Node, input_str: &str) -> Self {
+    fn new(node: Node, input_str: &str, is_root: bool) -> Self {
         Token {
             raw: node.utf8_text(input_str.as_bytes()).unwrap().to_owned(),
             expr: node.to_sexp(),
             kind: node.kind().to_string(),
+            grammar: node.grammar_name().to_string(),
+            source_language: String::from(""),
             children: vec![],
+            is_root: is_root,
         }
     }
     fn add_children(&mut self, node: Node, input_str: &str) {
@@ -37,7 +43,7 @@ impl TokenTrait for Token {
             return;
         }
         for child in node.children(&mut node_cursor) {
-            let mut child_token = Token::new(child, input_str);
+            let mut child_token = Token::new(child, input_str, false);
             child_token.add_children(child, input_str);
             self.children.push(child_token);
         }

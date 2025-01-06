@@ -1,0 +1,20 @@
+[package]
+name = "concept"
+version = "0.1.0"
+engine = "pytorch"
+authors = ["Stvchm9703 <stv.chm@gmail.com>"]
+edition = "2018"
+
+
+
+[dependances]
+pytorch = { version = "1.8.1", features = ["torch"] }
+
+
+[build]
+platform = [
+  "x86_64-unknown-linux-gnu",
+  "cuda-11.1",
+  "cudnn",
+]
+target = ["python", "dll"]

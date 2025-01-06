@@ -16,3 +16,5 @@ Cargo.lock
 sample_packages/
 
 .DS_Store
+**.DS_Store
+.DS_Store
