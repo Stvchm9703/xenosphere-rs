@@ -1,0 +1,2794 @@
+{
+  "raw": "func InstanceWrap ($input) ($output) {\n        score := 0\n        contextToken := strings.Split(strings.ReplaceAll(context, \"\\n\", \" \"), \" \")\n        positiveMatch := []string{}\n        for _, keyword := range *config.SearchKeywords {\n            matched := fuzzy.RankFindFold(keyword, contextToken)\n            for _, match := range matched {\n                if match.Distance == 0 {\n                    score += 2\n                } else if match.Distance <= 4 {\n                    score += 1\n                }\n                positiveMatch = append(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))\n            }\n        }\n        for _, keyword := range *config.IgnoreKeywords {\n            matched := fuzzy.RankFindFold(keyword, contextToken)\n            for _, match := range matched {\n                if match.Distance == 0 {\n                    score -= 3\n                } else if match.Distance <= 4 {\n                    score -= 2\n                }\n            }\n        }\n        // score += 1\n\nreturn $output_set\n}",
+  "expr": "(source_file (function_declaration name: (identifier) parameters: (parameter_list (ERROR (UNEXPECTED '$')) (parameter_declaration type: (type_identifier))) result: (parameter_list (ERROR (UNEXPECTED '$')) (parameter_declaration type: (type_identifier))) body: (block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (int_literal))) (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (interpreted_string_literal (escape_sequence)) (interpreted_string_literal))) (interpreted_string_literal))))) (short_var_declaration left: (expression_list (identifier)) right: (expression_list (composite_literal type: (slice_type element: (type_identifier)) body: (literal_value)))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier)))) body: (block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))) (assignment_statement left: (expression_list (identifier)) right: (expression_list (call_expression function: (identifier) arguments: (argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier)))))))))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier)))) body: (block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))))))) (comment) (return_statement (ERROR (UNEXPECTED '$')) (expression_list (identifier))))))",
+  "kind": "source_file",
+  "grammar": "source_file",
+  "source_language": "Golang",
+  "children": [
+    {
+      "raw": "func",
+      "expr": "(\"func\")",
+      "kind": "func",
+      "grammar": "func",
+      "source_language": "Golang",
+      "children": [],
+      "is_root": false
+    },
+    {
+      "raw": "InstanceWrap",
+      "expr": "(identifier)",
+      "kind": "identifier",
+      "grammar": "identifier",
+      "source_language": "Golang",
+      "children": [],
+      "is_root": false
+    },
+    {
+      "raw": "($input)",
+      "expr": "(parameter_list (ERROR (UNEXPECTED '$')) (parameter_declaration type: (type_identifier)))",
+      "kind": "parameter_list",
+      "grammar": "parameter_list",
+      "source_language": "Golang",
+      "children": [
+        {
+          "raw": "(",
+          "expr": "(\"(\")",
+          "kind": "(",
+          "grammar": "(",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "$",
+          "expr": "(ERROR (UNEXPECTED '$'))",
+          "kind": "ERROR",
+          "grammar": "ERROR",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "$",
+              "expr": "(UNEXPECTED '$')",
+              "kind": "ERROR",
+              "grammar": "ERROR",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": "input",
+          "expr": "(parameter_declaration type: (type_identifier))",
+          "kind": "parameter_declaration",
+          "grammar": "parameter_declaration",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "input",
+              "expr": "(type_identifier)",
+              "kind": "type_identifier",
+              "grammar": "identifier",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": ")",
+          "expr": "(\")\")",
+          "kind": ")",
+          "grammar": ")",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        }
+      ],
+      "is_root": false
+    },
+    {
+      "raw": "($output)",
+      "expr": "(parameter_list (ERROR (UNEXPECTED '$')) (parameter_declaration type: (type_identifier)))",
+      "kind": "parameter_list",
+      "grammar": "parameter_list",
+      "source_language": "Golang",
+      "children": [
+        {
+          "raw": "(",
+          "expr": "(\"(\")",
+          "kind": "(",
+          "grammar": "(",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "$",
+          "expr": "(ERROR (UNEXPECTED '$'))",
+          "kind": "ERROR",
+          "grammar": "ERROR",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "$",
+              "expr": "(UNEXPECTED '$')",
+              "kind": "ERROR",
+              "grammar": "ERROR",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": "output",
+          "expr": "(parameter_declaration type: (type_identifier))",
+          "kind": "parameter_declaration",
+          "grammar": "parameter_declaration",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "output",
+              "expr": "(type_identifier)",
+              "kind": "type_identifier",
+              "grammar": "identifier",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": ")",
+          "expr": "(\")\")",
+          "kind": ")",
+          "grammar": ")",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        }
+      ],
+      "is_root": false
+    },
+    {
+      "raw": "{\n        score := 0\n        contextToken := strings.Split(strings.ReplaceAll(context, \"\\n\", \" \"), \" \")\n        positiveMatch := []string{}\n        for _, keyword := range *config.SearchKeywords {\n            matched := fuzzy.RankFindFold(keyword, contextToken)\n            for _, match := range matched {\n                if match.Distance == 0 {\n                    score += 2\n                } else if match.Distance <= 4 {\n                    score += 1\n                }\n                positiveMatch = append(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))\n            }\n        }\n        for _, keyword := range *config.IgnoreKeywords {\n            matched := fuzzy.RankFindFold(keyword, contextToken)\n            for _, match := range matched {\n                if match.Distance == 0 {\n                    score -= 3\n                } else if match.Distance <= 4 {\n                    score -= 2\n                }\n            }\n        }\n        // score += 1\n\nreturn $output_set\n}",
+      "expr": "(block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (int_literal))) (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (interpreted_string_literal (escape_sequence)) (interpreted_string_literal))) (interpreted_string_literal))))) (short_var_declaration left: (expression_list (identifier)) right: (expression_list (composite_literal type: (slice_type element: (type_identifier)) body: (literal_value)))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier)))) body: (block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))) (assignment_statement left: (expression_list (identifier)) right: (expression_list (call_expression function: (identifier) arguments: (argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier)))))))))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier)))) body: (block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))))))) (comment) (return_statement (ERROR (UNEXPECTED '$')) (expression_list (identifier))))",
+      "kind": "block",
+      "grammar": "block",
+      "source_language": "Golang",
+      "children": [
+        {
+          "raw": "{",
+          "expr": "(\"{\")",
+          "kind": "{",
+          "grammar": "{",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "score := 0",
+          "expr": "(short_var_declaration left: (expression_list (identifier)) right: (expression_list (int_literal)))",
+          "kind": "short_var_declaration",
+          "grammar": "short_var_declaration",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "score",
+              "expr": "(expression_list (identifier))",
+              "kind": "expression_list",
+              "grammar": "expression_list",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "score",
+                  "expr": "(identifier)",
+                  "kind": "identifier",
+                  "grammar": "identifier",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            },
+            {
+              "raw": ":=",
+              "expr": "(\":=\")",
+              "kind": ":=",
+              "grammar": ":=",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            },
+            {
+              "raw": "0",
+              "expr": "(expression_list (int_literal))",
+              "kind": "expression_list",
+              "grammar": "expression_list",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "0",
+                  "expr": "(int_literal)",
+                  "kind": "int_literal",
+                  "grammar": "int_literal",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": "\n",
+          "expr": "(\"\n\")",
+          "kind": "\n",
+          "grammar": "\n",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "contextToken := strings.Split(strings.ReplaceAll(context, \"\\n\", \" \"), \" \")",
+          "expr": "(short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (interpreted_string_literal (escape_sequence)) (interpreted_string_literal))) (interpreted_string_literal)))))",
+          "kind": "short_var_declaration",
+          "grammar": "short_var_declaration",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "contextToken",
+              "expr": "(expression_list (identifier))",
+              "kind": "expression_list",
+              "grammar": "expression_list",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "contextToken",
+                  "expr": "(identifier)",
+                  "kind": "identifier",
+                  "grammar": "identifier",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            },
+            {
+              "raw": ":=",
+              "expr": "(\":=\")",
+              "kind": ":=",
+              "grammar": ":=",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            },
+            {
+              "raw": "strings.Split(strings.ReplaceAll(context, \"\\n\", \" \"), \" \")",
+              "expr": "(expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (interpreted_string_literal (escape_sequence)) (interpreted_string_literal))) (interpreted_string_literal))))",
+              "kind": "expression_list",
+              "grammar": "expression_list",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "strings.Split(strings.ReplaceAll(context, \"\\n\", \" \"), \" \")",
+                  "expr": "(call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (interpreted_string_literal (escape_sequence)) (interpreted_string_literal))) (interpreted_string_literal)))",
+                  "kind": "call_expression",
+                  "grammar": "call_expression",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "strings.Split",
+                      "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                      "kind": "selector_expression",
+                      "grammar": "selector_expression",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "strings",
+                          "expr": "(identifier)",
+                          "kind": "identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": ".",
+                          "expr": "(\".\")",
+                          "kind": ".",
+                          "grammar": ".",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "Split",
+                          "expr": "(field_identifier)",
+                          "kind": "field_identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "(strings.ReplaceAll(context, \"\\n\", \" \"), \" \")",
+                      "expr": "(argument_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (interpreted_string_literal (escape_sequence)) (interpreted_string_literal))) (interpreted_string_literal))",
+                      "kind": "argument_list",
+                      "grammar": "argument_list",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "(",
+                          "expr": "(\"(\")",
+                          "kind": "(",
+                          "grammar": "(",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "strings.ReplaceAll(context, \"\\n\", \" \")",
+                          "expr": "(call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (interpreted_string_literal (escape_sequence)) (interpreted_string_literal)))",
+                          "kind": "call_expression",
+                          "grammar": "call_expression",
+                          "source_language": "Golang",
+                          "children": [
+                            {
+                              "raw": "strings.ReplaceAll",
+                              "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                              "kind": "selector_expression",
+                              "grammar": "selector_expression",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "strings",
+                                  "expr": "(identifier)",
+                                  "kind": "identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ".",
+                                  "expr": "(\".\")",
+                                  "kind": ".",
+                                  "grammar": ".",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "ReplaceAll",
+                                  "expr": "(field_identifier)",
+                                  "kind": "field_identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "(context, \"\\n\", \" \")",
+                              "expr": "(argument_list (identifier) (interpreted_string_literal (escape_sequence)) (interpreted_string_literal))",
+                              "kind": "argument_list",
+                              "grammar": "argument_list",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "(",
+                                  "expr": "(\"(\")",
+                                  "kind": "(",
+                                  "grammar": "(",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "context",
+                                  "expr": "(identifier)",
+                                  "kind": "identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ",",
+                                  "expr": "(\",\")",
+                                  "kind": ",",
+                                  "grammar": ",",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "\"\\n\"",
+                                  "expr": "(interpreted_string_literal (escape_sequence))",
+                                  "kind": "interpreted_string_literal",
+                                  "grammar": "interpreted_string_literal",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "\"",
+                                      "expr": "(\"\"\")",
+                                      "kind": "\"",
+                                      "grammar": "\"",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "\\n",
+                                      "expr": "(escape_sequence)",
+                                      "kind": "escape_sequence",
+                                      "grammar": "escape_sequence",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "\"",
+                                      "expr": "(\"\"\")",
+                                      "kind": "\"",
+                                      "grammar": "\"",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ",",
+                                  "expr": "(\",\")",
+                                  "kind": ",",
+                                  "grammar": ",",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "\" \"",
+                                  "expr": "(interpreted_string_literal)",
+                                  "kind": "interpreted_string_literal",
+                                  "grammar": "interpreted_string_literal",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "\"",
+                                      "expr": "(\"\"\")",
+                                      "kind": "\"",
+                                      "grammar": "\"",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "\"",
+                                      "expr": "(\"\"\")",
+                                      "kind": "\"",
+                                      "grammar": "\"",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ")",
+                                  "expr": "(\")\")",
+                                  "kind": ")",
+                                  "grammar": ")",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            }
+                          ],
+                          "is_root": false
+                        },
+                        {
+                          "raw": ",",
+                          "expr": "(\",\")",
+                          "kind": ",",
+                          "grammar": ",",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "\" \"",
+                          "expr": "(interpreted_string_literal)",
+                          "kind": "interpreted_string_literal",
+                          "grammar": "interpreted_string_literal",
+                          "source_language": "Golang",
+                          "children": [
+                            {
+                              "raw": "\"",
+                              "expr": "(\"\"\")",
+                              "kind": "\"",
+                              "grammar": "\"",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "\"",
+                              "expr": "(\"\"\")",
+                              "kind": "\"",
+                              "grammar": "\"",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            }
+                          ],
+                          "is_root": false
+                        },
+                        {
+                          "raw": ")",
+                          "expr": "(\")\")",
+                          "kind": ")",
+                          "grammar": ")",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": "\n",
+          "expr": "(\"\n\")",
+          "kind": "\n",
+          "grammar": "\n",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "positiveMatch := []string{}",
+          "expr": "(short_var_declaration left: (expression_list (identifier)) right: (expression_list (composite_literal type: (slice_type element: (type_identifier)) body: (literal_value))))",
+          "kind": "short_var_declaration",
+          "grammar": "short_var_declaration",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "positiveMatch",
+              "expr": "(expression_list (identifier))",
+              "kind": "expression_list",
+              "grammar": "expression_list",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "positiveMatch",
+                  "expr": "(identifier)",
+                  "kind": "identifier",
+                  "grammar": "identifier",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            },
+            {
+              "raw": ":=",
+              "expr": "(\":=\")",
+              "kind": ":=",
+              "grammar": ":=",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            },
+            {
+              "raw": "[]string{}",
+              "expr": "(expression_list (composite_literal type: (slice_type element: (type_identifier)) body: (literal_value)))",
+              "kind": "expression_list",
+              "grammar": "expression_list",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "[]string{}",
+                  "expr": "(composite_literal type: (slice_type element: (type_identifier)) body: (literal_value))",
+                  "kind": "composite_literal",
+                  "grammar": "composite_literal",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "[]string",
+                      "expr": "(slice_type element: (type_identifier))",
+                      "kind": "slice_type",
+                      "grammar": "slice_type",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "[",
+                          "expr": "(\"[\")",
+                          "kind": "[",
+                          "grammar": "[",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "]",
+                          "expr": "(\"]\")",
+                          "kind": "]",
+                          "grammar": "]",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "string",
+                          "expr": "(type_identifier)",
+                          "kind": "type_identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "{}",
+                      "expr": "(literal_value)",
+                      "kind": "literal_value",
+                      "grammar": "literal_value",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "{",
+                          "expr": "(\"{\")",
+                          "kind": "{",
+                          "grammar": "{",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "}",
+                          "expr": "(\"}\")",
+                          "kind": "}",
+                          "grammar": "}",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": "\n",
+          "expr": "(\"\n\")",
+          "kind": "\n",
+          "grammar": "\n",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "for _, keyword := range *config.SearchKeywords {\n            matched := fuzzy.RankFindFold(keyword, contextToken)\n            for _, match := range matched {\n                if match.Distance == 0 {\n                    score += 2\n                } else if match.Distance <= 4 {\n                    score += 1\n                }\n                positiveMatch = append(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))\n            }\n        }",
+          "expr": "(for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier)))) body: (block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))) (assignment_statement left: (expression_list (identifier)) right: (expression_list (call_expression function: (identifier) arguments: (argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier))))))))))))",
+          "kind": "for_statement",
+          "grammar": "for_statement",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "for",
+              "expr": "(\"for\")",
+              "kind": "for",
+              "grammar": "for",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            },
+            {
+              "raw": "_, keyword := range *config.SearchKeywords",
+              "expr": "(range_clause left: (expression_list (identifier) (identifier)) right: (unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier))))",
+              "kind": "range_clause",
+              "grammar": "range_clause",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "_, keyword",
+                  "expr": "(expression_list (identifier) (identifier))",
+                  "kind": "expression_list",
+                  "grammar": "expression_list",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "_",
+                      "expr": "(identifier)",
+                      "kind": "identifier",
+                      "grammar": "identifier",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": ",",
+                      "expr": "(\",\")",
+                      "kind": ",",
+                      "grammar": ",",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "keyword",
+                      "expr": "(identifier)",
+                      "kind": "identifier",
+                      "grammar": "identifier",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                },
+                {
+                  "raw": ":=",
+                  "expr": "(\":=\")",
+                  "kind": ":=",
+                  "grammar": ":=",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "range",
+                  "expr": "(\"range\")",
+                  "kind": "range",
+                  "grammar": "range",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "*config.SearchKeywords",
+                  "expr": "(unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier)))",
+                  "kind": "unary_expression",
+                  "grammar": "unary_expression",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "*",
+                      "expr": "(\"*\")",
+                      "kind": "*",
+                      "grammar": "*",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "config.SearchKeywords",
+                      "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                      "kind": "selector_expression",
+                      "grammar": "selector_expression",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "config",
+                          "expr": "(identifier)",
+                          "kind": "identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": ".",
+                          "expr": "(\".\")",
+                          "kind": ".",
+                          "grammar": ".",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "SearchKeywords",
+                          "expr": "(field_identifier)",
+                          "kind": "field_identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            },
+            {
+              "raw": "{\n            matched := fuzzy.RankFindFold(keyword, contextToken)\n            for _, match := range matched {\n                if match.Distance == 0 {\n                    score += 2\n                } else if match.Distance <= 4 {\n                    score += 1\n                }\n                positiveMatch = append(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))\n            }\n        }",
+              "expr": "(block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))) (assignment_statement left: (expression_list (identifier)) right: (expression_list (call_expression function: (identifier) arguments: (argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier)))))))))))",
+              "kind": "block",
+              "grammar": "block",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "{",
+                  "expr": "(\"{\")",
+                  "kind": "{",
+                  "grammar": "{",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "matched := fuzzy.RankFindFold(keyword, contextToken)",
+                  "expr": "(short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier)))))",
+                  "kind": "short_var_declaration",
+                  "grammar": "short_var_declaration",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "matched",
+                      "expr": "(expression_list (identifier))",
+                      "kind": "expression_list",
+                      "grammar": "expression_list",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "matched",
+                          "expr": "(identifier)",
+                          "kind": "identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    },
+                    {
+                      "raw": ":=",
+                      "expr": "(\":=\")",
+                      "kind": ":=",
+                      "grammar": ":=",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "fuzzy.RankFindFold(keyword, contextToken)",
+                      "expr": "(expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))",
+                      "kind": "expression_list",
+                      "grammar": "expression_list",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "fuzzy.RankFindFold(keyword, contextToken)",
+                          "expr": "(call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier)))",
+                          "kind": "call_expression",
+                          "grammar": "call_expression",
+                          "source_language": "Golang",
+                          "children": [
+                            {
+                              "raw": "fuzzy.RankFindFold",
+                              "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                              "kind": "selector_expression",
+                              "grammar": "selector_expression",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "fuzzy",
+                                  "expr": "(identifier)",
+                                  "kind": "identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ".",
+                                  "expr": "(\".\")",
+                                  "kind": ".",
+                                  "grammar": ".",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "RankFindFold",
+                                  "expr": "(field_identifier)",
+                                  "kind": "field_identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "(keyword, contextToken)",
+                              "expr": "(argument_list (identifier) (identifier))",
+                              "kind": "argument_list",
+                              "grammar": "argument_list",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "(",
+                                  "expr": "(\"(\")",
+                                  "kind": "(",
+                                  "grammar": "(",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "keyword",
+                                  "expr": "(identifier)",
+                                  "kind": "identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ",",
+                                  "expr": "(\",\")",
+                                  "kind": ",",
+                                  "grammar": ",",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "contextToken",
+                                  "expr": "(identifier)",
+                                  "kind": "identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ")",
+                                  "expr": "(\")\")",
+                                  "kind": ")",
+                                  "grammar": ")",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            }
+                          ],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                },
+                {
+                  "raw": "\n",
+                  "expr": "(\"\n\")",
+                  "kind": "\n",
+                  "grammar": "\n",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "for _, match := range matched {\n                if match.Distance == 0 {\n                    score += 2\n                } else if match.Distance <= 4 {\n                    score += 1\n                }\n                positiveMatch = append(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))\n            }",
+                  "expr": "(for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))) (assignment_statement left: (expression_list (identifier)) right: (expression_list (call_expression function: (identifier) arguments: (argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier))))))))))",
+                  "kind": "for_statement",
+                  "grammar": "for_statement",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "for",
+                      "expr": "(\"for\")",
+                      "kind": "for",
+                      "grammar": "for",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "_, match := range matched",
+                      "expr": "(range_clause left: (expression_list (identifier) (identifier)) right: (identifier))",
+                      "kind": "range_clause",
+                      "grammar": "range_clause",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "_, match",
+                          "expr": "(expression_list (identifier) (identifier))",
+                          "kind": "expression_list",
+                          "grammar": "expression_list",
+                          "source_language": "Golang",
+                          "children": [
+                            {
+                              "raw": "_",
+                              "expr": "(identifier)",
+                              "kind": "identifier",
+                              "grammar": "identifier",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": ",",
+                              "expr": "(\",\")",
+                              "kind": ",",
+                              "grammar": ",",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "match",
+                              "expr": "(identifier)",
+                              "kind": "identifier",
+                              "grammar": "identifier",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            }
+                          ],
+                          "is_root": false
+                        },
+                        {
+                          "raw": ":=",
+                          "expr": "(\":=\")",
+                          "kind": ":=",
+                          "grammar": ":=",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "range",
+                          "expr": "(\"range\")",
+                          "kind": "range",
+                          "grammar": "range",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "matched",
+                          "expr": "(identifier)",
+                          "kind": "identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "{\n                if match.Distance == 0 {\n                    score += 2\n                } else if match.Distance <= 4 {\n                    score += 1\n                }\n                positiveMatch = append(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))\n            }",
+                      "expr": "(block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))) (assignment_statement left: (expression_list (identifier)) right: (expression_list (call_expression function: (identifier) arguments: (argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier)))))))))",
+                      "kind": "block",
+                      "grammar": "block",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "{",
+                          "expr": "(\"{\")",
+                          "kind": "{",
+                          "grammar": "{",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "if match.Distance == 0 {\n                    score += 2\n                } else if match.Distance <= 4 {\n                    score += 1\n                }",
+                          "expr": "(if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal))))))",
+                          "kind": "if_statement",
+                          "grammar": "if_statement",
+                          "source_language": "Golang",
+                          "children": [
+                            {
+                              "raw": "if",
+                              "expr": "(\"if\")",
+                              "kind": "if",
+                              "grammar": "if",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "match.Distance == 0",
+                              "expr": "(binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal))",
+                              "kind": "binary_expression",
+                              "grammar": "binary_expression",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "match.Distance",
+                                  "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                                  "kind": "selector_expression",
+                                  "grammar": "selector_expression",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "match",
+                                      "expr": "(identifier)",
+                                      "kind": "identifier",
+                                      "grammar": "identifier",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": ".",
+                                      "expr": "(\".\")",
+                                      "kind": ".",
+                                      "grammar": ".",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "Distance",
+                                      "expr": "(field_identifier)",
+                                      "kind": "field_identifier",
+                                      "grammar": "identifier",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "==",
+                                  "expr": "(\"==\")",
+                                  "kind": "==",
+                                  "grammar": "==",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "0",
+                                  "expr": "(int_literal)",
+                                  "kind": "int_literal",
+                                  "grammar": "int_literal",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "{\n                    score += 2\n                }",
+                              "expr": "(block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal))))",
+                              "kind": "block",
+                              "grammar": "block",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "{",
+                                  "expr": "(\"{\")",
+                                  "kind": "{",
+                                  "grammar": "{",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "score += 2",
+                                  "expr": "(assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))",
+                                  "kind": "assignment_statement",
+                                  "grammar": "assignment_statement",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "score",
+                                      "expr": "(expression_list (identifier))",
+                                      "kind": "expression_list",
+                                      "grammar": "expression_list",
+                                      "source_language": "Golang",
+                                      "children": [
+                                        {
+                                          "raw": "score",
+                                          "expr": "(identifier)",
+                                          "kind": "identifier",
+                                          "grammar": "identifier",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        }
+                                      ],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "+=",
+                                      "expr": "(\"+=\")",
+                                      "kind": "+=",
+                                      "grammar": "+=",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "2",
+                                      "expr": "(expression_list (int_literal))",
+                                      "kind": "expression_list",
+                                      "grammar": "expression_list",
+                                      "source_language": "Golang",
+                                      "children": [
+                                        {
+                                          "raw": "2",
+                                          "expr": "(int_literal)",
+                                          "kind": "int_literal",
+                                          "grammar": "int_literal",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        }
+                                      ],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "\n",
+                                  "expr": "(\"\n\")",
+                                  "kind": "\n",
+                                  "grammar": "\n",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "}",
+                                  "expr": "(\"}\")",
+                                  "kind": "}",
+                                  "grammar": "}",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "else",
+                              "expr": "(\"else\")",
+                              "kind": "else",
+                              "grammar": "else",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "if match.Distance <= 4 {\n                    score += 1\n                }",
+                              "expr": "(if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))",
+                              "kind": "if_statement",
+                              "grammar": "if_statement",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "if",
+                                  "expr": "(\"if\")",
+                                  "kind": "if",
+                                  "grammar": "if",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "match.Distance <= 4",
+                                  "expr": "(binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal))",
+                                  "kind": "binary_expression",
+                                  "grammar": "binary_expression",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "match.Distance",
+                                      "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                                      "kind": "selector_expression",
+                                      "grammar": "selector_expression",
+                                      "source_language": "Golang",
+                                      "children": [
+                                        {
+                                          "raw": "match",
+                                          "expr": "(identifier)",
+                                          "kind": "identifier",
+                                          "grammar": "identifier",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": ".",
+                                          "expr": "(\".\")",
+                                          "kind": ".",
+                                          "grammar": ".",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": "Distance",
+                                          "expr": "(field_identifier)",
+                                          "kind": "field_identifier",
+                                          "grammar": "identifier",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        }
+                                      ],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "<=",
+                                      "expr": "(\"<=\")",
+                                      "kind": "<=",
+                                      "grammar": "<=",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "4",
+                                      "expr": "(int_literal)",
+                                      "kind": "int_literal",
+                                      "grammar": "int_literal",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "{\n                    score += 1\n                }",
+                                  "expr": "(block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal))))",
+                                  "kind": "block",
+                                  "grammar": "block",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "{",
+                                      "expr": "(\"{\")",
+                                      "kind": "{",
+                                      "grammar": "{",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "score += 1",
+                                      "expr": "(assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))",
+                                      "kind": "assignment_statement",
+                                      "grammar": "assignment_statement",
+                                      "source_language": "Golang",
+                                      "children": [
+                                        {
+                                          "raw": "score",
+                                          "expr": "(expression_list (identifier))",
+                                          "kind": "expression_list",
+                                          "grammar": "expression_list",
+                                          "source_language": "Golang",
+                                          "children": [
+                                            {
+                                              "raw": "score",
+                                              "expr": "(identifier)",
+                                              "kind": "identifier",
+                                              "grammar": "identifier",
+                                              "source_language": "Golang",
+                                              "children": [],
+                                              "is_root": false
+                                            }
+                                          ],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": "+=",
+                                          "expr": "(\"+=\")",
+                                          "kind": "+=",
+                                          "grammar": "+=",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": "1",
+                                          "expr": "(expression_list (int_literal))",
+                                          "kind": "expression_list",
+                                          "grammar": "expression_list",
+                                          "source_language": "Golang",
+                                          "children": [
+                                            {
+                                              "raw": "1",
+                                              "expr": "(int_literal)",
+                                              "kind": "int_literal",
+                                              "grammar": "int_literal",
+                                              "source_language": "Golang",
+                                              "children": [],
+                                              "is_root": false
+                                            }
+                                          ],
+                                          "is_root": false
+                                        }
+                                      ],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "\n",
+                                      "expr": "(\"\n\")",
+                                      "kind": "\n",
+                                      "grammar": "\n",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "}",
+                                      "expr": "(\"}\")",
+                                      "kind": "}",
+                                      "grammar": "}",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            }
+                          ],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "\n",
+                          "expr": "(\"\n\")",
+                          "kind": "\n",
+                          "grammar": "\n",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "positiveMatch = append(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))",
+                          "expr": "(assignment_statement left: (expression_list (identifier)) right: (expression_list (call_expression function: (identifier) arguments: (argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier))))))))",
+                          "kind": "assignment_statement",
+                          "grammar": "assignment_statement",
+                          "source_language": "Golang",
+                          "children": [
+                            {
+                              "raw": "positiveMatch",
+                              "expr": "(expression_list (identifier))",
+                              "kind": "expression_list",
+                              "grammar": "expression_list",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "positiveMatch",
+                                  "expr": "(identifier)",
+                                  "kind": "identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "=",
+                              "expr": "(\"=\")",
+                              "kind": "=",
+                              "grammar": "=",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "append(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))",
+                              "expr": "(expression_list (call_expression function: (identifier) arguments: (argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier)))))))",
+                              "kind": "expression_list",
+                              "grammar": "expression_list",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "append(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))",
+                                  "expr": "(call_expression function: (identifier) arguments: (argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier))))))",
+                                  "kind": "call_expression",
+                                  "grammar": "call_expression",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "append",
+                                      "expr": "(identifier)",
+                                      "kind": "identifier",
+                                      "grammar": "identifier",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "(positiveMatch, fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target))",
+                                      "expr": "(argument_list (identifier) (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier)))))",
+                                      "kind": "argument_list",
+                                      "grammar": "argument_list",
+                                      "source_language": "Golang",
+                                      "children": [
+                                        {
+                                          "raw": "(",
+                                          "expr": "(\"(\")",
+                                          "kind": "(",
+                                          "grammar": "(",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": "positiveMatch",
+                                          "expr": "(identifier)",
+                                          "kind": "identifier",
+                                          "grammar": "identifier",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": ",",
+                                          "expr": "(\",\")",
+                                          "kind": ",",
+                                          "grammar": ",",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": "fmt.Sprintf(\"[%s:%s]\", match.Source, match.Target)",
+                                          "expr": "(call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier))))",
+                                          "kind": "call_expression",
+                                          "grammar": "call_expression",
+                                          "source_language": "Golang",
+                                          "children": [
+                                            {
+                                              "raw": "fmt.Sprintf",
+                                              "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                                              "kind": "selector_expression",
+                                              "grammar": "selector_expression",
+                                              "source_language": "Golang",
+                                              "children": [
+                                                {
+                                                  "raw": "fmt",
+                                                  "expr": "(identifier)",
+                                                  "kind": "identifier",
+                                                  "grammar": "identifier",
+                                                  "source_language": "Golang",
+                                                  "children": [],
+                                                  "is_root": false
+                                                },
+                                                {
+                                                  "raw": ".",
+                                                  "expr": "(\".\")",
+                                                  "kind": ".",
+                                                  "grammar": ".",
+                                                  "source_language": "Golang",
+                                                  "children": [],
+                                                  "is_root": false
+                                                },
+                                                {
+                                                  "raw": "Sprintf",
+                                                  "expr": "(field_identifier)",
+                                                  "kind": "field_identifier",
+                                                  "grammar": "identifier",
+                                                  "source_language": "Golang",
+                                                  "children": [],
+                                                  "is_root": false
+                                                }
+                                              ],
+                                              "is_root": false
+                                            },
+                                            {
+                                              "raw": "(\"[%s:%s]\", match.Source, match.Target)",
+                                              "expr": "(argument_list (interpreted_string_literal) (selector_expression operand: (identifier) field: (field_identifier)) (selector_expression operand: (identifier) field: (field_identifier)))",
+                                              "kind": "argument_list",
+                                              "grammar": "argument_list",
+                                              "source_language": "Golang",
+                                              "children": [
+                                                {
+                                                  "raw": "(",
+                                                  "expr": "(\"(\")",
+                                                  "kind": "(",
+                                                  "grammar": "(",
+                                                  "source_language": "Golang",
+                                                  "children": [],
+                                                  "is_root": false
+                                                },
+                                                {
+                                                  "raw": "\"[%s:%s]\"",
+                                                  "expr": "(interpreted_string_literal)",
+                                                  "kind": "interpreted_string_literal",
+                                                  "grammar": "interpreted_string_literal",
+                                                  "source_language": "Golang",
+                                                  "children": [
+                                                    {
+                                                      "raw": "\"",
+                                                      "expr": "(\"\"\")",
+                                                      "kind": "\"",
+                                                      "grammar": "\"",
+                                                      "source_language": "Golang",
+                                                      "children": [],
+                                                      "is_root": false
+                                                    },
+                                                    {
+                                                      "raw": "\"",
+                                                      "expr": "(\"\"\")",
+                                                      "kind": "\"",
+                                                      "grammar": "\"",
+                                                      "source_language": "Golang",
+                                                      "children": [],
+                                                      "is_root": false
+                                                    }
+                                                  ],
+                                                  "is_root": false
+                                                },
+                                                {
+                                                  "raw": ",",
+                                                  "expr": "(\",\")",
+                                                  "kind": ",",
+                                                  "grammar": ",",
+                                                  "source_language": "Golang",
+                                                  "children": [],
+                                                  "is_root": false
+                                                },
+                                                {
+                                                  "raw": "match.Source",
+                                                  "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                                                  "kind": "selector_expression",
+                                                  "grammar": "selector_expression",
+                                                  "source_language": "Golang",
+                                                  "children": [
+                                                    {
+                                                      "raw": "match",
+                                                      "expr": "(identifier)",
+                                                      "kind": "identifier",
+                                                      "grammar": "identifier",
+                                                      "source_language": "Golang",
+                                                      "children": [],
+                                                      "is_root": false
+                                                    },
+                                                    {
+                                                      "raw": ".",
+                                                      "expr": "(\".\")",
+                                                      "kind": ".",
+                                                      "grammar": ".",
+                                                      "source_language": "Golang",
+                                                      "children": [],
+                                                      "is_root": false
+                                                    },
+                                                    {
+                                                      "raw": "Source",
+                                                      "expr": "(field_identifier)",
+                                                      "kind": "field_identifier",
+                                                      "grammar": "identifier",
+                                                      "source_language": "Golang",
+                                                      "children": [],
+                                                      "is_root": false
+                                                    }
+                                                  ],
+                                                  "is_root": false
+                                                },
+                                                {
+                                                  "raw": ",",
+                                                  "expr": "(\",\")",
+                                                  "kind": ",",
+                                                  "grammar": ",",
+                                                  "source_language": "Golang",
+                                                  "children": [],
+                                                  "is_root": false
+                                                },
+                                                {
+                                                  "raw": "match.Target",
+                                                  "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                                                  "kind": "selector_expression",
+                                                  "grammar": "selector_expression",
+                                                  "source_language": "Golang",
+                                                  "children": [
+                                                    {
+                                                      "raw": "match",
+                                                      "expr": "(identifier)",
+                                                      "kind": "identifier",
+                                                      "grammar": "identifier",
+                                                      "source_language": "Golang",
+                                                      "children": [],
+                                                      "is_root": false
+                                                    },
+                                                    {
+                                                      "raw": ".",
+                                                      "expr": "(\".\")",
+                                                      "kind": ".",
+                                                      "grammar": ".",
+                                                      "source_language": "Golang",
+                                                      "children": [],
+                                                      "is_root": false
+                                                    },
+                                                    {
+                                                      "raw": "Target",
+                                                      "expr": "(field_identifier)",
+                                                      "kind": "field_identifier",
+                                                      "grammar": "identifier",
+                                                      "source_language": "Golang",
+                                                      "children": [],
+                                                      "is_root": false
+                                                    }
+                                                  ],
+                                                  "is_root": false
+                                                },
+                                                {
+                                                  "raw": ")",
+                                                  "expr": "(\")\")",
+                                                  "kind": ")",
+                                                  "grammar": ")",
+                                                  "source_language": "Golang",
+                                                  "children": [],
+                                                  "is_root": false
+                                                }
+                                              ],
+                                              "is_root": false
+                                            }
+                                          ],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": ")",
+                                          "expr": "(\")\")",
+                                          "kind": ")",
+                                          "grammar": ")",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        }
+                                      ],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            }
+                          ],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "\n",
+                          "expr": "(\"\n\")",
+                          "kind": "\n",
+                          "grammar": "\n",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "}",
+                          "expr": "(\"}\")",
+                          "kind": "}",
+                          "grammar": "}",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                },
+                {
+                  "raw": "\n",
+                  "expr": "(\"\n\")",
+                  "kind": "\n",
+                  "grammar": "\n",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "}",
+                  "expr": "(\"}\")",
+                  "kind": "}",
+                  "grammar": "}",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": "\n",
+          "expr": "(\"\n\")",
+          "kind": "\n",
+          "grammar": "\n",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "for _, keyword := range *config.IgnoreKeywords {\n            matched := fuzzy.RankFindFold(keyword, contextToken)\n            for _, match := range matched {\n                if match.Distance == 0 {\n                    score -= 3\n                } else if match.Distance <= 4 {\n                    score -= 2\n                }\n            }\n        }",
+          "expr": "(for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier)))) body: (block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal))))))))))",
+          "kind": "for_statement",
+          "grammar": "for_statement",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "for",
+              "expr": "(\"for\")",
+              "kind": "for",
+              "grammar": "for",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            },
+            {
+              "raw": "_, keyword := range *config.IgnoreKeywords",
+              "expr": "(range_clause left: (expression_list (identifier) (identifier)) right: (unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier))))",
+              "kind": "range_clause",
+              "grammar": "range_clause",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "_, keyword",
+                  "expr": "(expression_list (identifier) (identifier))",
+                  "kind": "expression_list",
+                  "grammar": "expression_list",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "_",
+                      "expr": "(identifier)",
+                      "kind": "identifier",
+                      "grammar": "identifier",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": ",",
+                      "expr": "(\",\")",
+                      "kind": ",",
+                      "grammar": ",",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "keyword",
+                      "expr": "(identifier)",
+                      "kind": "identifier",
+                      "grammar": "identifier",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                },
+                {
+                  "raw": ":=",
+                  "expr": "(\":=\")",
+                  "kind": ":=",
+                  "grammar": ":=",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "range",
+                  "expr": "(\"range\")",
+                  "kind": "range",
+                  "grammar": "range",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "*config.IgnoreKeywords",
+                  "expr": "(unary_expression operand: (selector_expression operand: (identifier) field: (field_identifier)))",
+                  "kind": "unary_expression",
+                  "grammar": "unary_expression",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "*",
+                      "expr": "(\"*\")",
+                      "kind": "*",
+                      "grammar": "*",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "config.IgnoreKeywords",
+                      "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                      "kind": "selector_expression",
+                      "grammar": "selector_expression",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "config",
+                          "expr": "(identifier)",
+                          "kind": "identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": ".",
+                          "expr": "(\".\")",
+                          "kind": ".",
+                          "grammar": ".",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "IgnoreKeywords",
+                          "expr": "(field_identifier)",
+                          "kind": "field_identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            },
+            {
+              "raw": "{\n            matched := fuzzy.RankFindFold(keyword, contextToken)\n            for _, match := range matched {\n                if match.Distance == 0 {\n                    score -= 3\n                } else if match.Distance <= 4 {\n                    score -= 2\n                }\n            }\n        }",
+              "expr": "(block (short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))) (for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))))))",
+              "kind": "block",
+              "grammar": "block",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "{",
+                  "expr": "(\"{\")",
+                  "kind": "{",
+                  "grammar": "{",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "matched := fuzzy.RankFindFold(keyword, contextToken)",
+                  "expr": "(short_var_declaration left: (expression_list (identifier)) right: (expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier)))))",
+                  "kind": "short_var_declaration",
+                  "grammar": "short_var_declaration",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "matched",
+                      "expr": "(expression_list (identifier))",
+                      "kind": "expression_list",
+                      "grammar": "expression_list",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "matched",
+                          "expr": "(identifier)",
+                          "kind": "identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    },
+                    {
+                      "raw": ":=",
+                      "expr": "(\":=\")",
+                      "kind": ":=",
+                      "grammar": ":=",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "fuzzy.RankFindFold(keyword, contextToken)",
+                      "expr": "(expression_list (call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier))))",
+                      "kind": "expression_list",
+                      "grammar": "expression_list",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "fuzzy.RankFindFold(keyword, contextToken)",
+                          "expr": "(call_expression function: (selector_expression operand: (identifier) field: (field_identifier)) arguments: (argument_list (identifier) (identifier)))",
+                          "kind": "call_expression",
+                          "grammar": "call_expression",
+                          "source_language": "Golang",
+                          "children": [
+                            {
+                              "raw": "fuzzy.RankFindFold",
+                              "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                              "kind": "selector_expression",
+                              "grammar": "selector_expression",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "fuzzy",
+                                  "expr": "(identifier)",
+                                  "kind": "identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ".",
+                                  "expr": "(\".\")",
+                                  "kind": ".",
+                                  "grammar": ".",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "RankFindFold",
+                                  "expr": "(field_identifier)",
+                                  "kind": "field_identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "(keyword, contextToken)",
+                              "expr": "(argument_list (identifier) (identifier))",
+                              "kind": "argument_list",
+                              "grammar": "argument_list",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "(",
+                                  "expr": "(\"(\")",
+                                  "kind": "(",
+                                  "grammar": "(",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "keyword",
+                                  "expr": "(identifier)",
+                                  "kind": "identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ",",
+                                  "expr": "(\",\")",
+                                  "kind": ",",
+                                  "grammar": ",",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "contextToken",
+                                  "expr": "(identifier)",
+                                  "kind": "identifier",
+                                  "grammar": "identifier",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": ")",
+                                  "expr": "(\")\")",
+                                  "kind": ")",
+                                  "grammar": ")",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            }
+                          ],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                },
+                {
+                  "raw": "\n",
+                  "expr": "(\"\n\")",
+                  "kind": "\n",
+                  "grammar": "\n",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "for _, match := range matched {\n                if match.Distance == 0 {\n                    score -= 3\n                } else if match.Distance <= 4 {\n                    score -= 2\n                }\n            }",
+                  "expr": "(for_statement (range_clause left: (expression_list (identifier) (identifier)) right: (identifier)) body: (block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal))))))))",
+                  "kind": "for_statement",
+                  "grammar": "for_statement",
+                  "source_language": "Golang",
+                  "children": [
+                    {
+                      "raw": "for",
+                      "expr": "(\"for\")",
+                      "kind": "for",
+                      "grammar": "for",
+                      "source_language": "Golang",
+                      "children": [],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "_, match := range matched",
+                      "expr": "(range_clause left: (expression_list (identifier) (identifier)) right: (identifier))",
+                      "kind": "range_clause",
+                      "grammar": "range_clause",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "_, match",
+                          "expr": "(expression_list (identifier) (identifier))",
+                          "kind": "expression_list",
+                          "grammar": "expression_list",
+                          "source_language": "Golang",
+                          "children": [
+                            {
+                              "raw": "_",
+                              "expr": "(identifier)",
+                              "kind": "identifier",
+                              "grammar": "identifier",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": ",",
+                              "expr": "(\",\")",
+                              "kind": ",",
+                              "grammar": ",",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "match",
+                              "expr": "(identifier)",
+                              "kind": "identifier",
+                              "grammar": "identifier",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            }
+                          ],
+                          "is_root": false
+                        },
+                        {
+                          "raw": ":=",
+                          "expr": "(\":=\")",
+                          "kind": ":=",
+                          "grammar": ":=",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "range",
+                          "expr": "(\"range\")",
+                          "kind": "range",
+                          "grammar": "range",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "matched",
+                          "expr": "(identifier)",
+                          "kind": "identifier",
+                          "grammar": "identifier",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    },
+                    {
+                      "raw": "{\n                if match.Distance == 0 {\n                    score -= 3\n                } else if match.Distance <= 4 {\n                    score -= 2\n                }\n            }",
+                      "expr": "(block (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))))",
+                      "kind": "block",
+                      "grammar": "block",
+                      "source_language": "Golang",
+                      "children": [
+                        {
+                          "raw": "{",
+                          "expr": "(\"{\")",
+                          "kind": "{",
+                          "grammar": "{",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "if match.Distance == 0 {\n                    score -= 3\n                } else if match.Distance <= 4 {\n                    score -= 2\n                }",
+                          "expr": "(if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))) alternative: (if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal))))))",
+                          "kind": "if_statement",
+                          "grammar": "if_statement",
+                          "source_language": "Golang",
+                          "children": [
+                            {
+                              "raw": "if",
+                              "expr": "(\"if\")",
+                              "kind": "if",
+                              "grammar": "if",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "match.Distance == 0",
+                              "expr": "(binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal))",
+                              "kind": "binary_expression",
+                              "grammar": "binary_expression",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "match.Distance",
+                                  "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                                  "kind": "selector_expression",
+                                  "grammar": "selector_expression",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "match",
+                                      "expr": "(identifier)",
+                                      "kind": "identifier",
+                                      "grammar": "identifier",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": ".",
+                                      "expr": "(\".\")",
+                                      "kind": ".",
+                                      "grammar": ".",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "Distance",
+                                      "expr": "(field_identifier)",
+                                      "kind": "field_identifier",
+                                      "grammar": "identifier",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "==",
+                                  "expr": "(\"==\")",
+                                  "kind": "==",
+                                  "grammar": "==",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "0",
+                                  "expr": "(int_literal)",
+                                  "kind": "int_literal",
+                                  "grammar": "int_literal",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "{\n                    score -= 3\n                }",
+                              "expr": "(block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal))))",
+                              "kind": "block",
+                              "grammar": "block",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "{",
+                                  "expr": "(\"{\")",
+                                  "kind": "{",
+                                  "grammar": "{",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "score -= 3",
+                                  "expr": "(assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))",
+                                  "kind": "assignment_statement",
+                                  "grammar": "assignment_statement",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "score",
+                                      "expr": "(expression_list (identifier))",
+                                      "kind": "expression_list",
+                                      "grammar": "expression_list",
+                                      "source_language": "Golang",
+                                      "children": [
+                                        {
+                                          "raw": "score",
+                                          "expr": "(identifier)",
+                                          "kind": "identifier",
+                                          "grammar": "identifier",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        }
+                                      ],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "-=",
+                                      "expr": "(\"-=\")",
+                                      "kind": "-=",
+                                      "grammar": "-=",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "3",
+                                      "expr": "(expression_list (int_literal))",
+                                      "kind": "expression_list",
+                                      "grammar": "expression_list",
+                                      "source_language": "Golang",
+                                      "children": [
+                                        {
+                                          "raw": "3",
+                                          "expr": "(int_literal)",
+                                          "kind": "int_literal",
+                                          "grammar": "int_literal",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        }
+                                      ],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "\n",
+                                  "expr": "(\"\n\")",
+                                  "kind": "\n",
+                                  "grammar": "\n",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "}",
+                                  "expr": "(\"}\")",
+                                  "kind": "}",
+                                  "grammar": "}",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "else",
+                              "expr": "(\"else\")",
+                              "kind": "else",
+                              "grammar": "else",
+                              "source_language": "Golang",
+                              "children": [],
+                              "is_root": false
+                            },
+                            {
+                              "raw": "if match.Distance <= 4 {\n                    score -= 2\n                }",
+                              "expr": "(if_statement condition: (binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal)) consequence: (block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))))",
+                              "kind": "if_statement",
+                              "grammar": "if_statement",
+                              "source_language": "Golang",
+                              "children": [
+                                {
+                                  "raw": "if",
+                                  "expr": "(\"if\")",
+                                  "kind": "if",
+                                  "grammar": "if",
+                                  "source_language": "Golang",
+                                  "children": [],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "match.Distance <= 4",
+                                  "expr": "(binary_expression left: (selector_expression operand: (identifier) field: (field_identifier)) right: (int_literal))",
+                                  "kind": "binary_expression",
+                                  "grammar": "binary_expression",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "match.Distance",
+                                      "expr": "(selector_expression operand: (identifier) field: (field_identifier))",
+                                      "kind": "selector_expression",
+                                      "grammar": "selector_expression",
+                                      "source_language": "Golang",
+                                      "children": [
+                                        {
+                                          "raw": "match",
+                                          "expr": "(identifier)",
+                                          "kind": "identifier",
+                                          "grammar": "identifier",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": ".",
+                                          "expr": "(\".\")",
+                                          "kind": ".",
+                                          "grammar": ".",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": "Distance",
+                                          "expr": "(field_identifier)",
+                                          "kind": "field_identifier",
+                                          "grammar": "identifier",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        }
+                                      ],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "<=",
+                                      "expr": "(\"<=\")",
+                                      "kind": "<=",
+                                      "grammar": "<=",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "4",
+                                      "expr": "(int_literal)",
+                                      "kind": "int_literal",
+                                      "grammar": "int_literal",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                },
+                                {
+                                  "raw": "{\n                    score -= 2\n                }",
+                                  "expr": "(block (assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal))))",
+                                  "kind": "block",
+                                  "grammar": "block",
+                                  "source_language": "Golang",
+                                  "children": [
+                                    {
+                                      "raw": "{",
+                                      "expr": "(\"{\")",
+                                      "kind": "{",
+                                      "grammar": "{",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "score -= 2",
+                                      "expr": "(assignment_statement left: (expression_list (identifier)) right: (expression_list (int_literal)))",
+                                      "kind": "assignment_statement",
+                                      "grammar": "assignment_statement",
+                                      "source_language": "Golang",
+                                      "children": [
+                                        {
+                                          "raw": "score",
+                                          "expr": "(expression_list (identifier))",
+                                          "kind": "expression_list",
+                                          "grammar": "expression_list",
+                                          "source_language": "Golang",
+                                          "children": [
+                                            {
+                                              "raw": "score",
+                                              "expr": "(identifier)",
+                                              "kind": "identifier",
+                                              "grammar": "identifier",
+                                              "source_language": "Golang",
+                                              "children": [],
+                                              "is_root": false
+                                            }
+                                          ],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": "-=",
+                                          "expr": "(\"-=\")",
+                                          "kind": "-=",
+                                          "grammar": "-=",
+                                          "source_language": "Golang",
+                                          "children": [],
+                                          "is_root": false
+                                        },
+                                        {
+                                          "raw": "2",
+                                          "expr": "(expression_list (int_literal))",
+                                          "kind": "expression_list",
+                                          "grammar": "expression_list",
+                                          "source_language": "Golang",
+                                          "children": [
+                                            {
+                                              "raw": "2",
+                                              "expr": "(int_literal)",
+                                              "kind": "int_literal",
+                                              "grammar": "int_literal",
+                                              "source_language": "Golang",
+                                              "children": [],
+                                              "is_root": false
+                                            }
+                                          ],
+                                          "is_root": false
+                                        }
+                                      ],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "\n",
+                                      "expr": "(\"\n\")",
+                                      "kind": "\n",
+                                      "grammar": "\n",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    },
+                                    {
+                                      "raw": "}",
+                                      "expr": "(\"}\")",
+                                      "kind": "}",
+                                      "grammar": "}",
+                                      "source_language": "Golang",
+                                      "children": [],
+                                      "is_root": false
+                                    }
+                                  ],
+                                  "is_root": false
+                                }
+                              ],
+                              "is_root": false
+                            }
+                          ],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "\n",
+                          "expr": "(\"\n\")",
+                          "kind": "\n",
+                          "grammar": "\n",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        },
+                        {
+                          "raw": "}",
+                          "expr": "(\"}\")",
+                          "kind": "}",
+                          "grammar": "}",
+                          "source_language": "Golang",
+                          "children": [],
+                          "is_root": false
+                        }
+                      ],
+                      "is_root": false
+                    }
+                  ],
+                  "is_root": false
+                },
+                {
+                  "raw": "\n",
+                  "expr": "(\"\n\")",
+                  "kind": "\n",
+                  "grammar": "\n",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                },
+                {
+                  "raw": "}",
+                  "expr": "(\"}\")",
+                  "kind": "}",
+                  "grammar": "}",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": "\n",
+          "expr": "(\"\n\")",
+          "kind": "\n",
+          "grammar": "\n",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "// score += 1",
+          "expr": "(comment)",
+          "kind": "comment",
+          "grammar": "comment",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "return $output_set",
+          "expr": "(return_statement (ERROR (UNEXPECTED '$')) (expression_list (identifier)))",
+          "kind": "return_statement",
+          "grammar": "return_statement",
+          "source_language": "Golang",
+          "children": [
+            {
+              "raw": "return",
+              "expr": "(\"return\")",
+              "kind": "return",
+              "grammar": "return",
+              "source_language": "Golang",
+              "children": [],
+              "is_root": false
+            },
+            {
+              "raw": "$",
+              "expr": "(ERROR (UNEXPECTED '$'))",
+              "kind": "ERROR",
+              "grammar": "ERROR",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "$",
+                  "expr": "(UNEXPECTED '$')",
+                  "kind": "ERROR",
+                  "grammar": "ERROR",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            },
+            {
+              "raw": "output_set",
+              "expr": "(expression_list (identifier))",
+              "kind": "expression_list",
+              "grammar": "expression_list",
+              "source_language": "Golang",
+              "children": [
+                {
+                  "raw": "output_set",
+                  "expr": "(identifier)",
+                  "kind": "identifier",
+                  "grammar": "identifier",
+                  "source_language": "Golang",
+                  "children": [],
+                  "is_root": false
+                }
+              ],
+              "is_root": false
+            }
+          ],
+          "is_root": false
+        },
+        {
+          "raw": "\n",
+          "expr": "(\"\n\")",
+          "kind": "\n",
+          "grammar": "\n",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        },
+        {
+          "raw": "}",
+          "expr": "(\"}\")",
+          "kind": "}",
+          "grammar": "}",
+          "source_language": "Golang",
+          "children": [],
+          "is_root": false
+        }
+      ],
+      "is_root": false
+    }
+  ],
+  "is_root": true
+}

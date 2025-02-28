@@ -3,7 +3,7 @@
 use anyhow::{Error, Result};
 
 pub mod variable_declartion_token;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use variable_declartion_token::VariableDeclartionToken;
 
 pub mod value_operation_token;
@@ -34,6 +34,7 @@ pub struct ScriptBlock {
     pub target_platform: String,
     pub script_filename: String,
     pub parsed_tokens: Vec<StatementToken>,
+    pub parser_engine: String,
 }
 
 pub trait StatementTokenParser {
@@ -51,8 +52,13 @@ pub enum StatementToken {
     FunctionReturnStatement(ReturnStatementToken),
     ConditionStatement(ConditionStatementToken),
     Comment(CommentToken),
+    ImportDeclaration(ImportDeclarationToken),
+    Unknown,
 }
 
+pub trait StatementTokenTrait {
+    fn get_raw_content() -> String;
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CommentToken {
@@ -63,4 +69,11 @@ pub struct CommentToken {
     /// raw_content : "// this is a comment"
     pub comment: String,
     pub raw_content: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImportDeclarationToken {
+    pub raw_content: String,
+    pub import_path: String,
+    pub import_name: String,
 }

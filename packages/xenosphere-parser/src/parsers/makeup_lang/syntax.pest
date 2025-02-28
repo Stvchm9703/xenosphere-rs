@@ -117,16 +117,17 @@ branch_block = {
 
 layer_pass_block = {
     // for layer pass / calculation
-    ("pass" | "PASS") ~ "{" ~ (c_impl_block)+ ~ "}"
+    ("pass" | "PASS") ~ "{" ~ (pass_impl_block)+ ~ "}"
 }
 
-c_impl_block = {
-    c_impl_attr_block ~ &"{" ~ c_impl_content_block ~ "}#"
+// script pass 
+pass_impl_block = {
+    pass_impl_attr_block ~ &"{" ~ pass_impl_content_block ~ "}#"
 }
 
-c_impl_attr_block = _{ attr_def_block }
+pass_impl_attr_block = _{ attr_def_block }
 
-c_impl_content_block = ${
+pass_impl_content_block = ${
     (!"}#" ~ ANY)*
 }
 

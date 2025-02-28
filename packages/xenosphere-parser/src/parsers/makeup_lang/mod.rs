@@ -18,9 +18,11 @@ use crate::tokens::layer_lang::{
 mod layer_property;
 mod layer_stack;
 mod value_define_block;
+mod layer_pass;
+mod common;
 
 #[derive(Parser)]
-#[grammar = "parsers/syntax.pest"]
+#[grammar = "parsers/makeup_lang/syntax.pest"]
 pub struct SyntexParser;
 
 pub fn parse(input_str: &str) -> std::result::Result<Pairs<Rule>, Error> {
@@ -71,9 +73,9 @@ fn parse_layer(pairs: Pairs<Rule>) -> Result<LayerObj, Error> {
             Rule::layer_property_block => {
                 layer_obj.property = Some(layer_property::parse_layer_property(pair.into_inner())?);
             }
-            // Rule::layer_pass_block => {
-            //     layer_obj.pass = Some(parse_layer_pass(pair.into_inner())?);
-            // }
+            Rule::layer_pass_block => {
+                layer_obj.pass = Some(layer_pass::parse_layer_pass(pair.into_inner())?);
+            }
             Rule::layer_stack_block => {
                 layer_obj.stack = Some(layer_stack::parse_layer_stack(pair.into_inner())?);
             }

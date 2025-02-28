@@ -1,11 +1,10 @@
-
-
+use serde_json::to_string_pretty;
+use std::{fs::File, io::Write};
 use xenosphere_parser::parsers::script_lang::parse_golang as parse_golang_token;
-
 
 #[cfg(test)]
 #[test]
-fn test_parser_with_simple_clang() {
+fn test_parser_with_simple_golang() {
     let token = parse_golang_token(
         r##"
 package scoring
@@ -190,7 +189,109 @@ func CalculateMatchingScores(readConfig *config.SearchConfig, postDetail *reques
 }
 
     "##,
-    );
+    ).unwrap();
     println!("{:#?}", token);
+    let json_str = to_string_pretty(&token).unwrap();
+    File::create("test_parser_with_simple_golang.json")
+        .unwrap()
+        .write_all(json_str.as_bytes())
+        .unwrap();
+    assert_eq!(4, 4);
+}
+
+#[cfg(test)]
+#[test]
+fn test_parser_with_golang_content() {
+    let token = parse_golang_token(
+        r##"
+func ScorePostMatching(config *config.SearchConfig, context string) (int, []string) {
+	score := 0
+	contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
+	positiveMatch := []string{}
+	for _, keyword := range *config.SearchKeywords {
+		matched := fuzzy.RankFindFold(keyword, contextToken)
+		for _, match := range matched {
+			if match.Distance == 0 {
+				score += 2
+			} else if match.Distance <= 4 {
+				score += 1
+			}
+			positiveMatch = append(positiveMatch, fmt.Sprintf("[%s:%s]", match.Source, match.Target))
+		}
+	}
+
+	for _, keyword := range *config.IgnoreKeywords {
+		matched := fuzzy.RankFindFold(keyword, contextToken)
+		for _, match := range matched {
+			if match.Distance == 0 {
+				score -= 3
+			} else if match.Distance <= 4 {
+				score -= 2
+			}
+		}
+
+	}
+	// score += 1
+
+	return score, positiveMatch
+}
+	"##,
+    )
+    .unwrap();
+    let json_str = to_string_pretty(&token).unwrap();
+    println!("{:#?}", token);
+    println!("{}", json_str);
+    File::create("test_parser_with_golang_content.json")
+        .unwrap()
+        .write_all(json_str.as_bytes())
+        .unwrap();
+    assert_eq!(4, 4);
+}
+
+
+
+#[cfg(test)]
+#[test]
+fn test_parser_with_golang_content_withput_main_wrap() {
+    let token = parse_golang_token(
+        r##"
+			score := 0
+			contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
+			positiveMatch := []string{}
+			for _, keyword := range *config.SearchKeywords {
+				matched := fuzzy.RankFindFold(keyword, contextToken)
+				for _, match := range matched {
+					if match.Distance == 0 {
+						score += 2
+					} else if match.Distance <= 4 {
+						score += 1
+					}
+					positiveMatch = append(positiveMatch, fmt.Sprintf("[%s:%s]", match.Source, match.Target))
+				}
+			}
+
+			for _, keyword := range *config.IgnoreKeywords {
+				matched := fuzzy.RankFindFold(keyword, contextToken)
+				for _, match := range matched {
+					if match.Distance == 0 {
+						score -= 3
+					} else if match.Distance <= 4 {
+						score -= 2
+					}
+				}
+
+			}
+			// score += 1
+
+	"##,
+    )
+    .unwrap();
+    let json_str = to_string_pretty(&token).unwrap();
+    // println!("{:#?}", token);
+    // println!("{}", json_str);
+    File::create("test_parser_with_golang_content_withput_main_wrap.json")
+        .unwrap()
+        .write_all(json_str.as_bytes())
+        .unwrap();
     assert_eq!(4, 4);
 }

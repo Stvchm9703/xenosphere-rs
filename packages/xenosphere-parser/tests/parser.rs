@@ -37,7 +37,7 @@ fn test_parser_with_layer_stack() {
             Classification(label=10),
             test.run(label=10),
             Resu/Resu101(label=10),
-           #branch
+            #branch
             {
                 stack [
                     Conv2D($y, $z, 3, 3, activation="relu"),
@@ -78,7 +78,7 @@ fn test_parser_with_layer_pass() {
             static tensor<(3,3)> mask = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
         }
         pass {
-            #[target="x86", syntex("gcc")]{
+            #[target="x86", syntex="gcc"]{
                 int x = 5;
                 int y = 10;
                 // code block

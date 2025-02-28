@@ -1,5 +1,12 @@
-use crate::tokens::tensor::{PseudoTensor};
+use crate::tokens::tensor::PseudoTensor;
 
+use super::script_lang::ScriptBlock;
+
+#[derive(Debug)]
+pub struct AttributeSet {
+    pub name: String,
+    pub value: String,
+}
 
 #[derive(Debug)]
 pub enum LayerFileToken {
@@ -66,10 +73,25 @@ pub enum LayerPropertyElementValue {
 // Layer Pass
 #[derive(Debug)]
 pub struct LayerPassScript {
-    pub script: Vec<String>,
-    pub script_syntex: String,
-    pub script_filename: String,
+    // the raw content 
+    pub raw_content: String,
+
+    // the transpiled token 
+    pub transpiled : ScriptBlock,
+    
+    // attribute `syntex` 
+    pub script_syntex: Option<String>,
+
+    // attribute `filename`
+    // suppose the script_filename is created by transpiler
+    pub script_filename: Option<String>,
+
+    // attribute `target`
     pub target_platform: String,
+
+    // attribute `transpiler`
+    pub transpiler: Option<String>,
+
 }
 
 pub type LayerPass = Vec<LayerPassScript>;

@@ -47,6 +47,7 @@ serde = { version = "1.0.203", features = [
   "std",
 ] }
 
+serde_json = "1.0"
 regex="*"
 lazy_static="1.5"
 
