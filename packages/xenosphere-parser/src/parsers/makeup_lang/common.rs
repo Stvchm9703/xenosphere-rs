@@ -1,5 +1,5 @@
 use anyhow::Error;
-use pest::iterators::{Pair, Pairs};
+use pest::iterators::Pairs;
 use regex::Regex;
 // use pest::Parser;
 // use pest_derive::Parser;
@@ -23,13 +23,11 @@ pub fn parse_attribute_set(pairs: Pairs<Rule>) -> Result<Vec<AttributeSet>, Erro
 }
 
 fn parse_attribute_set_content(content: &str) -> Result<AttributeSet, Error> {
-    let mut attr_set = AttributeSet {
-        name: String::new(),
-        value: String::new(),
-    };
+    let mut attr_set = AttributeSet::default();
 
     let kv_patt = Regex::new(r##"(?<name>\w+)="?(?<value>[\w\(\)]+)"?"##).unwrap();
     let fn_patt = Regex::new(r##"(?<name>\w+)\((?<value>.*)\)"##).unwrap();
+    let attr_patt = Regex::new(r##"^(?<name>\w+)(?<value>=true|=false)?$"##).unwrap();
 
     if kv_patt.is_match(content) {
         let cap = kv_patt.captures(content).unwrap();
@@ -39,6 +37,12 @@ fn parse_attribute_set_content(content: &str) -> Result<AttributeSet, Error> {
         let cap = fn_patt.captures(content).unwrap();
         attr_set.name = cap["name"].to_string();
         attr_set.value = cap["value"].to_string();
+    } else if attr_patt.is_match(content) {
+        let cap = attr_patt.captures(content).unwrap();
+        attr_set.name = cap["name"].to_string();
+        attr_set.value = cap["value"].to_string();
     }
     Ok(attr_set)
 }
+
+

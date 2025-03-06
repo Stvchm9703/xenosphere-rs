@@ -56,7 +56,7 @@ func_def_block = {
 }
 
 // variable definition, as the alias of the value
-var_def_block = _{
+var_def_block = {
     int_def_block
   | float_def_block
   | string_def_block
@@ -68,11 +68,11 @@ var_def_block = _{
 declare_const_reference = { "$" }
 property_reference      = { "&" }
 
-object_property = _{
+object_property = {
     (declare_const_reference | property_reference) ~ naming ~ ("." ~ naming)*
 }
 
-should_value = { value_block | object_property }
+should_value = _{ value_block | object_property }
 
 // assignment_block = {
 // (object_property | naming) ~ "=" ~ (should_value)
@@ -80,8 +80,12 @@ should_value = { value_block | object_property }
 
 // overall layer definition
 layer_def_block      = {
-    ("layer" | "LAYER") ~ (naming) ~ "{" ~ (layer_type_block){,1} ~ (layer_property_block){,1}
-  | (layer_pass_block | layer_stack_block){,1} ~ (layer_preview_block){,1} ~ "}"
+    ("layer" | "LAYER") ~ (naming) ~ "{" ~ 
+    (layer_type_block){,1} ~ 
+    (layer_property_block){,1} ~ 
+    (layer_pass_block | layer_stack_block){,1} ~ 
+    (layer_preview_block){,1} ~ 
+    "}"
 }
 layer_type_block     = {
     ("type" | "TYPE") ~ "=" ~ naming ~ ";"
@@ -107,7 +111,7 @@ imported_funciton_naming = {
     ASCII_ALPHANUMERIC ~ (("_" | "/" | ".")* ~ ASCII_ALPHANUMERIC)*
 }
 
-stack_func_block = _{
+stack_func_block = {
     imported_funciton_naming ~ func_arg_block
 }
 

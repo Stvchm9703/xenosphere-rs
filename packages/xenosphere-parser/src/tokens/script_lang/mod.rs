@@ -60,7 +60,7 @@ pub trait StatementTokenTrait {
     fn get_raw_content() -> String;
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub struct CommentToken {
     /// CCommentToken
     /// for the simple comment statement
@@ -71,7 +71,7 @@ pub struct CommentToken {
     pub raw_content: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub struct ImportDeclarationToken {
     pub raw_content: String,
     pub import_path: String,

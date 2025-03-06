@@ -1,22 +1,18 @@
 use anyhow::Error;
 use pest::iterators::{Pair, Pairs};
-// use pest::Parser;
-// use pest_derive::Parser;
-// use syn::token::Type;
-// use polars::prelude::*;
 
 use crate::tokens::layer_lang::{
     LayerPropertyElement, LayerPropertyElementSet, LayerPropertyElementValue,
 };
 
-use crate::parsers::makeup_lang::{Rule, value_define_block::parse_val_def_block};
+use crate::parsers::makeup_lang::{value_define_block::parse_val_def_block, Rule};
 
 pub fn parse_layer_property(pairs: Pairs<Rule>) -> Result<Vec<LayerPropertyElement>, Error> {
     let mut layer_properties: Vec<LayerPropertyElement> = vec![];
-    println!("in parse_layer_property");
+    // println!("in parse_layer_property");
     for pair in pairs {
-        // println!("parse_layer_property rule {:?}", pair.as_rule().to_owned());
-        // println!("value {:?}", pair.as_span().to_owned());
+        println!("parse_layer_property rule {:?}", pair.as_rule().to_owned());
+        println!("value {:?}", pair.as_span().to_owned());
         match pair.as_rule() {
             Rule::layer_property_elem => {
                 let tmp = parse_layer_property_element_set(pair)?;
@@ -26,7 +22,6 @@ pub fn parse_layer_property(pairs: Pairs<Rule>) -> Result<Vec<LayerPropertyEleme
             //     let tmp = parse_layer_property_elem_dim(pair)?;
             //     layer_properties.push(tmp);
             // }
-
             _ => {
                 let tmp = LayerPropertyElement::Unknown(pair.as_span().as_str().to_string());
                 layer_properties.push(tmp);
@@ -38,18 +33,24 @@ pub fn parse_layer_property(pairs: Pairs<Rule>) -> Result<Vec<LayerPropertyEleme
 }
 
 pub fn parse_layer_property_element_set(pair: Pair<Rule>) -> Result<LayerPropertyElement, Error> {
-    let mut layer_property_element_set = LayerPropertyElementSet {
-        name: "".to_string(),
-        value: LayerPropertyElementValue::Int(0),
+    let mut layer_property_element_set: LayerPropertyElementSet = LayerPropertyElementSet {
+        name: "".to_owned(),
+        value: LayerPropertyElementValue::None,
     };
 
-    // println!("parse_layer_property_element_set {:#?}", pair);
+    println!("parse_layer_property_element_set {:#?}", pair.as_rule());
 
-    for pair in pair.clone().into_inner() {
+    for inner in pair.clone().into_inner() {
+        // println!("===");
+        // println!("inner rule {:?}", inner.as_rule());
         // parse the val_def_block
-        let (name, value) = parse_val_def_block(pair)?;
-        layer_property_element_set.name = name;
-        layer_property_element_set.value = value;
+        layer_property_element_set = parse_val_def_block(inner)?;
+        // layer_property_element_set.name = name;
+        // layer_property_element_set.value = value;
+
+        println!("result : {:?}", layer_property_element_set);
+        println!("===");
+
     }
 
     // extract the prefix, either "static" or "in" or "out"

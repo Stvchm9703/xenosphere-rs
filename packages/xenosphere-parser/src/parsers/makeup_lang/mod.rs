@@ -41,7 +41,11 @@ pub fn parse(input_str: &str) -> std::result::Result<Pairs<Rule>, Error> {
 fn parse_content(pairs: Pairs<Rule>) -> Result<Vec<LayerFileToken>, Error> {
     let mut layer_file_tokens: Vec<LayerFileToken> = vec![];
     for pair in pairs {
+        // println!("parse-content");
+        // println!(" rule {:?}", pair.as_rule().to_owned());
+        // println!("value {:?}", pair.as_span().to_owned());
         match pair.as_rule() {
+            
             Rule::layer_def_block => {
                 let layer_obj = parse_layer(pair.into_inner())?;
                 layer_file_tokens.push(LayerFileToken::Layer(layer_obj));
@@ -58,7 +62,7 @@ fn parse_content(pairs: Pairs<Rule>) -> Result<Vec<LayerFileToken>, Error> {
 }
 
 fn parse_layer(pairs: Pairs<Rule>) -> Result<LayerObj, Error> {
-    println!("parse_layer");
+    // println!("parse_layer");
     let mut layer_obj = LayerObj {
         name: "".to_string(),
         property: None,
@@ -66,9 +70,12 @@ fn parse_layer(pairs: Pairs<Rule>) -> Result<LayerObj, Error> {
         stack: None,
     };
     for pair in pairs {
+        // println!("rule {:?}", pair.as_rule().to_owned());
+        // println!("value {:?}", pair.as_span().to_owned());
+        // println!();
         match pair.as_rule() {
             Rule::naming => {
-                layer_obj.name = pair.as_str().to_string();
+                layer_obj.name = pair.as_span().as_str().to_owned();
             }
             Rule::layer_property_block => {
                 layer_obj.property = Some(layer_property::parse_layer_property(pair.into_inner())?);
@@ -82,5 +89,7 @@ fn parse_layer(pairs: Pairs<Rule>) -> Result<LayerObj, Error> {
             _ => {}
         }
     }
+    println!("out parse layer : {:#?}" , layer_obj);
+
     Ok(layer_obj)
 }

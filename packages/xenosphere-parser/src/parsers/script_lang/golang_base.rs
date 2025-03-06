@@ -1,11 +1,10 @@
 // golang_base.rs
 /// moved to packages/xenosphere-parser-golang
 ///     out of the resource in processing multi-lang
-
 use anyhow::{Error, Result};
 
 use regex::Regex;
-use tree_sitter::{Language, Parser};
+use tree_sitter::Parser;
 use tree_sitter_go;
 
 use crate::tokens::script_lang::StatementToken;
@@ -67,7 +66,8 @@ fn check_raw_count(input_str: &str) -> String {
 
         if tmp_count > minimium_space {
             for i in 1..=(tmp_count - minimium_space) {
-                tmp_line = " ".to_owned() + &tmp_line;
+                tmp_line = " ".to_owned() + tmp_line.as_str();
+                // tmp_line = ""
             }
         }
         export_line_list.push(tmp_line);
