@@ -2,7 +2,7 @@
 ///
 
 /// attribute
-attr_set       = @{ (func_block | (naming ~ "=" ~ value_block | func_block)) ~ ","? }
+attr_set       = !{ (func_block | (naming ~ "=" ~ value_block | func_block)) }
 attr_def_block =  { "#[" ~ attr_set+ ~ "]" }
 
 naming = @{ ASCII_ALPHANUMERIC ~ ("_"* ~ ASCII_ALPHANUMERIC)* }

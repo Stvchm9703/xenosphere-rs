@@ -12,8 +12,8 @@ fn test_parser_with_layer_stack() {
         r##"
 #[use("Tensor")]
 #[import("Tensor")]
-#[import(path="../path/to/file")]
-#[export="Tensor"]
+#[import(name="Conv", path="../path/to/file")]
+#[export("Tensor")]
     layer Conv {
         property {
             in      int y = 3 ;
@@ -56,7 +56,7 @@ fn test_parser_with_layer_stack() {
     }
     "##,
     );
-    // println!("{:?}", token);
+    println!("{:#?}", token);
     assert_eq!(4, 4);
 }
 

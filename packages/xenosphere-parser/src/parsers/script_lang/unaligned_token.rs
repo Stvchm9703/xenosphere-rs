@@ -6,11 +6,8 @@ use crate::tokens::script_lang::{
 use lazy_static::lazy_static;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
-use std::{
-    fmt::{self, Debug, Formatter},
-    ops::Deref,
-};
-use tree_sitter::{Node, TreeCursor};
+use std::fmt::{self, Debug, Formatter};
+use tree_sitter::Node;
 lazy_static! {
     static ref IS_NAMED_REGEX: Regex = Regex::new(r"^[a-zA-Z_]+$").unwrap();
 }

@@ -1,5 +1,5 @@
 use super::value_operation_token;
-use serde::{de, Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct VariableDeclartionToken {

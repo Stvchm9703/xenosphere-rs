@@ -1,6 +1,6 @@
 use anyhow::Error;
 
-use tree_sitter::{Language, Parser};
+use tree_sitter::Parser;
 use tree_sitter_cpp;
 use tree_sitter_rust;
 pub mod unaligned_token;

@@ -1,4 +1,3 @@
-use std::fmt::format;
 use std::i32;
 
 use anyhow::{Error, Ok};
@@ -6,8 +5,11 @@ use pest::iterators::Pair;
 // use syn::parse;
 
 use crate::parsers::makeup_lang::Rule;
-use crate::tokens::layer_lang::{FuncArgSet, FuncArgValue, FuncCallSet, LayerPropertyElementSet};
-use crate::tokens::{layer_lang::LayerPropertyElementValue, tensor::PseudoTensor};
+use crate::tokens::makeup_lang::{
+    FuncArgSet, FuncArgValue, FuncCallSet, LayerPropertyElementSet, LayerPropertyElementValue,
+};
+use crate::tokens::tensor::PseudoTensor;
+
 pub fn parse_val_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
     // println!("rule: {:?}", pair.as_rule());
 
@@ -215,12 +217,10 @@ fn array_block(pair: &Pair<'_, Rule>) -> LayerPropertyElementValue {
 
 fn func_arg_block(pair: &Pair<'_, Rule>, id: usize) -> Option<FuncArgSet> {
     match pair.as_rule() {
-        Rule::object_property => {
-            Some(FuncArgSet {
-                name: format!("args:{}", id),
-                value: FuncArgValue::InputReference(pair.as_str().to_owned()),
-            })
-        }
+        Rule::object_property => Some(FuncArgSet {
+            name: format!("args:{}", id),
+            value: FuncArgValue::InputReference(pair.as_str().to_owned()),
+        }),
         Rule::func_name_arg_block => {
             let mut tmp = FuncArgSet {
                 name: String::new(),
@@ -260,7 +260,7 @@ fn func_arg_block(pair: &Pair<'_, Rule>, id: usize) -> Option<FuncArgSet> {
 fn parse_tensor_block(
     income_data: LayerPropertyElementValue,
 ) -> Result<PseudoTensor<LayerPropertyElementValue>, Error> {
-    let mut tensor_data = PseudoTensor {
+    let tensor_data = PseudoTensor {
         shape: vec![],
         data: vec![],
     };

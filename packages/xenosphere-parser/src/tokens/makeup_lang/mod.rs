@@ -1,3 +1,7 @@
+use std::collections::HashMap;
+
+use serde::{Deserialize, Serialize};
+
 use crate::tokens::tensor::PseudoTensor;
 
 use super::script_lang::ScriptBlock;
@@ -6,20 +10,31 @@ fn variant_eq<T>(a: &T, b: &T) -> bool {
     std::mem::discriminant(a) == std::mem::discriminant(b)
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct AttributeSet {
+    /// General Attribute Set
     pub name: String,
-    pub value: String,
+    pub value: HashMap<String, String>,
 }
 
-#[derive(Debug)]
+pub type LayerFileContent = Vec<LayerFileToken>;
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub enum LayerFileToken {
     Attribute(LayerFileAttribute),
     Layer(LayerObj),
     Unknown(String),
 }
 
-#[derive(Debug)]
+impl Default for LayerFileToken {
+    fn default() -> Self {
+        Self::Unknown("".to_string())
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub enum LayerFileAttribute {
     // package name
     Package(LayerPackageAttr),
@@ -34,20 +49,52 @@ pub enum LayerFileAttribute {
 }
 // -----------
 // attribute list
-#[derive(Debug)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct LayerPackageAttr {
     pub name: String,
     pub path: String,
 }
+impl LayerPackageAttr {
+    pub fn from_attribute_set(attr: &AttributeSet) -> Self {
+        Self {
+            name: attr.name.to_owned(),
+            path: attr.value.get("path").unwrap_or(&"".to_owned()).to_string(),
+            ..Self::default()
+        }
+    }
+}
 
-#[derive(Debug)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct LayerImportAttr {
     pub name: String,
     pub path: String,
     pub file_type: String,
 }
 
-#[derive(Debug)]
+impl LayerImportAttr {
+    pub fn from_attribute_set(attr: &AttributeSet) -> Self {
+        let path = if let Some(path) = attr.value.get("path") {
+            path
+        } else {
+            ""
+        };
+
+        let file_type = if let Some(file_type) = attr.value.get("file_type") {
+            file_type
+        } else {
+            "xesl_cpp"
+        };
+
+        Self {
+            name: attr.name.to_owned(),
+            path: path.to_string(),
+            file_type: file_type.to_string(),
+            ..Self::default()
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct LayerObj {
     pub name: String,
     pub property: Option<LayerProperty>,
@@ -55,11 +102,23 @@ pub struct LayerObj {
     pub stack: Option<LayerStacks>,
 }
 
+impl Default for LayerObj {
+    fn default() -> Self {
+        Self {
+            name: String::default(),
+            property: None,
+            pass: None,
+            stack: None,
+        }
+    }
+}
+
 // --------------------------------
 // Layer Property
 pub type LayerProperty = Vec<LayerPropertyElement>;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub enum LayerPropertyElement {
     Static(LayerPropertyElementSet),
     In(LayerPropertyElementSet),
@@ -69,13 +128,23 @@ pub enum LayerPropertyElement {
     Unknown(String),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub struct LayerPropertyElementSet {
     pub name: String,
     pub value: LayerPropertyElementValue,
 }
+impl Default for LayerPropertyElementSet {
+    fn default() -> Self {
+        Self {
+            name: String::default(),
+            value: LayerPropertyElementValue::None,
+        }
+    }
+}
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub enum LayerPropertyElementValue {
     Int(i32),
     Float(f32),
@@ -91,7 +160,8 @@ impl PartialEq for LayerPropertyElementValue {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub enum FuncArgValue {
     Int(i32),
     Float(f32),
@@ -100,16 +170,16 @@ pub enum FuncArgValue {
     OutputReference(String),
     None,
 }
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FuncArgSet {
     pub name: String,
     pub value: FuncArgValue,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FuncCallSet {
     pub func_name: String,
-    // None : maybe bypass the arg from last layer function call return, or by the runtime-call 
+    // None : maybe bypass the arg from last layer function call return, or by the runtime-call
     // Vec<FuncArgSet> : by by argument position,
     pub func_arg: Option<Vec<FuncArgSet>>,
 }
@@ -118,7 +188,8 @@ pub struct FuncCallSet {
 
 // --------------------------------
 // Layer Pass
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub struct LayerPassScript {
     // the raw content
     pub raw_content: String,
@@ -166,8 +237,7 @@ pub type LayerPass = Vec<LayerPassScript>;
 pub type LayerStacks = Vec<LayerStackElm>;
 
 /// the function block
-///
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct LayerStackBlock {
     pub id: usize,
     pub pos: usize,
@@ -177,7 +247,7 @@ pub struct LayerStackBlock {
 
 pub type LayerStackFuncArgSet = FuncArgSet;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct LayerStackBranch {
     pub id: usize,
     pub pos: usize,
@@ -185,7 +255,8 @@ pub struct LayerStackBranch {
     pub stack_list: Vec<LayerStackElm>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
 pub enum LayerStackElm {
     Block(LayerStackBlock),
     Branch(LayerStackBranch),

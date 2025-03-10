@@ -34,7 +34,7 @@ pub fn parse_golang_tree(input_str: &str) -> Result<UnalignedToken, Error> {
 }
 
 fn check_raw_count(input_str: &str) -> String {
-    let mut line_list: Vec<String> = input_str
+    let line_list: Vec<String> = input_str
         .split('\n')
         .map(|s| s.to_string())
         .filter(|p| !p.is_empty() && !p.starts_with("\n"))
