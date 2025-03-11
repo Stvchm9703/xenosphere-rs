@@ -1,4 +1,4 @@
-use std::i32;
+use std::{default, i32};
 
 use anyhow::{Error, Ok};
 use pest::iterators::Pair;
@@ -8,7 +8,7 @@ use crate::parsers::makeup_lang::Rule;
 use crate::tokens::makeup_lang::{
     FuncArgSet, FuncArgValue, FuncCallSet, LayerPropertyElementSet, LayerPropertyElementValue,
 };
-use crate::tokens::tensor::PseudoTensor;
+use crate::tokens::tensor::{PseudoTensor, PseudoTensorData};
 
 pub fn parse_val_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
     // println!("rule: {:?}", pair.as_rule());
@@ -34,7 +34,9 @@ pub fn parse_val_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, 
                 return Ok(parse_array_def_block(pair_item)?);
             }
 
-            Rule::tensor_def_block => {}
+            Rule::tensor_def_block => {
+                return Ok(parse_tensor_def_block(pair_item)?);
+            }
             _ => {}
         };
         // println!("//rule: {:?}", pair_item.as_rule());
@@ -50,7 +52,7 @@ pub fn parse_val_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, 
 fn parse_int_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
     let mut name = "".to_string();
     // let mut shape: Vec<i32> = vec![];
-    let mut value = LayerPropertyElementValue::Int(0);
+    let mut value = LayerPropertyElementValue::Int(0i32);
 
     for pair_item in pair.clone().into_inner() {
         // println!("rule: {:?}", pair_item.as_rule());
@@ -175,6 +177,42 @@ fn parse_array_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Er
     return Ok(LayerPropertyElementSet { name, value });
 }
 
+fn parse_tensor_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
+    let mut name = String::new();
+    let mut shape: Vec<u8> = vec![];
+    let mut value: Vec<PseudoTensorData<f32>> = vec![];
+
+    for pair_item in pair.clone().into_inner() {
+        // println!("pair_item:{:?}", pair_item);
+        match pair_item.as_rule() {
+            Rule::naming => {
+                name = pair_item.as_str().to_string();
+            }
+            Rule::shape_block => {
+                let mut shape_str = pair_item.as_span().as_str().to_owned();
+                shape_str = shape_str.replace("(", "").replace(")", "");
+                shape = shape_str
+                    .split(",")
+                    .into_iter()
+                    .map(|x| x.trim().parse::<u8>().unwrap_or_default())
+                    .collect();
+            }
+
+            Rule::tensor_arr_block => {
+                let root_coor = vec![];
+                value = tensor_arr_block(pair_item.to_owned(), root_coor)?;
+            }
+            _ => {}
+        }
+    }
+    return Ok(LayerPropertyElementSet {
+        name,
+        value: LayerPropertyElementValue::Tensor(
+            PseudoTensor::new_with_data(shape, value).unwrap()
+        ),
+    });
+}
+
 pub fn parse_value_block(pair: Pair<Rule>) -> Result<LayerPropertyElementValue, Error> {
     // println!("parse_value_block {:?}", pair);
     match pair.as_rule() {
@@ -257,13 +295,38 @@ fn func_arg_block(pair: &Pair<'_, Rule>, id: usize) -> Option<FuncArgSet> {
     }
 }
 
-fn parse_tensor_block(
-    income_data: LayerPropertyElementValue,
-) -> Result<PseudoTensor<LayerPropertyElementValue>, Error> {
-    let tensor_data = PseudoTensor {
-        shape: vec![],
-        data: vec![],
-    };
+fn tensor_arr_block(
+    pair: Pair<'_, Rule>,
+    parent_layer: Vec<u64>,
+) -> Result<Vec<PseudoTensorData<f32>>, Error> {
+    let mut tensor_data: Vec<PseudoTensorData<f32>> = vec![];
+    // let mut coor_set = parent_layer.to_owned();
+    for (idx, pair_item) in pair.into_inner().enumerate() {
+        // println!("idx : {}", idx);
+        // println!("pair_item : {:?}", pair_item.as_rule());
+        match pair_item.as_rule() {
+            Rule::tensor_value => {
+                // let elem_index = u64::try_from(idx)?;
+                let mut coor_set = parent_layer.to_owned();
+                coor_set.push(u64::try_from(idx)?);
+                tensor_data.extend_from_slice(&tensor_arr_block(pair_item, coor_set)?);
+            }
+            Rule::tensor_arr_block => {
+                tensor_data.extend_from_slice(&tensor_arr_block(
+                    pair_item.to_owned(),
+                    parent_layer.to_owned(),
+                )?);
+            }
+            Rule::num_block | Rule::float_block => {
+                // let mut coor =
+                tensor_data.push(PseudoTensorData::new(
+                    parent_layer.to_owned(),
+                    pair_item.as_span().as_str().parse::<f32>().unwrap(),
+                ));
+            }
+            _ => (),
+        }
+    }
 
     Ok(tensor_data)
 }

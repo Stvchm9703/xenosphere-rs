@@ -2,7 +2,7 @@
 ///
 
 /// attribute
-attr_set       = !{ (func_block | (naming ~ "=" ~ value_block | func_block)) }
+attr_set       = !{ (func_block | (naming ~ "=" ~ value_block | func_block) ~ ","?) }
 attr_def_block =  { "#[" ~ attr_set+ ~ "]" }
 
 naming = @{ ASCII_ALPHANUMERIC ~ ("_"* ~ ASCII_ALPHANUMERIC)* }
@@ -80,12 +80,7 @@ should_value = _{ value_block | object_property }
 
 // overall layer definition
 layer_def_block      = {
-    ("layer" | "LAYER") ~ (naming) ~ "{" ~ 
-    (layer_type_block){,1} ~ 
-    (layer_property_block){,1} ~ 
-    (layer_pass_block | layer_stack_block){,1} ~ 
-    (layer_preview_block){,1} ~ 
-    "}"
+    ("layer" | "LAYER") ~ (naming) ~ "{" ~ (layer_type_block){,1} ~ (layer_property_block){,1} ~ (layer_pass_block | layer_stack_block){,1} ~ (layer_preview_block){,1} ~ "}"
 }
 layer_type_block     = {
     ("type" | "TYPE") ~ "=" ~ naming ~ ";"
@@ -124,7 +119,7 @@ layer_pass_block = {
     ("pass" | "PASS") ~ "{" ~ (pass_impl_block)+ ~ "}"
 }
 
-// script pass 
+// script pass
 pass_impl_block = {
     pass_impl_attr_block ~ &"{" ~ pass_impl_content_block ~ "}#"
 }

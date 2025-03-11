@@ -44,8 +44,7 @@ fn parse_attribute_set_content(pair: Pair<Rule>) -> Result<AttributeSet, Error> 
                         Rule::func_name_arg_block => {
                             let mut tmp_name = String::new();
                             for named_arg_pair in arg_pair.into_inner() {
-                                println!("func_name_arg_block : {:?}", named_arg_pair);
-
+                                // println!("func_name_arg_block : {:?}", named_arg_pair);
                                 match named_arg_pair.as_rule() {
                                     Rule::naming => {
                                         tmp_name = named_arg_pair.as_span().as_str().to_string()

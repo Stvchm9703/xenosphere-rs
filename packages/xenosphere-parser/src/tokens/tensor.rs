@@ -1,8 +1,10 @@
+use std::fmt::{self, Debug, Formatter};
+
 use anyhow::Error;
 // use polars::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 pub struct PseudoTensor<T> {
     // shape
     // : shape is a vector of integers that represents the shape of the tensor.
@@ -20,15 +22,12 @@ impl<T> PseudoTensor<T> {
         }
     }
 
-    pub fn new_with_data(shape: Vec<u8>, data: Vec<PseudoTensorData<T>>)-> Result<Self, Error> {
-        
-        Ok(Self {
-            shape, data
-        })
+    pub fn new_with_data(shape: Vec<u8>, data: Vec<PseudoTensorData<T>>) -> Result<Self, Error> {
+        Ok(Self { shape, data })
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Clone, PartialEq, Serialize, Deserialize)]
 pub struct PseudoTensorData<T> {
     pub coordinate: Vec<u64>,
     pub value: T,
@@ -37,6 +36,15 @@ pub struct PseudoTensorData<T> {
 impl<T> PseudoTensorData<T> {
     pub fn new(coordinate: Vec<u64>, value: T) -> Self {
         PseudoTensorData { coordinate, value }
+    }
+}
+
+impl<T: Debug> Debug for PseudoTensorData<T> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result
+    where
+        T: Debug,
+    {
+        return write!(f, "pt :{:?} ; {:?}", self.coordinate, self.value);
     }
 }
 

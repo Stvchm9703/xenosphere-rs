@@ -5,6 +5,8 @@ use xenosphere_parser::parsers::{
     makeup_lang::Rule as MarkupRule, makeup_lang::SyntexParser as MarkupParser, parse_makeup_token,
 };
 
+use serde_json::to_string;
+
 #[cfg(test)]
 #[test]
 fn test_parser_with_layer_stack() {
@@ -25,8 +27,7 @@ fn test_parser_with_layer_stack() {
             static  func c;
             static  func c1 = LEUKOCYTE;
             static  func c2 = LEUKOCYTE($x, $y, b=12);
-            static  tensor<(3,3)> mask ;
-
+            static  tensor<(3,3)> mask;
         }
         stack
         [
@@ -52,11 +53,13 @@ fn test_parser_with_layer_stack() {
                     Dense(10),
                 ],
             }
-        ]
+        ]   
     }
     "##,
-    );
+    )
+    .unwrap();
     println!("{:#?}", token);
+    // println!("{:?}", to_string(&token));
     assert_eq!(4, 4);
 }
 
@@ -99,7 +102,7 @@ fn test_parser_with_layer_pass() {
     } 
     "##,
     );
-    // println!("{:#?}", token);
+    println!("{:#?}", token);
     assert_eq!(4, 4);
 }
 

@@ -38,7 +38,7 @@ pub fn parse_layer_property_element_set(pair: Pair<Rule>) -> Result<LayerPropert
         value: LayerPropertyElementValue::None,
     };
 
-    println!("parse_layer_property_element_set {:#?}", pair.as_rule());
+    // println!("parse_layer_property_element_set {:#?}", pair.as_rule());
 
     for inner in pair.clone().into_inner() {
         // println!("===");
