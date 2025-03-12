@@ -7,6 +7,8 @@ pub use property::*;
 pub mod stack;
 pub use stack::*;
 
+pub mod preview;
+pub use preview::*;
 
 use serde::{Deserialize, Serialize};
 
@@ -17,7 +19,7 @@ pub struct LayerObj {
     pub property: Option<LayerProperty>,
     pub pass: Option<LayerPass>,
     pub stack: Option<LayerStacks>,
-    pub preview: Option<String>,
+    pub preview: Option<LayerPreview>,
 }
 
 impl Default for LayerObj {

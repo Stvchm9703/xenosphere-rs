@@ -6,7 +6,6 @@ use crate::tokens::script_lang::ScriptBlock;
 // --------------------------------
 // Layer Pass
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(tag = "_type")]
 pub struct LayerPassScript {
     // the raw content
     pub raw_content: String,
@@ -48,3 +47,4 @@ impl Default for LayerPassScript {
 
 pub type LayerPass = Vec<LayerPassScript>;
 // --------------------------------
+

@@ -15,7 +15,7 @@ pub struct XeslFileContent {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(tag = "_type")]
+#[serde(tag = "_token_type")]
 pub enum XeslFileToken {
     Attribute(FileAttribute),
     Layer(LayerObj),
@@ -24,7 +24,6 @@ pub enum XeslFileToken {
 
 impl Default for XeslFileToken {
     fn default() -> Self {
-        Self::Unknown("".to_string())
+        Self::Unknown(String::default())
     }
 }
-

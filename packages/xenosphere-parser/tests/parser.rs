@@ -5,11 +5,15 @@ use xenosphere_parser::parsers::{
     makeup_lang::Rule as MarkupRule, makeup_lang::SyntexParser as MarkupParser, parse_makeup_token,
 };
 
-use serde_json::to_string;
+use serde_json::to_string_pretty as to_string;
+
+use bincode;
 
 #[cfg(test)]
 #[test]
 fn test_parser_with_layer_stack() {
+    use std::{fs, io::Write, ptr::write_bytes};
+
     let token = parse_makeup_token(
         r##"
 #[use("Tensor")]
@@ -58,8 +62,19 @@ fn test_parser_with_layer_stack() {
     "##,
     )
     .unwrap();
-    println!("{:#?}", token);
-    // println!("{:?}", to_string(&token));
+    // println!("{:#?}", token);
+    println!("{:?}", to_string(&token));
+
+    let s = bincode::serialize(&token).unwrap();
+    let mut bin_file = fs::OpenOptions::new()
+        .create(true)
+        .read(true)
+        .write(true)
+        .open("test_parser_with_layer_stack.bincode")
+        .unwrap();
+
+    bin_file.write_all(&s).unwrap();
+
     assert_eq!(4, 4);
 }
 
@@ -98,6 +113,9 @@ fn test_parser_with_layer_pass() {
                     return 0;
                 }
             }#
+        }
+        preview {
+        
         }
     } 
     "##,

@@ -1,5 +1,5 @@
 use anyhow::Error;
-use common::parse_attribute_set;
+use common::parse_attribute_set_content;
 use pest::iterators::Pairs;
 use pest::Parser;
 use pest_derive::Parser;
@@ -9,15 +9,15 @@ use pest_derive::Parser;
 use crate::tokens::makeup_lang::{
     // self,
     FileAttribute,
-    XeslFileContent,
-    XeslFileToken,
     FileImportAttr,
-    LayerObj,
     FilePackageAttr,
     // LayerFuncArgSet,
     // LayerFuncArgValue,
     // LayerPropertyElement,
     // LayerPropertyElementSet, LayerPropertyElementValue, LayerStackBlock, LayerStackElm,
+    LayerObj,
+    XeslFileContent,
+    XeslFileToken,
 };
 
 mod common;
@@ -53,10 +53,12 @@ fn parse_content(pairs: Pairs<Rule>) -> Result<XeslFileContent, Error> {
                 layer_file_tokens.push(XeslFileToken::Layer(parse_layer(pair.into_inner())?));
             }
             Rule::attr_def_block => {
-                layer_file_tokens.extend(parse_attr_def_block(pair.into_inner())?);
+                layer_file_tokens.push(parse_attr_def_block(pair.into_inner())?);
             }
             _ => {
                 let tmp = pair.as_str().to_string();
+                // println!("parse_content unresolved");
+                // println!("{:?}", pair);
                 if tmp.is_empty() == false {
                     layer_file_tokens.push(XeslFileToken::Unknown(tmp));
                 }
@@ -97,24 +99,36 @@ fn parse_layer(pairs: Pairs<Rule>) -> Result<LayerObj, Error> {
     Ok(layer_obj)
 }
 
-fn parse_attr_def_block(pairs: Pairs<Rule>) -> Result<Vec<XeslFileToken>, Error> {
-    let inner: Vec<XeslFileToken> = parse_attribute_set(pairs)?
-        .iter()
-        .map(|x| {
-            // println!("x : {:?}", x);
-            match x.name.as_str() {
-                "import" => XeslFileToken::Attribute(FileAttribute::Import(
-                    FileImportAttr::from_attribute_set(x),
-                )),
+fn parse_attr_def_block(pairs: Pairs<Rule>) -> Result<XeslFileToken, Error> {
+    // let inner: Vec<XeslFileToken> = parse_attribute_set(pairs.to_owned())?
+    //     .iter()
+    //     .map(|x| {
+    //         // println!("x : {:?}", x);
+    //         match x.name.as_str() {
+    //             "import" => XeslFileToken::Attribute(FileAttribute::Import(
+    //                 FileImportAttr::from_attribute_set(x),
+    //             )),
 
-                "export" => XeslFileToken::Attribute(FileAttribute::Export(x.to_owned())),
-                "package" => XeslFileToken::Attribute(FileAttribute::Package(
-                    FilePackageAttr::from_attribute_set(x),
-                )),
-                _ => XeslFileToken::Attribute(FileAttribute::Unknown(x.to_owned())),
-            }
-        })
-        .collect();
+    //             "export" => XeslFileToken::Attribute(FileAttribute::Export(x.to_owned())),
+    //             "package" => XeslFileToken::Attribute(FileAttribute::Package(
+    //                 FilePackageAttr::from_attribute_set(x),
+    //             )),
+    //             _ => XeslFileToken::Attribute(FileAttribute::Unknown(x.to_owned())),
+    //         }
+    //     })
+    //     .collect();
 
+    let pair_item = pairs.to_owned().into_iter().next().unwrap();
+    let file_token = parse_attribute_set_content(pair_item)?;
+    let inner = match file_token.name.as_str() {
+        "import" => XeslFileToken::Attribute(FileAttribute::Import(
+            FileImportAttr::from_attribute_set(&file_token),
+        )),
+        "export" => XeslFileToken::Attribute(FileAttribute::Export(file_token.to_owned())),
+        "package" => XeslFileToken::Attribute(FileAttribute::Package(
+            FilePackageAttr::from_attribute_set(&file_token),
+        )),
+        _ => XeslFileToken::Attribute(FileAttribute::Unknown(file_token.to_owned())),
+    };
     Ok(inner)
 }

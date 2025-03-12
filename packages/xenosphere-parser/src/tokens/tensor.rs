@@ -44,7 +44,7 @@ impl<T: Debug> Debug for PseudoTensorData<T> {
     where
         T: Debug,
     {
-        return write!(f, "pt :{:?} ; {:?}", self.coordinate, self.value);
+        return write!(f, "pt: {:?};{:?}", self.coordinate, self.value);
     }
 }
 

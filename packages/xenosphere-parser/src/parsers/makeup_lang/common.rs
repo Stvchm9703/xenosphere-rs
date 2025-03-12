@@ -19,7 +19,7 @@ pub fn parse_attribute_set(pairs: Pairs<Rule>) -> Result<Vec<AttributeSet>, Erro
     return Ok(attrs);
 }
 
-fn parse_attribute_set_content(pair: Pair<Rule>) -> Result<AttributeSet, Error> {
+pub fn parse_attribute_set_content(pair: Pair<Rule>) -> Result<AttributeSet, Error> {
     // let content = pair.as_span().as_str();
 
     // println!("content : {:?}", content);

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use super::AttributeSet;
 
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(tag = "_type")]
+#[serde(tag = "_attribute_type")]
 pub enum FileAttribute {
     // package name
     Package(FilePackageAttr),

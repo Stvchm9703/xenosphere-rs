@@ -1,4 +1,4 @@
-use std::{default, i32};
+use std::i32;
 
 use anyhow::{Error, Ok};
 use pest::iterators::Pair;
@@ -11,41 +11,37 @@ use crate::tokens::makeup_lang::{
 use crate::tokens::tensor::{PseudoTensor, PseudoTensorData};
 
 pub fn parse_val_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
-    // println!("rule: {:?}", pair.as_rule());
+    let pair_item = pair.clone().into_inner().next().unwrap();
+    match pair_item.as_rule() {
+        Rule::int_def_block => {
+            return Ok(parse_int_def_block(pair_item)?);
+        }
+        Rule::float_def_block => {
+            return Ok(parse_float_def_block(pair_item)?);
+        }
+        Rule::string_def_block => {
+            return Ok(parse_string_def_block(pair_item)?);
+        }
 
-    for pair_item in pair.clone().into_inner() {
-        // println!("//rule: {:?}", pair_item.as_rule());
-        match pair_item.as_rule() {
-            Rule::int_def_block => {
-                return Ok(parse_int_def_block(pair_item)?);
-            }
-            Rule::float_def_block => {
-                return Ok(parse_float_def_block(pair_item)?);
-            }
-            Rule::string_def_block => {
-                return Ok(parse_string_def_block(pair_item)?);
-            }
+        Rule::func_def_block => {
+            return Ok(parse_func_def_block(pair_item)?);
+        }
 
-            Rule::func_def_block => {
-                return Ok(parse_func_def_block(pair_item)?);
-            }
+        Rule::array_def_block => {
+            return Ok(parse_array_def_block(pair_item)?);
+        }
 
-            Rule::array_def_block => {
-                return Ok(parse_array_def_block(pair_item)?);
-            }
-
-            Rule::tensor_def_block => {
-                return Ok(parse_tensor_def_block(pair_item)?);
-            }
-            _ => {}
-        };
-        // println!("//rule: {:?}", pair_item.as_rule());
-    }
+        Rule::tensor_def_block => {
+            return Ok(parse_tensor_def_block(pair_item)?);
+        }
+        _ => {}
+    };
 
     // Err(Error::msg("unsolved"))
     Ok(LayerPropertyElementSet {
-        name: "emp".to_owned(),
+        name: "unknowned".to_owned(),
         value: LayerPropertyElementValue::None,
+        ..LayerPropertyElementSet::default()
     })
 }
 
@@ -68,7 +64,11 @@ fn parse_int_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Erro
             _ => {}
         }
     }
-    return Ok(LayerPropertyElementSet { name, value });
+    return Ok(LayerPropertyElementSet {
+        name,
+        value,
+        ..Default::default()
+    });
 }
 
 fn parse_float_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
@@ -91,7 +91,11 @@ fn parse_float_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Er
             _ => {}
         }
     }
-    return Ok(LayerPropertyElementSet { name, value });
+    return Ok(LayerPropertyElementSet {
+        name,
+        value,
+        ..LayerPropertyElementSet::default()
+    });
 }
 
 fn parse_string_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
@@ -114,7 +118,11 @@ fn parse_string_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, E
             _ => {}
         }
     }
-    return Ok(LayerPropertyElementSet { name, value });
+    return Ok(LayerPropertyElementSet {
+        name,
+        value,
+        ..Default::default()
+    });
 }
 
 fn parse_func_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
@@ -154,6 +162,7 @@ fn parse_func_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Err
     return Ok(LayerPropertyElementSet {
         name,
         value: LayerPropertyElementValue::Func(func_set),
+        ..Default::default()
     });
 }
 
@@ -174,7 +183,11 @@ fn parse_array_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Er
             _ => {}
         }
     }
-    return Ok(LayerPropertyElementSet { name, value });
+    return Ok(LayerPropertyElementSet {
+        name,
+        value,
+        ..Default::default()
+    });
 }
 
 fn parse_tensor_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
@@ -208,8 +221,9 @@ fn parse_tensor_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, E
     return Ok(LayerPropertyElementSet {
         name,
         value: LayerPropertyElementValue::Tensor(
-            PseudoTensor::new_with_data(shape, value).unwrap()
+            PseudoTensor::new_with_data(shape, value).unwrap(),
         ),
+        ..LayerPropertyElementSet::default()
     });
 }
 

@@ -2,7 +2,7 @@ use anyhow::Error;
 
 use tree_sitter::Parser;
 use tree_sitter_cpp;
-use tree_sitter_rust;
+// use tree_sitter_rust;
 pub mod unaligned_token;
 use unaligned_token::{UnalignedToken, UnalignedTokenTrait};
 
@@ -39,21 +39,5 @@ pub fn parse_cpp(input_str: &str) -> std::result::Result<(), Error> {
     root_token.source_language = "cpp".to_string();
     println!("token {:#?}", root_token);
 
-    Ok(())
-}
-
-pub fn parse_rust(input_str: &str) -> std::result::Result<(), Error> {
-    let mut parser = Parser::new();
-    parser.set_language(&tree_sitter_rust::language()).unwrap();
-    let tree = parser.parse(input_str, None).unwrap();
-
-    let mut root_token = UnalignedToken::new(tree.root_node(), input_str, true);
-    root_token.source_language = "cpp".to_string();
-    println!("token {:#?}", root_token);
-
-    Ok(())
-}
-
-pub fn parse_python(input_str: &str) -> std::result::Result<(), Error> {
     Ok(())
 }

@@ -1,14 +1,14 @@
-use anyhow::Error;
+use anyhow::{Error, Ok};
 use pest::iterators::{Pair, Pairs};
 
 use crate::tokens::makeup_lang::{
-    LayerPropertyElement, LayerPropertyElementSet, LayerPropertyElementValue,
+    LayerPropertyElementSet, LayerPropertyPrefix,
 };
 
 use crate::parsers::makeup_lang::{value_define_block::parse_val_def_block, Rule};
 
-pub fn parse_layer_property(pairs: Pairs<Rule>) -> Result<Vec<LayerPropertyElement>, Error> {
-    let mut layer_properties: Vec<LayerPropertyElement> = vec![];
+pub fn parse_layer_property(pairs: Pairs<Rule>) -> Result<Vec<LayerPropertyElementSet>, Error> {
+    let mut layer_properties: Vec<LayerPropertyElementSet> = vec![];
     // println!("in parse_layer_property");
     for pair in pairs {
         println!("parse_layer_property rule {:?}", pair.as_rule().to_owned());
@@ -23,8 +23,9 @@ pub fn parse_layer_property(pairs: Pairs<Rule>) -> Result<Vec<LayerPropertyEleme
             //     layer_properties.push(tmp);
             // }
             _ => {
-                let tmp = LayerPropertyElement::Unknown(pair.as_span().as_str().to_string());
-                layer_properties.push(tmp);
+                layer_properties.push(LayerPropertyElementSet::new_unresolved(
+                    pair.as_span().as_str().to_owned(),
+                ));
             }
         }
     }
@@ -32,37 +33,26 @@ pub fn parse_layer_property(pairs: Pairs<Rule>) -> Result<Vec<LayerPropertyEleme
     Ok(layer_properties)
 }
 
-pub fn parse_layer_property_element_set(pair: Pair<Rule>) -> Result<LayerPropertyElement, Error> {
-    let mut layer_property_element_set: LayerPropertyElementSet = LayerPropertyElementSet {
-        name: "".to_owned(),
-        value: LayerPropertyElementValue::None,
-    };
-
+pub fn parse_layer_property_element_set(
+    pair: Pair<Rule>,
+) -> Result<LayerPropertyElementSet, Error> {
     // println!("parse_layer_property_element_set {:#?}", pair.as_rule());
-
-    for inner in pair.clone().into_inner() {
-        // println!("===");
-        // println!("inner rule {:?}", inner.as_rule());
-        // parse the val_def_block
-        layer_property_element_set = parse_val_def_block(inner)?;
-        // layer_property_element_set.name = name;
-        // layer_property_element_set.value = value;
-
-        println!("result : {:?}", layer_property_element_set);
-        println!("===");
-
-    }
+    let inner = pair.clone().into_inner().next().unwrap();
+    let mut layer_property_element_set: LayerPropertyElementSet = parse_val_def_block(inner)?;
+    // println!("result : {:?}", layer_property_element_set);
+    // println!("===");
 
     // extract the prefix, either "static" or "in" or "out"
     let prefix = pair.as_str().to_string();
     if prefix.contains("static") {
-        return Ok(LayerPropertyElement::Static(layer_property_element_set));
+        // return Ok(LayerPropertyPrefix::Static(layer_property_element_set));
+        layer_property_element_set.prefix = LayerPropertyPrefix::Static;
     } else if prefix.contains("in") {
-        return Ok(LayerPropertyElement::In(layer_property_element_set));
+        // return Ok(LayerPropertyPrefix::In(layer_property_element_set));
+        layer_property_element_set.prefix = LayerPropertyPrefix::In;
     } else if prefix.contains("out") {
-        return Ok(LayerPropertyElement::Out(layer_property_element_set));
+        // return Ok(LayerPropertyPrefix::Out(layer_property_element_set));
+        layer_property_element_set.prefix = LayerPropertyPrefix::Out;
     }
-    Ok(LayerPropertyElement::Unknown(
-        pair.as_span().as_str().to_string(),
-    ))
+    Ok(layer_property_element_set)
 }
