@@ -11,7 +11,7 @@ pub struct LayerPassScript {
     pub raw_content: String,
 
     // the transpiled token
-    pub transpiled: ScriptBlock,
+    pub transpiled: Option<ScriptBlock>,
 
     // attribute `syntex`
     pub script_syntex: Option<String>,
@@ -35,7 +35,7 @@ impl Default for LayerPassScript {
     fn default() -> Self {
         Self {
             raw_content: String::new(),
-            transpiled: ScriptBlock::default(),
+            transpiled: None,
             script_syntex: None,
             script_filename: None,
             target_platform: String::new(),

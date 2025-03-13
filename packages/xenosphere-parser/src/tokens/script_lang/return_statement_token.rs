@@ -1,7 +1,9 @@
 use crate::tokens::script_lang::value_operation_token::ValueOperationToken;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+use super::{StatementTokenTrait, UnalignedToken};
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ReturnStatementToken {
     /// CFunctionReturnStatementToken
     /// for the simple function return statement
@@ -9,5 +11,16 @@ pub struct ReturnStatementToken {
     /// return_value : a
     /// raw_content : "return a;"
     pub return_value: Option<ValueOperationToken>,
-    pub raw_content: String,
+    #[serde(skip)]
+    pub raw_token: Option<Box<UnalignedToken>>,
+}
+
+impl StatementTokenTrait for ReturnStatementToken {
+    fn get_raw_content(&self) -> &str {
+        if let Some(rt) = self.raw_token.as_ref() {
+            &rt.raw
+        } else {
+            ""
+        }
+    }
 }

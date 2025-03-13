@@ -4,7 +4,9 @@ use crate::tokens::script_lang::{
 };
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+use super::{StatementTokenTrait, UnalignedToken};
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct FunctionDeclarationStatementToken {
     /// CFunctionDeclarationStatementToken
     /// for the simple function declaration statement
@@ -21,5 +23,17 @@ pub struct FunctionDeclarationStatementToken {
     pub function_args: Vec<VariableDeclartionToken>,
     pub function_return_type: Vec<VariableDeclartionToken>,
     pub function_body: CompoundStatementToken,
-    pub raw_content: String,
+    // pub raw_content: String,
+    #[serde(skip)]
+    pub raw_token: Option<Box<UnalignedToken>>,
+}
+
+impl StatementTokenTrait for FunctionDeclarationStatementToken {
+    fn get_raw_content(&self) -> &str {
+        if let Some(rt) = self.raw_token.as_ref() {
+            &rt.raw
+        } else {
+            ""
+        }
+    }
 }

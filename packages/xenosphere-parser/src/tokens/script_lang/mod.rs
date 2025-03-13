@@ -1,32 +1,47 @@
 // use crate::parsers::clang::Rule;
 // use pest::iterators::{Pair, Pairs};
+pub use serde::{Deserialize, Serialize};
+
+pub mod identifier;
+pub use identifier::*;
 
 pub mod variable_declartion_token;
-use serde::{Deserialize, Serialize};
-use variable_declartion_token::VariableDeclartionToken;
+pub use variable_declartion_token::*;
 
 pub mod value_operation_token;
-use value_operation_token::ValueOperationToken;
+pub use value_operation_token::*;
 
 pub mod compound_statement_token;
-use compound_statement_token::CompoundStatementToken;
+pub use compound_statement_token::*;
 
 pub mod loop_statement_token;
-use loop_statement_token::LoopStatementToken;
+pub use loop_statement_token::*;
 
 pub mod function_declaration_statement_token;
-use function_declaration_statement_token::FunctionDeclarationStatementToken;
+pub use function_declaration_statement_token::*;
 
 pub mod function_call_statement_token;
-use function_call_statement_token::FunctionCallStatementToken;
+pub use function_call_statement_token::*;
 
 pub mod return_statement_token;
-use return_statement_token::ReturnStatementToken;
+pub use return_statement_token::*;
 
 pub mod condition_statement_token;
-use condition_statement_token::ConditionStatementToken;
+pub use condition_statement_token::*;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
+pub mod unaligned_token;
+pub use unaligned_token::*;
+
+pub mod comment_token;
+pub use comment_token::*;
+
+pub mod import_declaration_token;
+pub use import_declaration_token::*;
+
+pub mod error;
+pub use error::Error;
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 pub struct ScriptBlock {
     pub raw_content: String,
     pub script_syntex: String,
@@ -37,10 +52,10 @@ pub struct ScriptBlock {
 }
 
 pub trait StatementTokenParser {
-    // fn try_parse(pair: Pair<Rule>) -> Result<(), Error>;
+    fn try_parse(raw_content: String) -> Result<ScriptBlock, Error>;
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum StatementToken {
     VariableDeclaration(VariableDeclartionToken),
     ValueOperationStatment(ValueOperationToken),
@@ -52,27 +67,9 @@ pub enum StatementToken {
     ConditionStatement(ConditionStatementToken),
     Comment(CommentToken),
     ImportDeclaration(ImportDeclarationToken),
-    Unknown,
+    Unknown(UnalignedToken),
 }
 
 pub trait StatementTokenTrait {
-    fn get_raw_content() -> String;
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
-pub struct CommentToken {
-    /// CCommentToken
-    /// for the simple comment statement
-    /// e.g. // this is a comment
-    /// comment : this is a comment
-    /// raw_content : "// this is a comment"
-    pub comment: String,
-    pub raw_content: String,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
-pub struct ImportDeclarationToken {
-    pub raw_content: String,
-    pub import_path: String,
-    pub import_name: String,
+    fn get_raw_content(&self) -> &str;
 }

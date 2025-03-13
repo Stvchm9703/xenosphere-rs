@@ -1,16 +1,25 @@
-use crate::tokens::script_lang::{
-    compound_statement_token::CompoundStatementToken,
-    variable_declartion_token::VariableDeclartionToken,
-};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+use super::{StatementTokenTrait, UnalignedToken};
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct IdentifierToken {
-    /// CIdentifierToken
+    /// IdentifierToken
     /// for the simple identifier token
     /// e.g. a
     /// identifier : a
     /// raw_content : "a"
     pub identifier: String,
-    pub raw_content: String,
+    #[serde(skip)]
+    pub raw_token: Option<Box<UnalignedToken>>,
+}
+
+impl StatementTokenTrait for IdentifierToken {
+    fn get_raw_content(&self) -> &str {
+        if let Some(rt) = self.raw_token.as_ref() {
+            &rt.raw
+        } else {
+            ""
+        }
+    }
 }

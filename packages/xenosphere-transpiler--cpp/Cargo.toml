@@ -1,0 +1,9 @@
+[package]
+name = "xenosphere-transpiler--cpp"
+version = "0.0.0"
+edition = "2021"
+license-file.workspace = true
+homepage.workspace = true
+
+[dependencies]
+xenosphere-parser = { path = "../xenosphere-parser" }

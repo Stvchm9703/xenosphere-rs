@@ -10,7 +10,9 @@ pub struct PseudoTensor<T> {
     // : shape is a vector of integers that represents the shape of the tensor.
     // : e.g. [2, 3, 4] means a tensor with 3 dimensions, and each dimension has 2, 3, and 4 elements.
     // :  first dimension has 2 elements, second dimension has 3 elements, and third dimension has 4 elements.
+    #[serde(rename = "s")]
     pub shape: Vec<u8>,
+    #[serde(rename = "d")]
     pub data: Vec<PseudoTensorData<T>>,
 }
 
@@ -29,7 +31,9 @@ impl<T> PseudoTensor<T> {
 
 #[derive(Clone, PartialEq, Serialize, Deserialize)]
 pub struct PseudoTensorData<T> {
+    #[serde(rename = "c")]
     pub coordinate: Vec<u64>,
+    #[serde(rename = "v")]
     pub value: T,
 }
 

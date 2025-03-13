@@ -9,6 +9,7 @@ members = [
     "packages/xenosphere-service",
     "packages/xenosphere-app",
     "app/src-tauri",
+    "packages/xenosphere-transpiler--cpp",
 ]
 package.license-file = "LICENSE"
 package.homepage = "https://github.com/Stvchm9703/xenosphere-rs"

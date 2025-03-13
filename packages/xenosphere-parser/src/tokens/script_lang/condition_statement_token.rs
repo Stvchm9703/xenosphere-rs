@@ -1,7 +1,9 @@
 use crate::tokens::script_lang::compound_statement_token::CompoundStatementToken;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+use super::{StatementTokenTrait, UnalignedToken};
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ConditionStatementToken {
     /// CConditionStatementToken
     /// for the simple condition statement
@@ -16,16 +18,41 @@ pub struct ConditionStatementToken {
     /// if_statements : [a = b + c, b = a + c]
     /// else_statements : [a = b - c, b = a - c]
     /// raw_content : "if (a > b) {a = b + c; b = a + c;} else {a = b - c; b = a - c;}"
-    pub statement_type: String, // if, switch
+    pub statement_type: StatementType,
     pub set: Vec<ConditionStatementSet>,
-    pub raw_content: String,
+    #[serde(skip)]
+    pub raw_token: Option<Box<UnalignedToken>>,
 }
 
+impl StatementTokenTrait for ConditionStatementToken {
+    fn get_raw_content(&self) -> &str {
+        if let Some(rt) = self.raw_token.as_ref() {
+            &rt.raw
+        } else {
+            ""
+        }
+    }
+}
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum StatementType {
+    Unknown(String),
+    If,
+    Switch,
+}
+
+impl Default for StatementType {
+    fn default() -> Self {
+        StatementType::Unknown(String::new())
+    }
+}
+
+//  ---
+//
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ConditionStatementSet {
     /// ConditionStatementSet
-    ///     the subset of CConditionStatementToken
+    ///     the subset of ConditionStatementToken
     /// for the simple condition statement
     /// e.g. if (a > b) {
     ///     a = b + c;
@@ -37,12 +64,27 @@ pub struct ConditionStatementSet {
     /// order: 0
     /// statement_set_type: if
     /// condition : a > b
-    /// compound : CCompoundStatementToken { statements: [a = b + c, b = a + c], raw_content: "a = b + c; b = a + c;" }
+    /// compound : CompoundStatementToken { statements: [a = b + c, b = a + c], raw_content: "a = b + c; b = a + c;" }
     /// raw_content : "{a = b + c; b = a + c;}"
-    pub order: i32,
-    pub statement_set_type: String, // if, else if, else, case
+    pub order: usize,
+    pub statement_set_type: StatementSetType, // if, else if, else, case
     pub condition: String,
-    pub raw_condition: String,
     pub compound: CompoundStatementToken,
     pub raw_content: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum StatementSetType {
+    Unknown(String),
+    If,
+    Else,
+    ElseIf,
+    Case,
+    Default,
+}
+
+impl Default for StatementSetType {
+    fn default() -> Self {
+        StatementSetType::Unknown(String::new())
+    }
 }

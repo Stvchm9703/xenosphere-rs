@@ -1,7 +1,9 @@
 use crate::tokens::script_lang::variable_declartion_token::VariableDeclartionToken;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+use super::{StatementTokenTrait, UnalignedToken};
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct FunctionCallStatementToken {
     /// CFunctionCallStatementToken
     /// for the simple function call statement
@@ -11,5 +13,15 @@ pub struct FunctionCallStatementToken {
     /// raw_content : "add(a, b);"
     pub function_name: String,
     pub function_args: Vec<VariableDeclartionToken>,
-    pub raw_content: String,
+    pub raw_token: Option<Box<UnalignedToken>>,
+}
+
+impl StatementTokenTrait for FunctionCallStatementToken {
+    fn get_raw_content(&self) -> &str {
+        if let Some(rt) = self.raw_token.as_ref() {
+            &rt.raw
+        } else {
+            ""
+        }
+    }
 }

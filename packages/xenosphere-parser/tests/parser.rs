@@ -119,8 +119,10 @@ fn test_parser_with_layer_pass() {
         }
     } 
     "##,
-    );
+    ).unwrap();
     println!("{:#?}", token);
+    println!("{:?}", to_string(&token));
+
     assert_eq!(4, 4);
 }
 

@@ -1,6 +1,8 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+use super::{StatementTokenTrait, UnalignedToken};
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ValueOperationToken {
     /// ValueOperationToken
     /// for the simple value operation
@@ -11,12 +13,24 @@ pub struct ValueOperationToken {
     /// raw_content : "a = b + c;"
     // debug: String,
     // debug_operate_type: String,
-    pub assigned: String,
-    pub raw_content: String,
+    pub assigned_variable: String,
+    // pub raw_content: String,
     pub value_operation_set: Vec<ValueOperationSet>,
+    #[serde(skip)]
+    pub raw_token: Option<Box<UnalignedToken>>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+impl StatementTokenTrait for ValueOperationToken {
+    fn get_raw_content(&self) -> &str {
+        if let Some(rt) = self.raw_token.as_ref() {
+            &rt.raw
+        } else {
+            ""
+        }
+    }
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ValueOperationSet {
     /// ValueOperationSet
     /// for the simple value operation set
@@ -25,7 +39,7 @@ pub struct ValueOperationSet {
     /// value : b
     /// operator : =
     /// raw_content : "= b"
-    pub order: i32,
+    pub order: usize,
     pub operate_type: String, // = + - * / % & | ^ << >> && || < <= > >= == !=
     pub value: String,
     pub raw_content: String,

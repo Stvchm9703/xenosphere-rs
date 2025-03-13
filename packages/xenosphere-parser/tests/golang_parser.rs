@@ -1,297 +1,302 @@
-use serde_json::to_string_pretty;
-use std::{fs::File, io::Write};
-use xenosphere_parser::parsers::script_lang::parse_golang as parse_golang_token;
+// tests/golang_parser.rs
+//
+// removed
 
-#[cfg(test)]
-#[test]
-fn test_parser_with_simple_golang() {
-    let token = parse_golang_token(
-        r##"
-package scoring
+// /**
+// //
+// use serde_json::to_string_pretty;
+// use std::{fs::File, io::Write};
+// use xenosphere_parser::parsers::script_lang::golang_base::parse_golang_tree as parse_golang_token;
 
-import (
-	"fmt"
-	"job-seek/pkg/config"
-	"job-seek/pkg/request"
+// #[cfg(test)]
+// #[test]
+// fn test_parser_with_simple_golang() {
+//     let token = parse_golang_token(
+//         r##"
+// package scoring
 
-	"sort"
-	"strings"
+// import (
+// 	"fmt"
+// 	"job-seek/pkg/config"
+// 	"job-seek/pkg/request"
 
-	"github.com/k0kubun/pp/v3"
-	"github.com/lithammer/fuzzysearch/fuzzy"
-	"github.com/samber/lo"
-)
+// 	"sort"
+// 	"strings"
 
-func ExampleScore() {
+// 	"github.com/k0kubun/pp/v3"
+// 	"github.com/lithammer/fuzzysearch/fuzzy"
+// 	"github.com/samber/lo"
+// )
 
-	test := []string{"javascript", "typescript"}
-	matches := fuzzy.RankFindFold("java", test)
-	sort.Sort(matches)
-	pp.Println("matches", matches)
-}
+// func ExampleScore() {
 
-func ScorePostMatching(config *config.SearchConfig, context string) (int, []string) {
-	score := 0
-	contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
-	positiveMatch := []string{}
-	for _, keyword := range *config.SearchKeywords {
-		matched := fuzzy.RankFindFold(keyword, contextToken)
-		for _, match := range matched {
-			if match.Distance == 0 {
-				score += 2
-			} else if match.Distance <= 4 {
-				score += 1
-			}
-			positiveMatch = append(positiveMatch, fmt.Sprintf("[%s:%s]", match.Source, match.Target))
-		}
-	}
+// 	test := []string{"javascript", "typescript"}
+// 	matches := fuzzy.RankFindFold("java", test)
+// 	sort.Sort(matches)
+// 	pp.Println("matches", matches)
+// }
 
-	for _, keyword := range *config.IgnoreKeywords {
-		matched := fuzzy.RankFindFold(keyword, contextToken)
-		for _, match := range matched {
-			if match.Distance == 0 {
-				score -= 3
-			} else if match.Distance <= 4 {
-				score -= 2
-			}
-		}
+// func ScorePostMatching(config *config.SearchConfig, context string) (int, []string) {
+// 	score := 0
+// 	contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
+// 	positiveMatch := []string{}
+// 	for _, keyword := range *config.SearchKeywords {
+// 		matched := fuzzy.RankFindFold(keyword, contextToken)
+// 		for _, match := range matched {
+// 			if match.Distance == 0 {
+// 				score += 2
+// 			} else if match.Distance <= 4 {
+// 				score += 1
+// 			}
+// 			positiveMatch = append(positiveMatch, fmt.Sprintf("[%s:%s]", match.Source, match.Target))
+// 		}
+// 	}
 
-	}
-	// score += 1
+// 	for _, keyword := range *config.IgnoreKeywords {
+// 		matched := fuzzy.RankFindFold(keyword, contextToken)
+// 		for _, match := range matched {
+// 			if match.Distance == 0 {
+// 				score -= 3
+// 			} else if match.Distance <= 4 {
+// 				score -= 2
+// 			}
+// 		}
 
-	return score, positiveMatch
-}
+// 	}
+// 	// score += 1
 
-func ScorePostMatchingKeyword(config *config.SearchConfig, context string) (fuzzy.Ranks, fuzzy.Ranks) {
-	// score := 0
-	contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
-	// positiveMatch := []string{}
-	posMatch := make(fuzzy.Ranks, 0)
-	negMatch := make(fuzzy.Ranks, 0)
-	for _, keyword := range *config.SearchKeywords {
-		matched := fuzzy.RankFindFold(keyword, contextToken)
-		posMatch = append(posMatch, matched...)
-	}
-	posMatch = lo.Filter(posMatch, func(item fuzzy.Rank, _ int) bool {
-		return strings.Contains(strings.ToLower(item.Target), strings.ToLower(item.Source))
-	})
+// 	return score, positiveMatch
+// }
 
-	for _, keyword := range *config.IgnoreKeywords {
-		matched := fuzzy.RankFindFold(keyword, contextToken)
-		negMatch = append(negMatch, matched...)
-	}
-	negMatch = lo.Filter(negMatch, func(item fuzzy.Rank, _ int) bool {
-		return strings.Contains(strings.ToLower(item.Target), strings.ToLower(item.Source))
-	})
+// func ScorePostMatchingKeyword(config *config.SearchConfig, context string) (fuzzy.Ranks, fuzzy.Ranks) {
+// 	// score := 0
+// 	contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
+// 	// positiveMatch := []string{}
+// 	posMatch := make(fuzzy.Ranks, 0)
+// 	negMatch := make(fuzzy.Ranks, 0)
+// 	for _, keyword := range *config.SearchKeywords {
+// 		matched := fuzzy.RankFindFold(keyword, contextToken)
+// 		posMatch = append(posMatch, matched...)
+// 	}
+// 	posMatch = lo.Filter(posMatch, func(item fuzzy.Rank, _ int) bool {
+// 		return strings.Contains(strings.ToLower(item.Target), strings.ToLower(item.Source))
+// 	})
 
-	return posMatch, negMatch
-}
+// 	for _, keyword := range *config.IgnoreKeywords {
+// 		matched := fuzzy.RankFindFold(keyword, contextToken)
+// 		negMatch = append(negMatch, matched...)
+// 	}
+// 	negMatch = lo.Filter(negMatch, func(item fuzzy.Rank, _ int) bool {
+// 		return strings.Contains(strings.ToLower(item.Target), strings.ToLower(item.Source))
+// 	})
 
-func scoringMatch(posMatch, negMatch fuzzy.Ranks, posFullScore, posPartScore, negFullScore, negPartScore int, ignoreRepeated bool) int {
-	score := 0
+// 	return posMatch, negMatch
+// }
 
-	pMatch := posMatch
-	nMatch := negMatch
-	if ignoreRepeated {
-		pMatch = make(fuzzy.Ranks, 0)
-		keys := lo.KeyBy(posMatch, func(item fuzzy.Rank) string {
-			return item.Target
-		})
-		for keyRef := range keys {
-			items := lo.Filter(posMatch, func(item fuzzy.Rank, _ int) bool {
-				return item.Target == keyRef
-			})
-			item := lo.MinBy(items, func(item fuzzy.Rank, minItem fuzzy.Rank) bool {
-				return item.Distance < minItem.Distance
-			})
-			pMatch = append(pMatch, item)
-		}
+// func scoringMatch(posMatch, negMatch fuzzy.Ranks, posFullScore, posPartScore, negFullScore, negPartScore int, ignoreRepeated bool) int {
+// 	score := 0
 
-		nMatch = make(fuzzy.Ranks, 0)
-		keys = lo.KeyBy(negMatch, func(item fuzzy.Rank) string {
-			return item.Target
-		})
-		for keyRef := range keys {
-			items := lo.Filter(negMatch, func(item fuzzy.Rank, _ int) bool {
-				return item.Target == keyRef
-			})
-			item := lo.MinBy(items, func(item fuzzy.Rank, minItem fuzzy.Rank) bool {
-				return item.Distance < minItem.Distance
-			})
-			nMatch = append(nMatch, item)
-		}
+// 	pMatch := posMatch
+// 	nMatch := negMatch
+// 	if ignoreRepeated {
+// 		pMatch = make(fuzzy.Ranks, 0)
+// 		keys := lo.KeyBy(posMatch, func(item fuzzy.Rank) string {
+// 			return item.Target
+// 		})
+// 		for keyRef := range keys {
+// 			items := lo.Filter(posMatch, func(item fuzzy.Rank, _ int) bool {
+// 				return item.Target == keyRef
+// 			})
+// 			item := lo.MinBy(items, func(item fuzzy.Rank, minItem fuzzy.Rank) bool {
+// 				return item.Distance < minItem.Distance
+// 			})
+// 			pMatch = append(pMatch, item)
+// 		}
 
-	}
+// 		nMatch = make(fuzzy.Ranks, 0)
+// 		keys = lo.KeyBy(negMatch, func(item fuzzy.Rank) string {
+// 			return item.Target
+// 		})
+// 		for keyRef := range keys {
+// 			items := lo.Filter(negMatch, func(item fuzzy.Rank, _ int) bool {
+// 				return item.Target == keyRef
+// 			})
+// 			item := lo.MinBy(items, func(item fuzzy.Rank, minItem fuzzy.Rank) bool {
+// 				return item.Distance < minItem.Distance
+// 			})
+// 			nMatch = append(nMatch, item)
+// 		}
 
-	for _, match := range pMatch {
-		if match.Distance == 0 {
-			score += posFullScore
-		} else if match.Distance <= 4 {
-			score += posPartScore
-		}
-	}
+// 	}
 
-	for _, match := range nMatch {
-		if match.Distance == 0 {
-			score -= negFullScore
-		} else if match.Distance <= 4 {
-			score -= negPartScore
-		}
-	}
-	return score
-}
-func CalculateMatchingScores(readConfig *config.SearchConfig, postDetail *request.SeekPostDetails) (int, []string) {
-	// positiveMatch := make(fuzzy.Ranks, 0)
-	// negativeMatch := make(fuzzy.Ranks, 0)
+// 	for _, match := range pMatch {
+// 		if match.Distance == 0 {
+// 			score += posFullScore
+// 		} else if match.Distance <= 4 {
+// 			score += posPartScore
+// 		}
+// 	}
 
-	score := 0
+// 	for _, match := range nMatch {
+// 		if match.Distance == 0 {
+// 			score -= negFullScore
+// 		} else if match.Distance <= 4 {
+// 			score -= negPartScore
+// 		}
+// 	}
+// 	return score
+// }
+// func CalculateMatchingScores(readConfig *config.SearchConfig, postDetail *request.SeekPostDetails) (int, []string) {
+// 	// positiveMatch := make(fuzzy.Ranks, 0)
+// 	// negativeMatch := make(fuzzy.Ranks, 0)
 
-	// title weighting
-	positiveMatch, negativeMatch := ScorePostMatchingKeyword(readConfig, postDetail.PostTitle)
-	score += scoringMatch(positiveMatch, negativeMatch, 5, 2, 5, 2, false)
+// 	score := 0
 
-	pMatch, nMatch := ScorePostMatchingKeyword(readConfig, postDetail.WorkType)
-	score += scoringMatch(pMatch, nMatch, 5, 2, 5, 1, false)
-	positiveMatch = append(positiveMatch, pMatch...)
-	negativeMatch = append(negativeMatch, nMatch...)
+// 	// title weighting
+// 	positiveMatch, negativeMatch := ScorePostMatchingKeyword(readConfig, postDetail.PostTitle)
+// 	score += scoringMatch(positiveMatch, negativeMatch, 5, 2, 5, 2, false)
 
-	pMatch, nMatch = ScorePostMatchingKeyword(readConfig, postDetail.Role)
-	score += scoringMatch(pMatch, nMatch, 5, 2, 5, 2, true)
-	positiveMatch = append(positiveMatch, pMatch...)
-	negativeMatch = append(negativeMatch, nMatch...)
+// 	pMatch, nMatch := ScorePostMatchingKeyword(readConfig, postDetail.WorkType)
+// 	score += scoringMatch(pMatch, nMatch, 5, 2, 5, 1, false)
+// 	positiveMatch = append(positiveMatch, pMatch...)
+// 	negativeMatch = append(negativeMatch, nMatch...)
 
-	pMatch, nMatch = ScorePostMatchingKeyword(readConfig, postDetail.DebugText)
-	score += scoringMatch(pMatch, nMatch, 3, 2, 3, 2, true)
-	positiveMatch = append(positiveMatch, pMatch...)
-	negativeMatch = append(negativeMatch, nMatch...)
+// 	pMatch, nMatch = ScorePostMatchingKeyword(readConfig, postDetail.Role)
+// 	score += scoringMatch(pMatch, nMatch, 5, 2, 5, 2, true)
+// 	positiveMatch = append(positiveMatch, pMatch...)
+// 	negativeMatch = append(negativeMatch, nMatch...)
 
-	pMatch, nMatch = ScorePostMatchingKeyword(readConfig, postDetail.CompanyDetails.Description)
-	score += scoringMatch(pMatch, nMatch, 2, 1, 2, 1, true)
-	positiveMatch = append(positiveMatch, pMatch...)
-	negativeMatch = append(negativeMatch, nMatch...)
+// 	pMatch, nMatch = ScorePostMatchingKeyword(readConfig, postDetail.DebugText)
+// 	score += scoringMatch(pMatch, nMatch, 3, 2, 3, 2, true)
+// 	positiveMatch = append(positiveMatch, pMatch...)
+// 	negativeMatch = append(negativeMatch, nMatch...)
 
-	pMatch, nMatch = ScorePostMatchingKeyword(readConfig, postDetail.CompanyDetails.Specialties)
-	score += scoringMatch(pMatch, nMatch, 2, 1, 2, 1, true)
-	positiveMatch = append(positiveMatch, pMatch...)
-	negativeMatch = append(negativeMatch, nMatch...)
+// 	pMatch, nMatch = ScorePostMatchingKeyword(readConfig, postDetail.CompanyDetails.Description)
+// 	score += scoringMatch(pMatch, nMatch, 2, 1, 2, 1, true)
+// 	positiveMatch = append(positiveMatch, pMatch...)
+// 	negativeMatch = append(negativeMatch, nMatch...)
 
-	debugText := make([]string, 0)
+// 	pMatch, nMatch = ScorePostMatchingKeyword(readConfig, postDetail.CompanyDetails.Specialties)
+// 	score += scoringMatch(pMatch, nMatch, 2, 1, 2, 1, true)
+// 	positiveMatch = append(positiveMatch, pMatch...)
+// 	negativeMatch = append(negativeMatch, nMatch...)
 
-	for _, match := range positiveMatch {
-		debugText = append(debugText, fmt.Sprintf("[pos;%s:%s:%d]", match.Target, match.Source, match.Distance))
-	}
+// 	debugText := make([]string, 0)
 
-	for _, match := range negativeMatch {
-		debugText = append(debugText, fmt.Sprintf("[neg;%s:%s:%d]", match.Target, match.Source, match.Distance))
-	}
+// 	for _, match := range positiveMatch {
+// 		debugText = append(debugText, fmt.Sprintf("[pos;%s:%s:%d]", match.Target, match.Source, match.Distance))
+// 	}
 
-	return score, debugText
-}
+// 	for _, match := range negativeMatch {
+// 		debugText = append(debugText, fmt.Sprintf("[neg;%s:%s:%d]", match.Target, match.Source, match.Distance))
+// 	}
 
-    "##,
-    ).unwrap();
-    println!("{:#?}", token);
-    let json_str = to_string_pretty(&token).unwrap();
-    File::create("test_parser_with_simple_golang.json")
-        .unwrap()
-        .write_all(json_str.as_bytes())
-        .unwrap();
-    assert_eq!(4, 4);
-}
+// 	return score, debugText
+// }
 
-#[cfg(test)]
-#[test]
-fn test_parser_with_golang_content() {
-    let token = parse_golang_token(
-        r##"
-func ScorePostMatching(config *config.SearchConfig, context string) (int, []string) {
-	score := 0
-	contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
-	positiveMatch := []string{}
-	for _, keyword := range *config.SearchKeywords {
-		matched := fuzzy.RankFindFold(keyword, contextToken)
-		for _, match := range matched {
-			if match.Distance == 0 {
-				score += 2
-			} else if match.Distance <= 4 {
-				score += 1
-			}
-			positiveMatch = append(positiveMatch, fmt.Sprintf("[%s:%s]", match.Source, match.Target))
-		}
-	}
+//     "##,
+//     ).unwrap();
+//     println!("{:#?}", token);
+//     let json_str = to_string_pretty(&token).unwrap();
+//     File::create("test_parser_with_simple_golang.json")
+//         .unwrap()
+//         .write_all(json_str.as_bytes())
+//         .unwrap();
+//     assert_eq!(4, 4);
+// }
 
-	for _, keyword := range *config.IgnoreKeywords {
-		matched := fuzzy.RankFindFold(keyword, contextToken)
-		for _, match := range matched {
-			if match.Distance == 0 {
-				score -= 3
-			} else if match.Distance <= 4 {
-				score -= 2
-			}
-		}
+// #[cfg(test)]
+// #[test]
+// fn test_parser_with_golang_content() {
+//     let token = parse_golang_token(
+//         r##"
+// func ScorePostMatching(config *config.SearchConfig, context string) (int, []string) {
+// 	score := 0
+// 	contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
+// 	positiveMatch := []string{}
+// 	for _, keyword := range *config.SearchKeywords {
+// 		matched := fuzzy.RankFindFold(keyword, contextToken)
+// 		for _, match := range matched {
+// 			if match.Distance == 0 {
+// 				score += 2
+// 			} else if match.Distance <= 4 {
+// 				score += 1
+// 			}
+// 			positiveMatch = append(positiveMatch, fmt.Sprintf("[%s:%s]", match.Source, match.Target))
+// 		}
+// 	}
 
-	}
-	// score += 1
+// 	for _, keyword := range *config.IgnoreKeywords {
+// 		matched := fuzzy.RankFindFold(keyword, contextToken)
+// 		for _, match := range matched {
+// 			if match.Distance == 0 {
+// 				score -= 3
+// 			} else if match.Distance <= 4 {
+// 				score -= 2
+// 			}
+// 		}
 
-	return score, positiveMatch
-}
-	"##,
-    )
-    .unwrap();
-    let json_str = to_string_pretty(&token).unwrap();
-    println!("{:#?}", token);
-    println!("{}", json_str);
-    File::create("test_parser_with_golang_content.json")
-        .unwrap()
-        .write_all(json_str.as_bytes())
-        .unwrap();
-    assert_eq!(4, 4);
-}
+// 	}
+// 	// score += 1
 
+// 	return score, positiveMatch
+// }
+// 	"##,
+//     )
+//     .unwrap();
+//     let json_str = to_string_pretty(&token).unwrap();
+//     println!("{:#?}", token);
+//     println!("{}", json_str);
+//     File::create("test_parser_with_golang_content.json")
+//         .unwrap()
+//         .write_all(json_str.as_bytes())
+//         .unwrap();
+//     assert_eq!(4, 4);
+// }
 
+// #[cfg(test)]
+// #[test]
+// fn test_parser_with_golang_content_withput_main_wrap() {
+//     let token = parse_golang_token(
+//         r##"
+// 			score := 0
+// 			contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
+// 			positiveMatch := []string{}
+// 			for _, keyword := range *config.SearchKeywords {
+// 				matched := fuzzy.RankFindFold(keyword, contextToken)
+// 				for _, match := range matched {
+// 					if match.Distance == 0 {
+// 						score += 2
+// 					} else if match.Distance <= 4 {
+// 						score += 1
+// 					}
+// 					positiveMatch = append(positiveMatch, fmt.Sprintf("[%s:%s]", match.Source, match.Target))
+// 				}
+// 			}
 
-#[cfg(test)]
-#[test]
-fn test_parser_with_golang_content_withput_main_wrap() {
-    let token = parse_golang_token(
-        r##"
-			score := 0
-			contextToken := strings.Split(strings.ReplaceAll(context, "\n", " "), " ")
-			positiveMatch := []string{}
-			for _, keyword := range *config.SearchKeywords {
-				matched := fuzzy.RankFindFold(keyword, contextToken)
-				for _, match := range matched {
-					if match.Distance == 0 {
-						score += 2
-					} else if match.Distance <= 4 {
-						score += 1
-					}
-					positiveMatch = append(positiveMatch, fmt.Sprintf("[%s:%s]", match.Source, match.Target))
-				}
-			}
+// 			for _, keyword := range *config.IgnoreKeywords {
+// 				matched := fuzzy.RankFindFold(keyword, contextToken)
+// 				for _, match := range matched {
+// 					if match.Distance == 0 {
+// 						score -= 3
+// 					} else if match.Distance <= 4 {
+// 						score -= 2
+// 					}
+// 				}
 
-			for _, keyword := range *config.IgnoreKeywords {
-				matched := fuzzy.RankFindFold(keyword, contextToken)
-				for _, match := range matched {
-					if match.Distance == 0 {
-						score -= 3
-					} else if match.Distance <= 4 {
-						score -= 2
-					}
-				}
+// 			}
+// 			// score += 1
 
-			}
-			// score += 1
-
-	"##,
-    )
-    .unwrap();
-    let json_str = to_string_pretty(&token).unwrap();
-    // println!("{:#?}", token);
-    // println!("{}", json_str);
-    File::create("test_parser_with_golang_content_withput_main_wrap.json")
-        .unwrap()
-        .write_all(json_str.as_bytes())
-        .unwrap();
-    assert_eq!(4, 4);
-}
+// 	"##,
+//     )
+//     .unwrap();
+//     let json_str = to_string_pretty(&token).unwrap();
+//     // println!("{:#?}", token);
+//     // println!("{}", json_str);
+//     File::create("test_parser_with_golang_content_withput_main_wrap.json")
+//         .unwrap()
+//         .write_all(json_str.as_bytes())
+//         .unwrap();
+//     assert_eq!(4, 4);
+// }
+//  */
