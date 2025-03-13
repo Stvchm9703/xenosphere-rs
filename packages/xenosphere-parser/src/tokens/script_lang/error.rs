@@ -1,5 +1,5 @@
 // error.rs
-
+#[derive(Debug)]
 pub enum Error {
     AstQuery(tree_sitter::QueryError),
     AstLanguage(tree_sitter::LanguageError),
