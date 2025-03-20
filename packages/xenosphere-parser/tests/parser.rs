@@ -1,6 +1,6 @@
-use pest::{iterators::Pairs, Parser};
-use polars;
-use polars::prelude::*;
+use pest::{Parser, iterators::Pairs};
+// use polars;
+// use polars::prelude::*;
 use xenosphere_parser::parsers::{
     makeup_lang::Rule as MarkupRule, makeup_lang::SyntexParser as MarkupParser, parse_makeup_token,
 };
@@ -57,7 +57,7 @@ fn test_parser_with_layer_stack() {
                     Dense(10),
                 ],
             }
-        ]   
+        ]
     }
     "##,
     )
@@ -88,11 +88,11 @@ fn test_parser_with_layer_pass() {
 
     layer Conv {
         property {
-            in int y = 3 ; 
+            in int y = 3 ;
             static int x = 3 ;
             static float z = 3.0 ;
             static string a = "3" ;
-            static array b = [3, 4, 5]; 
+            static array b = [3, 4, 5];
             static tensor<(3,3)> mask = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
         }
         pass {
@@ -115,11 +115,12 @@ fn test_parser_with_layer_pass() {
             }#
         }
         preview {
-        
+
         }
-    } 
+    }
     "##,
-    ).unwrap();
+    )
+    .unwrap();
     println!("{:#?}", token);
     println!("{:?}", to_string(&token));
 
@@ -173,10 +174,49 @@ fn test_property_define<'a>() {
 
 #[cfg(test)]
 #[test]
-fn test_parse_tensor_dt<'a>() {
-    let test_string = vec![0f32; 27];
-    let mut series = Series::new("test", test_string);
-    series = series.reshape(&[3i64; 3]).unwrap();
-    println!("{:?}", series);
+fn test_parser_with_layer_stack2() {
+    let token = parse_makeup_token(
+        r##"
+#[use("Tensor")]
+#[import("Tensor")]
+#[import(name="Conv", path="../path/to/file")]
+#[export("Tensor")]
+    layer Conv {
+        property {
+            in      int y = 3 ;
+            in      int e ;
+            static  int x = 3;
+            static  float z = 3.0;
+            static  string a = "3";
+            static  array b  = [3, 4, 5];
+            static  func c;
+            static  func c1 = LEUKOCYTE;
+            static  func c2 = LEUKOCYTE($x, $y, b=12);
+            static  tensor<(3,3)> mask;
+        }
+        stack
+        [
+             Conv2D(
+                 input_tensor = $input_tensor,
+                 output_tensor = $output_tensor,
+                 kernel_size = 1,
+                 stride_size = 1,
+             ),
+             MaxPool2D(
+                 input_tensor = $output_tensor,
+                 output_tensor = $output_tensor,
+                 kernel_size = kernel_size,
+             ),
+             CELU(
+                 input_tensor = $output_tensor,
+                 output_tensor = $output_tensor,
+             ),
+        ]
+    }
+    "##,
+    )
+    .unwrap();
+    // println!("{:#?}", token);
+    println!("{:?}", to_string(&token));
     assert!(true);
 }

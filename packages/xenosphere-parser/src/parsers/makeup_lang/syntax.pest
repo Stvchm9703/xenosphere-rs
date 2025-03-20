@@ -48,7 +48,7 @@ tensor_value     = { num_block | tensor_arr_block }
 tensor_arr_block = { "[" ~ (tensor_value ~ (",")?)* ~ "]" }
 
 tensor_def_block = {
-    "tensor" ~ "<" ~ shape_block ~ ">" ~ naming ~ ("=" ~ tensor_arr_block){,1}
+    "tensor" ~ "<" ~ (shape_block | "auto") ~ ">" ~ naming ~ ("=" ~ tensor_arr_block){,1}
 }
 
 func_def_block = {
@@ -72,7 +72,7 @@ object_property = {
     (declare_const_reference | property_reference) ~ naming ~ ("." ~ naming)*
 }
 
-should_value = _{ value_block | object_property }
+should_value = _{ naming | value_block | object_property }
 
 // assignment_block = {
 // (object_property | naming) ~ "=" ~ (should_value)

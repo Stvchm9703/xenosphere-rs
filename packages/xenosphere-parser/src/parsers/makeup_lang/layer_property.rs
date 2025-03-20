@@ -1,9 +1,7 @@
 use anyhow::{Error, Ok};
 use pest::iterators::{Pair, Pairs};
 
-use crate::tokens::makeup_lang::{
-    LayerPropertyElementSet, LayerPropertyPrefix,
-};
+use crate::tokens::makeup_lang::{LayerPropertyElementSet, LayerPropertyPrefix};
 
 use crate::parsers::makeup_lang::{value_define_block::parse_val_def_block, Rule};
 
@@ -11,8 +9,8 @@ pub fn parse_layer_property(pairs: Pairs<Rule>) -> Result<Vec<LayerPropertyEleme
     let mut layer_properties: Vec<LayerPropertyElementSet> = vec![];
     // println!("in parse_layer_property");
     for pair in pairs {
-        println!("parse_layer_property rule {:?}", pair.as_rule().to_owned());
-        println!("value {:?}", pair.as_span().to_owned());
+        // println!("parse_layer_property rule {:?}", pair.as_rule().to_owned());
+        // println!("value {:?}", pair.as_span().to_owned());
         match pair.as_rule() {
             Rule::layer_property_elem => {
                 let tmp = parse_layer_property_element_set(pair)?;

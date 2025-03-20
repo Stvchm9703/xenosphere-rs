@@ -1,9 +1,9 @@
 [package]
 name = "xenosphere-core"
 version = "0.0.1-alpha.1"
-edition = "2021"
+edition = "2024"
 description = "A core framework for Xenosphere"
-license-file= "LICENSE"
+license-file = "LICENSE"
 repository = "https://github.com/Stvchm9703/xenosphere-rs/packages/xenosphere-core"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

@@ -1,18 +1,20 @@
 #[package("SamplePackage")]
-#[use("Package1")]
+#[import("Tensor")]
+#[import(name="Conv", path="../path/to/file")]
+#[export("Tensor")]
 
 ///!    Generates by visual editor;
 ///!    edit this file to change the layer structure;
 
-layer "SampleLayer"
+layer SampleLayer
 {
    property
    {
-        in array    kernel_size = [3,3]
-        static int  stride_size = 0
+        in     array    kernel_size = [3,3];
+        static int      stride_size = 0;
 
-        in tensor   $input_tensor
-        out tensor  $output_tensor
+        in      tensor<(3,3)>  input_tensor;
+        out     tensor<(3,3)>  output_tensor;
    }
 
 

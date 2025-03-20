@@ -17,4 +17,5 @@ sample_packages/
 
 .DS_Store
 **.DS_Store
-.DS_Store
+
+.xs

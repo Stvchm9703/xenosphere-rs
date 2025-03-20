@@ -193,6 +193,7 @@ fn parse_array_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Er
 fn parse_tensor_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, Error> {
     let mut name = String::new();
     let mut shape: Vec<u8> = vec![];
+    let mut is_auto_shape = false;
     let mut value: Vec<PseudoTensorData<f32>> = vec![];
 
     for pair_item in pair.clone().into_inner() {
@@ -204,11 +205,15 @@ fn parse_tensor_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, E
             Rule::shape_block => {
                 let mut shape_str = pair_item.as_span().as_str().to_owned();
                 shape_str = shape_str.replace("(", "").replace(")", "");
-                shape = shape_str
-                    .split(",")
-                    .into_iter()
-                    .map(|x| x.trim().parse::<u8>().unwrap_or_default())
-                    .collect();
+                if shape_str == "auto" {
+                    is_auto_shape = true;
+                } else {
+                    shape = shape_str
+                        .split(",")
+                        .into_iter()
+                        .map(|x| x.trim().parse::<u8>().unwrap_or_default())
+                        .collect();
+                }
             }
 
             Rule::tensor_arr_block => {
@@ -218,11 +223,13 @@ fn parse_tensor_def_block(pair: Pair<Rule>) -> Result<LayerPropertyElementSet, E
             _ => {}
         }
     }
+
+    let mut pseudo_tensor = PseudoTensor::new_with_data(shape, value).unwrap();
+    pseudo_tensor.is_auto_shape = is_auto_shape;
+
     return Ok(LayerPropertyElementSet {
         name,
-        value: LayerPropertyElementValue::Tensor(
-            PseudoTensor::new_with_data(shape, value).unwrap(),
-        ),
+        value: LayerPropertyElementValue::Tensor(pseudo_tensor),
         ..LayerPropertyElementSet::default()
     });
 }

@@ -1,9 +1,9 @@
 [package]
 name = "xenosphere-macro"
 version = "0.0.1-alpha.1"
-edition = "2021"
+edition = "2024"
 description = "A macro function for handling Xenosphere framework"
-license-file= "LICENSE"
+license-file = "LICENSE"
 repository = "https://github.com/Stvchm9703/xenosphere-rs/packages/xenosphere-macro"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -12,6 +12,9 @@ repository = "https://github.com/Stvchm9703/xenosphere-rs/packages/xenosphere-ma
 proc-macro = true
 
 [dependencies]
-proc-macro2 = { workplace = true , version = "1.0.79" }
-syn = { workplace = true, version = "2.0.58", features = ["extra-traits", "full"] }
-quote = { workplace=true, version = "1.0.35"}
+proc-macro2 = { workplace = true, version = "1.0.79" }
+syn = { workplace = true, version = "2.0.58", features = [
+    "extra-traits",
+    "full",
+] }
+quote = { workplace = true, version = "1.0.35" }

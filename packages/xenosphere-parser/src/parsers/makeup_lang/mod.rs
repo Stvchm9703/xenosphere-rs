@@ -1,7 +1,7 @@
 use anyhow::Error;
 use common::parse_attribute_set_content;
-use pest::iterators::Pairs;
 use pest::Parser;
+use pest::iterators::Pairs;
 use pest_derive::Parser;
 // use syn::token::Type;
 // use polars::prelude::*;
@@ -68,6 +68,7 @@ fn parse_content(pairs: Pairs<Rule>) -> Result<XeslFileContent, Error> {
 
     Ok(XeslFileContent {
         content: layer_file_tokens,
+        ..Default::default()
     })
 }
 

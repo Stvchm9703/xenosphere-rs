@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::tokens::script_lang::ScriptBlock;
 
-
 // --------------------------------
 // Layer Pass
 #[derive(Debug, Serialize, Deserialize)]
@@ -29,6 +28,10 @@ pub struct LayerPassScript {
     // attribute `overwrite`
     //  overwrite the previous / default language pass, but it should also not to transpile to other language
     pub is_overwrite: bool,
+
+    // attribute `allow_transpile`
+    // allow the transpiler process to process the script content as script content
+    pub allow_transpile: bool,
 }
 
 impl Default for LayerPassScript {
@@ -41,10 +44,10 @@ impl Default for LayerPassScript {
             target_platform: String::new(),
             transpiler: None,
             is_overwrite: false,
+            allow_transpile: false,
         }
     }
 }
 
 pub type LayerPass = Vec<LayerPassScript>;
 // --------------------------------
-
