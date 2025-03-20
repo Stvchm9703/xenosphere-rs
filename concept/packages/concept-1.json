@@ -1,0 +1,185 @@
+{
+  "file_name": "concept-1.xesl",
+  "file_path": "/Users/stephencheng/git_src/xenosphere-rs/concept/packages/concept-1.xesl",
+  "cache_path": ".xs/parser/concept-1.bincode",
+  "content": [
+    {
+      "_token_type": "Attribute",
+      "_attribute_type": "Package",
+      "name": "package",
+      "path": ""
+    },
+    {
+      "_token_type": "Attribute",
+      "_attribute_type": "Import",
+      "name": "import",
+      "path": "",
+      "file_type": "xesl_cpp"
+    },
+    {
+      "_token_type": "Attribute",
+      "_attribute_type": "Import",
+      "name": "import",
+      "path": "",
+      "file_type": "xesl_cpp"
+    },
+    {
+      "_token_type": "Attribute",
+      "_attribute_type": "Export",
+      "name": "export",
+      "value": {}
+    },
+    {
+      "_token_type": "Layer",
+      "name": "SampleLayer",
+      "property": [
+        {
+          "prefix": "In",
+          "name": "kernel_size",
+          "value": {
+            "_type": "Array",
+            "value": [
+              {
+                "_type": "Float",
+                "value": 3.0
+              },
+              {
+                "_type": "Float",
+                "value": 3.0
+              }
+            ]
+          }
+        },
+        {
+          "prefix": "Static",
+          "name": "stride_size",
+          "value": {
+            "_type": "Int",
+            "value": 0
+          }
+        },
+        {
+          "prefix": "In",
+          "name": "input_tensor",
+          "value": {
+            "_type": "Tensor",
+            "value": {
+              "s": [
+                3,
+                3
+              ],
+              "r": false,
+              "d": []
+            }
+          }
+        },
+        {
+          "prefix": "Out",
+          "name": "output_tensor",
+          "value": {
+            "_type": "Tensor",
+            "value": {
+              "s": [
+                3,
+                3
+              ],
+              "r": false,
+              "d": []
+            }
+          }
+        }
+      ],
+      "pass": null,
+      "stack": [
+        {
+          "_type": "Block",
+          "id": 0,
+          "pos": 23,
+          "func_name": "Conv2D",
+          "func_args": [
+            {
+              "name": "input_tensor",
+              "value": {
+                "_type": "InputReference",
+                "value": "$input_tensor"
+              }
+            },
+            {
+              "name": "output_tensor",
+              "value": {
+                "_type": "InputReference",
+                "value": "$output_tensor"
+              }
+            },
+            {
+              "name": "kernel_size",
+              "value": {
+                "_type": "String",
+                "value": ""
+              }
+            },
+            {
+              "name": "stride_size",
+              "value": {
+                "_type": "String",
+                "value": ""
+              }
+            }
+          ]
+        },
+        {
+          "_type": "Block",
+          "id": 1,
+          "pos": 29,
+          "func_name": "MaxPool2D",
+          "func_args": [
+            {
+              "name": "input_tensor",
+              "value": {
+                "_type": "InputReference",
+                "value": "$output_tensor"
+              }
+            },
+            {
+              "name": "output_tensor",
+              "value": {
+                "_type": "InputReference",
+                "value": "$output_tensor"
+              }
+            },
+            {
+              "name": "kernel_size",
+              "value": {
+                "_type": "String",
+                "value": ""
+              }
+            }
+          ]
+        },
+        {
+          "_type": "Block",
+          "id": 2,
+          "pos": 34,
+          "func_name": "CELU",
+          "func_args": [
+            {
+              "name": "input_tensor",
+              "value": {
+                "_type": "InputReference",
+                "value": "$output_tensor"
+              }
+            },
+            {
+              "name": "output_tensor",
+              "value": {
+                "_type": "InputReference",
+                "value": "$output_tensor"
+              }
+            }
+          ]
+        }
+      ],
+      "preview": null
+    }
+  ]
+}
